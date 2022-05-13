@@ -1,0 +1,86 @@
+<template>
+
+    <template if:true={showIntro}>
+        <lightning-card title="New Grant Application Process" icon-name="custom:custom64">
+ 
+            <div class="c-container slds-theme_default">
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item padding="around-small" size="12">
+                        <div class="page-section page-header">
+                            <h1>Create a winning grant application</h1>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="12">
+                        <lightning-layout>
+                            <lightning-layout-item padding="around-small" size="6">
+                                <div class="page-section page-main">
+
+                                    <div class="slds-progress slds-progress_vertical">
+                                        <ol class="slds-progress__list">
+                                            <li class="slds-progress__item slds-is-completed">
+                                                <span class="slds-icon_container slds-icon-utility-success slds-progress__marker slds-progress__marker_icon"
+                                                    title="Complete">
+                                                    <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                                                        <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#success"></use>
+                                                    </svg>
+                                                    <span class="slds-assistive-text">Complete</span>
+                                                </span>
+                                                <div class="slds-progress__item_content slds-grid slds-grid_align-spread">1. Create Grant application record</div>
+                                            </li>
+                                            <li class="slds-progress__item slds-is-completed">
+                                                <span class="slds-icon_container slds-icon-utility-success slds-progress__marker slds-progress__marker_icon"
+                                                    title="Complete">
+                                                    <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                                                        <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#success"></use>
+                                                    </svg>
+                                                    <span class="slds-assistive-text">Complete</span>
+                                                </span>
+                                                <div class="slds-progress__item_content slds-grid slds-grid_align-spread">2. Choose or Create relevant sections </div>
+                                            </li>
+                                            <li class="slds-progress__item slds-is-active">
+                                                <div class="slds-progress__marker"></div>
+                                                <div class="slds-progress__item_content slds-grid slds-grid_align-spread">3. Add content blocks. 
+                                                    Select from existing content text blocks. Or add new blocks to better fit your grant propossal.
+                                                </div>
+                                            </li>
+                                            <li class="slds-progress__item">
+                                                <div class="slds-progress__marker"></div>
+                                                <div class="slds-progress__item_content slds-grid slds-grid_align-spread">4. Repeat steps 2 and 3 until application is complete</div>
+                                            </li>
+                                            <li class="slds-progress__item">
+                                                <div class="slds-progress__marker"></div>
+                                                <div class="slds-progress__item_content slds-grid slds-grid_align-spread">5. Save and Export your grant application</div>
+                                            </li>
+                                        </ol>
+                                        <div aria-valuemin="0" aria-valuemax="100" aria-valuenow="25" role="progressbar">
+                                            <span class="slds-assistive-text">Progress: 25%</span>
+                                        </div>
+                                    </div>
+                            
+                                    <lightning-button variant="brand" label="Start New Grant Application" title="Primary action" onclick={handleStart} class="slds-m-left_x-small"></lightning-button>
+
+                                </div>        
+                            </lightning-layout-item>
+                        
+                            <lightning-layout-item padding="around-small" size="6">
+                                <div class="page-section page-right">
+                                    <div class="slds-m-around_medium">
+                                        <img src={ggwAgnostic}>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+
+                        </lightning-layout>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>        
+        </lightning-card>
+    </template>
+
+    <template if:true={showStart}>
+        <!-- ADD ggwNewApplication LWC-->
+        <c-ggw-new-application
+        ></c-ggw-new-application>
+    </template>
+
+</template>

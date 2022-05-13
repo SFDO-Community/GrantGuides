@@ -1,0 +1,47 @@
+#!/bin/sh
+
+##########################################################################################
+#
+#   Author: Igor Androsov 2020
+#
+##########################################################################################
+
+# Create new Scratch org environment for development testing and load test data
+# Set input prameter values
+
+ORG_ALIAS="$1"
+# Get input for ORG active days with default to 30 days
+ACTIVEDAYS="${2:-30}"
+
+echo "--- START DEPLOYMENT FOR: $ORG_ALIAS"
+echo "--- New ORG will be active for: $ACTIVEDAYS"
+# Set user alias from org name
+TRLUSER="${ORG_ALIAS}-user"
+
+# Create new scratch org 30 days max
+sfdx force:org:create --setdefaultusername --setalias $ORG_ALIAS --definitionfile config/project-scratch-def.json -d $ACTIVEDAYS || { echo 'Scratch org create failed' ; exit 1; }
+
+# Create test user
+sfdx force:user:create --setalias $TRLUSER --definitionfile config/user-def-2.json || { echo 'Scratch org User create failed' ; exit 1; }
+sfdx force:user:display -u $TRLUSER
+
+# Push source
+sfdx force:source:push -u $ORG_ALIAS || { echo 'Source push failed' ; exit 1; }
+
+# Assign Permission Set to users
+
+# Push sample data - TO push data neeed to update Case record Type ID from New target ORG and run this command
+# sfdx force:data:tree:import -u trl220 --plan test-data/export-account-Account-Case-Opportunity-plan.json
+# Get Rec Type
+# sfdx force:data:record:get --json -u -u $ORG_ALIAS -s RecordType -w "DeveloperName='TRL'"
+
+# Run Data import script
+# scripts/dx/dataimport $ORG_ALIAS 
+
+# Run Tests - optional step
+#sfdx force:apex:test:run --classnames Cases_onlyTest,TRLCase_detail_page_CTRLTest,TRL_WithdrawnCommentCTRLTest,TRL_Action_New_CTRLTest,TRL_Action_Edit_CTRLTest --resultformat tap --codecoverage -u $ORG_ALIAS
+#sfdx force:apex:test:run --classnames "Action_New_CTRLTest,TRL_Action_Edit_CTRLTest" --resultformat tap --codecoverage -u trl320
+
+
+# Open new org
+#sfdx force:org:open -u $ORG_ALIAS

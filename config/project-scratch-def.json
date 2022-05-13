@@ -1,0 +1,14 @@
+{
+  "orgName": "Salesfroce Labs",
+  "edition": "Developer",
+  "language": "en_US",
+  "features": ["EnableSetPasswordInApi","AuthorApex"],
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    }
+  }
+}

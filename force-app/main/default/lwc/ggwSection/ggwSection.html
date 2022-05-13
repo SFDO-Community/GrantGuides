@@ -1,0 +1,46 @@
+<template>
+    <lightning-card title={sectionTitle} >
+        <lightning-button label="Add block" slot="actions" onclick={showModal}></lightning-button>
+        <div class="slds-box slds-box_xx-small slds-m-left_x-small slds-m-right_x-small slds-m-bottom_xx-small">            
+            <lightning-formatted-rich-text
+                value={textBlock}
+            ></lightning-formatted-rich-text>
+        </div>   
+    </lightning-card>
+
+    <template if:true={openModal}>  
+        <div class="slds-modal slds-fade-in-open slds-backdrop">  
+          <div class="slds-modal__container">  
+            <!------HEADER Section 
+            <div class="slds-modal__header">  
+              <lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
+                variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
+              </lightning-button-icon>  
+              <h2>Welcome To SalesforcePoint.com</h2>  
+            </div>  
+        -->
+            <!------Body Section-->  
+            <div class="slds-modal__content slds-p-around_medium">  
+                <center>  
+
+                    <c-ggw-content-block-modal
+                      section={sectionId}
+                      onselectedblockchange={hanldeSelectedBlockChange}
+                    ></c-ggw-content-block-modal>
+
+                </center>  
+            </div>  
+            <!------Footer Section-->  
+            <div class="slds-modal__footer">  
+              <!-- TODO ONLY Show Save button is there are available Blocks for section 
+              <template if:true={sectionHasBlocks}>
+                <lightning-button label="Save" onclick={saveCloseModal}></lightning-button>  
+              </template>
+              -->
+              <lightning-button label="Save" onclick={saveCloseModal}></lightning-button>
+              <lightning-button icon-name="utility:close" label="Cancel" variant="brand" onclick={closeModal}></lightning-button>  
+            </div>  
+          </div>  
+        </div>  
+    </template>      
+</template>

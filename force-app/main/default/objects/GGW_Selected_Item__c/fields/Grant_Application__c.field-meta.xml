@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grant_Application__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Related parent Grant application</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Related parent Grant application</inlineHelpText>
+    <label>Grant Application</label>
+    <referenceTo>GGW_Grant_Application__c</referenceTo>
+    <relationshipLabel>Selected Items</relationshipLabel>
+    <relationshipName>Selected_Items</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

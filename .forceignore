@@ -1,0 +1,40 @@
+# List files or directories below to ignore them when running force:source:push, force:source:pull, and force:source:status
+# More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
+#
+
+package.xml
+
+# LWC configuration files
+**/jsconfig.json
+**/.eslintrc.json
+
+# LWC Jest
+**/__tests__/**
+
+# General Scratch items
+#AppSwitcher.appMenu
+
+*profiles*
+
+##
+force-app/main/default/approvalProcesses/Case.TRL_Case_Approval_Process_EMEA.approvalProcess-meta.xml
+
+force-app/main/default/profiles/Custom%3A Marketing Profile.profile-meta.xml
+force-app/main/default/profiles/Custom%3A Sales Profile.profile-meta.xml
+force-app/main/default/profiles/Custom%3A Support Profile.profile-meta.xml
+force-app/main/default/profiles/Admin.profile-meta.xml
+force-app/main/default/profiles/Custom*.profile-meta.xml
+
+force-app/main/default/layouts/Account-Account*
+force-app/main/default/layouts/Case-Case*
+force-app/main/default/layouts/CommunityMemberLayout-Community*0
+
+force-app/main/default/objects/Case/recordTypes/Support.recordType-meta.xml
+
+force-app/main/default/objects/Case/businessProcess/Test Tech Request.businessProcess-met.xml
+force-app/main/default/objects/Case/businessProcess/Sales Operation Process.businessProcess-met.xml
+force-app/main/default/objects/Case/businessProcess/Sales Systems Requests.businessProcess-met.xml
+force-app/main/default/objects/Case/businessProcess/Support Process.businessProcess-met.xml
+force-app/main/default/objects/Case/recordTypes/Test.recordType-meta.xml
+
+#force-app/main/default/assignmentRules/Case.assignmentRules-meta.xml

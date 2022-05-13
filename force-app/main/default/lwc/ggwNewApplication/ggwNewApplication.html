@@ -1,0 +1,78 @@
+<template>
+    
+    <lightning-card title="New Grant Application" icon-name="utility:builder">
+        <lightning-button label="Create" slot="actions"></lightning-button>
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col">
+                <div class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
+<!--
+                    <h2 class="header">Suggested sections to include:</h2>
+                    <lightning-input type="checkbox" label="Statement of need" name="input1" checked></lightning-input>
+                    <lightning-input type="checkbox" label="Program narrative" name="input2" ></lightning-input>
+                    <lightning-input type="checkbox" label="Plan of action" name="input3" checked></lightning-input>
+                    <lightning-input type="checkbox" label="Goals and objectives" name="input4" ></lightning-input>
+                    <lightning-input type="checkbox" label="Measurable outcomes" name="input5" ></lightning-input>
+                    <lightning-input type="checkbox" label="Budget narrative" name="input6" checked ></lightning-input>
+                    -->
+                    <lightning-checkbox-group name="Suggested sections to include"
+                        label="Suggested sections to include"
+                        options={options}
+                        value={value}
+                        onchange={handleChange}></lightning-checkbox-group>
+                </div>        
+            </div>
+
+            <div class="slds-col">
+                <div class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
+ 
+                    <div class="slds-var-m-around_medium">
+                        <lightning-layout vertical-align="end" class="slds-var-m-bottom_small">
+                            <lightning-layout-item flexibility="grow">
+                                <div onkeyup={handleKeyUp}>
+                                    <lightning-input
+                                        name="enter-search"
+                                        label="Search for sections"
+                                        type="search"
+                                    ></lightning-input>
+                                </div>
+                                <p if:true={queryTerm}>
+                                    Searched for {queryTerm}!
+                                </p>    
+            
+                            </lightning-layout-item>
+                        </lightning-layout>    
+                    </div>
+                    
+                    <div class="slds-var-m-around_medium">
+                        <lightning-layout vertical-align="end"
+                            class="slds-var-m-bottom_small"
+                        >
+                            <lightning-layout-item flexibility="grow">
+                                <lightning-input type="text" label="Create new section"></lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-var-p-left_xx-small">
+                                <lightning-button
+                                    label="New Section"
+                                    onclick={handleNewSection}
+                                ></lightning-button>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+
+                    <!--
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-button-icon icon-name="utility:add" variant="brand" alternative-text="New"  class="slds-m-left_xx-small" title="New"></lightning-button-icon>
+                        </div>
+                        <div class="slds-col slds-size_3-of-4">
+                            <lightning-input type="text" label="Create new section"></lightning-input>
+                        </div>
+                    </div>
+                    -->
+                </div>
+
+            </div>
+        </div>    
+    </lightning-card>
+</template>
