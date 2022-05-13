@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Grant Preview</label>
+    <motif>Custom50: Big top</motif>
+    <page>GGW_GrantPreview</page>
+</CustomTab>

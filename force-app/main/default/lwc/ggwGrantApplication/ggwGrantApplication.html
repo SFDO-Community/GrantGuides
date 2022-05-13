@@ -2,7 +2,7 @@
     <lightning-card title="Grant Application" icon-name="utility:builder">
         <lightning-button-group slot="actions">
             <lightning-button label="Save" ></lightning-button>
-            <lightning-button label="Export" ></lightning-button>
+            <lightning-button label="Export" onclick={exportGrantPdf}></lightning-button>
         </lightning-button-group>
 
         <template for:each={sections} for:item="sec">

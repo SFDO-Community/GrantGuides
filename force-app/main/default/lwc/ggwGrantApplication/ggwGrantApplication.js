@@ -1,7 +1,8 @@
 import { LightningElement ,wire , api, track } from "lwc";
+import { NavigationMixin } from 'lightning/navigation';
 import getSections from '@salesforce/apex/GGW_ApplicationCtrl.getSections';
 
-export default class GgwGrantApplication extends LightningElement {
+export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
 	@api
 	recordId;
 	@api
@@ -32,6 +33,14 @@ export default class GgwGrantApplication extends LightningElement {
         }
     }
 
+    exportGrantPdf(){
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: {
+                apiName: 'Grant_Preview'
+            }
+        });
+    }
 
     // when the component is first initialized assign an initial value to the `greekLetter` variable
     //connectedCallback() {

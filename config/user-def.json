@@ -1,0 +1,14 @@
+{
+    "Username": "ggw.lab@sflabs.com",
+    "LastName": "Astro",
+    "FirstName": "Nomical",
+    "Email": "iandrosov@mulesoft.com",
+    "Alias": "astronm1",
+    "TimeZoneSidKey": "America/Denver",
+    "LocaleSidKey": "en_US",
+    "EmailEncodingKey": "UTF-8",
+    "LanguageLocaleKey": "en_US",
+    "profileName": "System Administrator",
+    "permsets": [],
+    "generatePassword": true
+}

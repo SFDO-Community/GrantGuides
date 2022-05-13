@@ -13,20 +13,12 @@
                 <identifier>c_ggwGrantApplication1</identifier>
             </componentInstance>
         </itemInstances>
-        <name>region1</name>
-        <type>Region</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <name>region2</name>
-        <type>Region</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <name>region3</name>
+        <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
     <masterLabel>GGW UI Tester</masterLabel>
     <template>
-        <name>flexipage:appHomeTemplateTwoColumnsStacked</name>
+        <name>flexipage:defaultAppHomeTemplate</name>
     </template>
     <type>AppPage</type>
 </FlexiPage>

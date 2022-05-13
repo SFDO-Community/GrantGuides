@@ -10,6 +10,12 @@ public without sharing class GGW_ApplicationCtrl {
 
     }
 
+    // APEX COUNT WORDS in Rich text
+    //GGW_Content_Block__c block = [SELECT Id, Name, Description__c, Section__c, CreatedDate FROM GGW_Content_Block__c WHERE Id = 'a011D000009yi31QAA'  LIMIT 1];
+
+    //integer cnt = block.Description__c.normalizeSpace().stripHtmlTags().replaceAll('\\S','').length() ;
+    //System.debug('### RICH Text words: '+cnt);
+
     // ------------------------------------    
     // shared classes
     public class GGW_SectionWrapper {
@@ -44,7 +50,7 @@ public without sharing class GGW_ApplicationCtrl {
             // Count words in rich text with APEX methods
             integer words = block.Description__c.normalizeSpace().stripHtmlTags().replaceAll('\\S','').length() ;
             this.wordcount = words;
-            this.displaydate = block.CreatedDate.format('YYYY-MM-DD'); // Format this to short
+            this.displaydate = block.CreatedDate.format('YYYY-MM'); // Format this to short
             // TODO
             this.displaybadge = 'Winner'; // TODO find how to fill this what make a tag?
             this.totalblocks = cnt;
