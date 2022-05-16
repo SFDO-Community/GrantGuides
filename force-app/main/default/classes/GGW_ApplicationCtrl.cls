@@ -23,6 +23,22 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String label;
         @AuraEnabled public Boolean selected; 
         @AuraEnabled public Boolean hasblocks;
+
+        // BASIC Constrauctior Create Section object mapp from GGW_Section__c
+        public GGW_SectionWrapper(GGW_Section__c s){
+            this.recordid = s.Id;
+            this.label = s.Name;
+            this.selected = s.Recommended__c;
+            this.hasblocks = true; // default assuming blocks exist
+        }
+
+        // Create Section object mapp from GGW_Section__c and find Blocks
+        public GGW_SectionWrapper(GGW_Section__c s, Set<String> setOfSectionsWithBlock){
+            this.recordid = s.Id;
+            this.label = s.Name;
+            this.selected = s.Recommended__c;
+            this.hasblocks = setOfSectionsWithBlock.contains(s.Id);
+        }
     }
     public class GGW_SectionWrapperList {
         @AuraEnabled public List<GGW_SectionWrapper> sectionlist;
@@ -56,7 +72,7 @@ public without sharing class GGW_ApplicationCtrl {
             this.totalblocks = cnt;
         }
     }
-
+    // Return all Suggested section for shorter list
     @AuraEnabled(cacheable=true)
     public static List<GGW_SectionWrapper> getSections(){
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
@@ -64,12 +80,24 @@ public without sharing class GGW_ApplicationCtrl {
         List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
                                                 FROM GGW_Section__c WHERE Suggested__c = true ORDER BY Sort_Order__c];
         for(GGW_Section__c s : sectionList){
-            GGW_SectionWrapper sw = new GGW_SectionWrapper();
-            sw.recordid = s.Id;
-            sw.label = s.Name;
-            sw.selected = s.Recommended__c;
-            sw.hasblocks = setOfSectionsWithBlock.contains(s.Id);
+            GGW_SectionWrapper sw = new GGW_SectionWrapper(s,setOfSectionsWithBlock);
             swList.add(sw);
+        }
+        return swList;
+    }
+    // Search any section by text key
+    @AuraEnabled(cacheable=true)
+    public static  List<GGW_SectionWrapper> findSections(String searchKey) {
+        List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
+        if(searchKey != null && searchKey.length() > 0){
+            String key = '%' + searchKey + '%';
+            List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
+                FROM GGW_Section__c WHERE Name LIKE :key AND Suggested__c = false ORDER BY Sort_Order__c LIMIT 20];
+                
+                for(GGW_Section__c s : sectionList){
+                    GGW_SectionWrapper sw = new GGW_SectionWrapper(s);
+                    swList.add(sw);
+                }
         }
         return swList;
     }
