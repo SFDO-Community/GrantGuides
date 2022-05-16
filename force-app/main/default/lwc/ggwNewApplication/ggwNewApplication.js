@@ -6,15 +6,39 @@ import findSections from '@salesforce/apex/GGW_ApplicationCtrl.findSections';
 const DELAY = 300;
 
 export default class GgwNewApplication extends NavigationMixin(LightningElement) {
+
+    // --List of checkobxes gested section
     value = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommends selected items
     options = []; // List of Suggested sections
     searchKey = ''; // Seach key for find Sections
+    // ---
 
+    // --Search for sections
     valueSectionAdd = [];
     optionsSectionAdd = [];
+    // ---
 
-    //@wire(findSections, { searchKey: '$searchKey' })
-    //sections;
+    // --New Grant name & Status combo box
+    grantNameValue;
+    statusValue;
+    // ---
+    get statusOptions() {
+        return [
+            { label: 'New', value: 'New' },
+            { label: 'Progress', value: 'Progress' },
+            { label: 'Submited', value: 'Submited' },
+            { label: 'Complete', value: 'Complete' },
+            { label: 'Rejected', value: 'Rejected' },
+        ];
+    }
+    // Status changes combo box handler
+    handleStatusChange(event){
+        this.statusValue = event.detail.value;
+    }
+    handleGrantNameChange(event) {
+        this.grantNameValue = event.detail.value;
+    }
+
     @wire(findSections, { searchKey: '$searchKey' })
         wireFoundSections({error,data}){
             if (data) {
