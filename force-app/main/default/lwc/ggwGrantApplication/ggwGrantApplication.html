@@ -1,18 +1,30 @@
 <template>
-    <lightning-card title="Grant Application" icon-name="utility:builder">
-        <lightning-button-group slot="actions">
-            <lightning-button label="Save" ></lightning-button>
-            <lightning-button label="Export" onclick={exportGrantPdf}></lightning-button>
-        </lightning-button-group>
+  <lightning-quick-action-panel header={displayTitle}>
+    <div>
+      
+      
+        <lightning-card title={displayTitle} icon-name="utility:builder">
+            <lightning-button-group slot="actions">
+                <lightning-button label="Export" onclick={exportGrantPdf}></lightning-button>
+            </lightning-button-group>
+    
+            <template for:each={sections} for:item="sec">
+                <c-ggw-section
+                    section-title={sec.label}
+                    text-block={sec.textblock}
+                    section-id={sec.value}
+                    section-has-blocks={sec.hasblocks}
+                    key={sec.value}
+                ></c-ggw-section>
+              </template>
+        </lightning-card>
+      
+    </div>
 
-        <template for:each={sections} for:item="sec">
-            <c-ggw-section
-                section-title={sec.label}
-                text-block={sec.textblock}
-                section-id={sec.value}
-                section-has-blocks={sec.hasblocks}
-                key={sec.value}
-            ></c-ggw-section>
-        </template>
-    </lightning-card>
+
+    <div slot="footer">
+      <lightning-button variant="neutral" label="Close" onclick={closeModal}></lightning-button>
+      <lightning-button variant="brand" label="Save" onclick={updateGrant} class="slds-m-left_x-small"></lightning-button>
+    </div>
+  </lightning-quick-action-panel>
 </template>

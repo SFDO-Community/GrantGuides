@@ -135,4 +135,31 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return cbwResultList;
     }
+
+    @AuraEnabled()
+    public static GGW_Grant_Application__c newGrant(String name, List<String> sections){
+        System.debug('## NEW GRANT Parm: '+name+' SECTIONS:'+sections);
+        GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
+        if (name != null && name.length() > 0){
+            gapp.Name = name;
+            gapp.Status__c = 'Progress';
+            insert gapp;
+            // Add selected sections itterate over selected section IDs param
+            List<GGW_Selected_Item__c> selectedItems = new List<GGW_Selected_Item__c>();
+            Integer itemSortOrder = 1;
+            for(String sect : sections){
+                GGW_Selected_Item__c item = new GGW_Selected_Item__c();
+                item.GGW_Section__c = sect;
+                item.Grant_Application__c = gapp.Id;
+                item.Sort_Order__c = itemSortOrder;
+                selectedItems.add(item);
+                itemSortOrder++; // increment sort order set as default
+            }
+            if(selectedItems.size()>0){
+                insert selectedItems;
+            }
+            System.debug('## NEW GRANT: '+name+' ID:'+gapp.Id+' SECTIONS:'+sections);
+        }
+        return gapp;
+    }
 }

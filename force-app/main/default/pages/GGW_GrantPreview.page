@@ -1,4 +1,4 @@
-<apex:page showHeader="false" applyBodyTag="false" renderAs="pdf">
+<apex:page standardController="GGW_Grant_Application__c" showHeader="false" applyBodyTag="false" renderAs="pdf">
     
     <head>
         <title>Grant Application: Project-X</title>

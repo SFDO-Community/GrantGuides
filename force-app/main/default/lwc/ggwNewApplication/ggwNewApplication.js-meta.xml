@@ -7,6 +7,8 @@
 		<target>lightning__HomePage</target>
 		<target>lightning__FlowScreen</target>
 		<target>lightning__Tab</target>
+		<target>lightning__RecordPage</target>
+		<target>lightning__RecordAction</target>
 	</targets>
 	<targetConfigs>
 		<targetConfig targets="lightning__AppPage">
@@ -17,6 +19,12 @@
 		</targetConfig>
 		<targetConfig targets="lightning__HomePage">
 			<supportedFormFactors>
+				<supportedFormFactor type="Large"/>
+			</supportedFormFactors>
+		</targetConfig>
+		<targetConfig targets="lightning__RecordPage">
+			<supportedFormFactors>
+				<supportedFormFactor type="Small"/>
 				<supportedFormFactor type="Large"/>
 			</supportedFormFactors>
 		</targetConfig>
