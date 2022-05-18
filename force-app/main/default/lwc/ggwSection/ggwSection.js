@@ -6,7 +6,8 @@ export default class GgwSection extends LightningElement {
     @api sectionId;
     @api sectionHasBlocks; // Boolean value if section has block allow to save
     @track openModal = false;
-    
+    blockId;
+
     showModal() {
         console.log('# Section ID: '+this.key);
         this.openModal = true;
@@ -35,6 +36,17 @@ export default class GgwSection extends LightningElement {
     }
 
     hanldeSelectedBlockChange(event){
-        this.textBlock = event.detail;
+        this.textBlock = event.detail.blocktext;
+        this.blockId = event.detail.blockid;
+        // Bubble UP the selectedblockchange event with the text data.
+        var sectionObject = { section: this.sectionId, text: this.textBlock, blockid: this.blockId };
+        const selectedBlockEvent = new CustomEvent("selectedtext", {
+            detail: sectionObject,
+            bubbles: true
+        });
+  
+        // Dispatches the event.
+        this.dispatchEvent(selectedBlockEvent);
+
     }
 }

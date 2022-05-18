@@ -14,6 +14,9 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 	objectApiName;
     @api grantName;
     displayTitle;
+    _title = 'Grant Application';
+    message = 'Test';
+    variant = 'success';
     
 	closeModal() {
 		this.dispatchEvent(new CloseActionScreenEvent());
@@ -81,8 +84,28 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         });
     }
 
+    hanldeSelectedTextChange(event){
+        //this.textBlock = event.detail;
+        console.log('Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid);
+        // Display toaster message
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: 'Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid,
+            variant: this.variant,
+        });
+        this.dispatchEvent(evt);        
+    }
+
     updateGrant(){
-        
+        console.log('Show Text Block:'+this.sections[0].textblock);
+        // Display toaster message
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: 'Show Text Block:'+this.sections[0].textblock,
+            variant: this.variant,
+        });
+        this.dispatchEvent(evt);
+
     }
     // when the component is first initialized assign an initial value to the `greekLetter` variable
     //connectedCallback() {

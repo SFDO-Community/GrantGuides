@@ -6,6 +6,7 @@ export default class GgwContentBlockModal extends LightningElement {
     titleAvailableBlocks = 'No content blocks available'; // set default value
     contentblocks = [];
     selectedText = 'Text sample';
+    selectedBlockId;
 
     @wire(getContentBlocks, { sectionId: '$section' })
     wireIntro({error,data}){
@@ -32,13 +33,14 @@ export default class GgwContentBlockModal extends LightningElement {
             try {
                 if(tmpBlocks[i].recordid === evt.target.name){
                     //console.log('### Selected: '+ tmpBlocks[i].recordid + 'TTTT');
+                    this.selectedBlockId = undefined;
                     if(tmpBlocks[i].isselected){
                         tmpBlocks[i].isselected = false;
                     }else{
                         tmpBlocks[i].isselected = true;
                         // set text value
                         this.selectedText = tmpBlocks[i].displaytext;
-                        
+                        this.selectedBlockId = tmpBlocks[i].recordid;
                     }
                 }else{
                     tmpBlocks[i].isselected = false;
@@ -50,11 +52,15 @@ export default class GgwContentBlockModal extends LightningElement {
         this.contentblocks = tmpBlocks;
 
         // Creates the selectedblockchange event with the text data.
-        const selectedBlockEvent = new CustomEvent("selectedblockchange", {
-            detail: this.selectedText
-        });
-  
-        // Dispatches the event.
-        this.dispatchEvent(selectedBlockEvent);
+        if(this.selectedBlockId){
+            var block = {blocktext: this.selectedText, blockid: this.selectedBlockId};
+            const selectedBlockEvent = new CustomEvent("selectedblockchange", {
+                detail: block,
+                bubbles: true
+            });
+    
+            // Dispatches the event.
+            this.dispatchEvent(selectedBlockEvent);
+        }
     }
 }
