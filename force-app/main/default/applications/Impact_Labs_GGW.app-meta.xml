@@ -22,38 +22,6 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>Impact Labs GGW</label>
     <navType>Standard</navType>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Grant_Application_Record_Page2</content>
-        <formFactor>Small</formFactor>
-        <pageOrSobjectType>GGW_Grant_Application__c</pageOrSobjectType>
-        <type>Flexipage</type>
-        <profile>Admin</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Grant_Application_Record_Page2</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>GGW_Grant_Application__c</pageOrSobjectType>
-        <type>Flexipage</type>
-        <profile>Admin</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Grant_Application_Record_Page2</content>
-        <formFactor>Small</formFactor>
-        <pageOrSobjectType>GGW_Grant_Application__c</pageOrSobjectType>
-        <type>Flexipage</type>
-        <profile>Standard</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Grant_Application_Record_Page2</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>GGW_Grant_Application__c</pageOrSobjectType>
-        <type>Flexipage</type>
-        <profile>Standard</profile>
-    </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>GGW_Grant_Application__c</tabs>
     <tabs>GGW_Section__c</tabs>
@@ -61,7 +29,6 @@
     <tabs>GGW_Selected_Item__c</tabs>
     <tabs>GGW_UI_Tester</tabs>
     <tabs>Grant_Application_Flow</tabs>
-    <tabs>Grant_Preview</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Impact_Labs_GGW_UtilityBar</utilityBar>
 </CustomApplication>
