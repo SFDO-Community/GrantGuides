@@ -18,6 +18,13 @@ public without sharing class GGW_ApplicationCtrl {
 
     // ------------------------------------    
     // shared classes
+    public class GGW_GrantApplicationWrapper {
+        @AuraEnabled public String recordid;
+        @AuraEnabled public String name;
+        @AuraEnabled public String status;
+
+        @AuraEnabled public List<GGW_ContentBlockWrapper> selectedContentBlock; // Include Section and Text block
+    }
     public class GGW_SectionWrapper {
         @AuraEnabled public String recordid;
         @AuraEnabled public String label;
@@ -40,9 +47,9 @@ public without sharing class GGW_ApplicationCtrl {
             this.hasblocks = setOfSectionsWithBlock.contains(s.Id);
         }
     }
-    public class GGW_SectionWrapperList {
-        @AuraEnabled public List<GGW_SectionWrapper> sectionlist;
-    }
+    //public class GGW_SectionWrapperList {
+    //    @AuraEnabled public List<GGW_SectionWrapper> sectionlist;
+    //}
     public class GGW_ContentBlockWrapper {
         @AuraEnabled public String recordid;
         @AuraEnabled public String sectionid;
@@ -54,7 +61,11 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String displaydate; // Created date
         @AuraEnabled public Integer totalblocks;
         @AuraEnabled public Boolean isselected;
+        @AuraEnabled public String selecteditemid; // Id of selecetd item on application
+        @AuraEnabled public Integer sortorder;
+        public GGW_ContentBlockWrapper(){
 
+        }
         //. Construct and map Block fields
         public GGW_ContentBlockWrapper(GGW_Content_Block__c block, Integer cnt){
             this.isselected = false;
@@ -71,6 +82,57 @@ public without sharing class GGW_ApplicationCtrl {
             this.displaybadge = 'Winner'; // TODO find how to fill this what make a tag?
             this.totalblocks = cnt;
         }
+    }
+
+    // Return Grant Aplication Wrapper object
+    @AuraEnabled
+    public static GGW_GrantApplicationWrapper getApplication(String recordId){
+        List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
+                                Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
+                                Selected_Block__r.Description__c, Text_Block__c  
+                                FROM GGW_Selected_Item__c 
+                                WHERE Grant_Application__c =: recordId ORDER BY Sort_Order__c];
+        GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
+        if(appItems != null && appItems.size()>0){
+            app.recordid = recordId;
+            app.name = appItems[0].Application_Name__c;
+            app.status = appItems[0].Grant_Application__r.Status__c;
+
+            List<GGW_ContentBlockWrapper> contentList = new List<GGW_ContentBlockWrapper>();
+            for(GGW_Selected_Item__c item : appItems){
+                GGW_ContentBlockWrapper cbw = new GGW_ContentBlockWrapper();
+                cbw.selecteditemid = item.Id;
+                cbw.recordid = item.Selected_Block__c;
+                cbw.sectionid = item.GGW_Section__c;
+                cbw.sectionname = item.Section_Name__c;
+                cbw.totalblocks = 1; // Alway only 1 per section in Grant
+                cbw.displaytext = item.Text_Block__c; //Selected_Block__r.Description__c;
+                cbw.isselected = true;
+                cbw.sortorder = item.Sort_Order__c.intValue(); // APEX SOQL return NUmber decimal need convert to Int Illegal assignment from Decimal to Integer
+                contentList.add(cbw);
+            }
+            app.selectedContentBlock = contentList;
+        }
+        return app;
+    }
+    // Update text block selection, wire block to item and copy block text data for display and edits
+    @AuraEnabled()
+    public static void saveSelectedSectionText(String itemid, String blockid){
+        GGW_Content_Block__c cBlock = [SELECT Id, Name, Description__c FROM GGW_Content_Block__c WHERE Id =: blockid LIMIT 1];
+        // Construct selected Item to update
+        GGW_Selected_Item__c item = new GGW_Selected_Item__c();
+        item.Id = itemid;
+        item.Selected_Block__c = blockid;
+        item.Text_Block__c = cBlock.Description__c; // Copy rich text from block to item for edits
+        update item;
+    }
+    // Edit rich text inside item method called from Section component when edit rich text
+    @AuraEnabled()
+    public static void updateSelectedItemText(String itemid, String richtext){
+        GGW_Selected_Item__c item = new GGW_Selected_Item__c();
+        item.Id = itemid;
+        item.Text_Block__c = richtext; // Update rich text from block to item on edit button click
+        update item;
     }
     // Return all Suggested section for shorter list
     @AuraEnabled(cacheable=true)

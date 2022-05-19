@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Selected_Block__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Link to a chose text block for section to use in Grant application</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Link to a chose text block for section to use in Grant application</inlineHelpText>
+    <label>Selected Block</label>
+    <referenceTo>GGW_Content_Block__c</referenceTo>
+    <relationshipLabel>Selected Items</relationshipLabel>
+    <relationshipName>Selected_Items</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

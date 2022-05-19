@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grant_Application__c</fullName>
+    <description>Grant Application master record</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Grant Application master record parent</inlineHelpText>
+    <label>Grant Application</label>
+    <referenceTo>GGW_Grant_Application__c</referenceTo>
+    <relationshipLabel>Selected Items</relationshipLabel>
+    <relationshipName>Selected_Items</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
