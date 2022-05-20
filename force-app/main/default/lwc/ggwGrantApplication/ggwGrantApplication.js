@@ -1,19 +1,19 @@
 import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { NavigationMixin } from 'lightning/navigation';
-import getSections from '@salesforce/apex/GGW_ApplicationCtrl.getSections';
+import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { getRecord } from 'lightning/uiRecordApi';
-import ID_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Id';
-import GRANTNAME_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Name';
+//import { getRecord } from 'lightning/uiRecordApi';
+//import ID_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Id';
+//import GRANTNAME_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Name';
 
 export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
-	@api
-	recordId;
-	@api
-	objectApiName;
+	@api recordId;
+	@api objectApiName;
     @api grantName;
     displayTitle;
+    status;
+    sectioncount;
     _title = 'Grant Application';
     message = 'Test';
     variant = 'success';
@@ -27,7 +27,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     toggleButtonLabel = 'Add Content';
 
     sections = [];
-
+    /* This standard call is replaced by Apex method getApplication with related blocks sections.
     @wire(getRecord, {recordId: '$recordId',fields: [GRANTNAME_FIELD]})
         wireGrantApp({error,data}){
             if (data) {
@@ -44,26 +44,74 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                 console.log('unknown error');
             }
         }
-    //grant;
-    /*
-    get grantname() {
-        this.grantName = this.grant
-        ? this.grant.fields.Name.value
-        : null;
-        return this.grant.data
-            ? this.grant.data.fields.Name.value
-            : null;
-    }
-*/
-    @wire(getSections)
-    wireIntro({error,data}){
-        if (data) {
+        */
 
-            for(var i=0; i<data.length; i++)  {
-                if(data[i].selected == true){
-                    this.sections = [...this.sections ,{label: data[i].label, value: data[i].recordid, hasblocks: data[i].hasblocks, textblock: 'Text placeholder'} ];  
-                }
-            }                
+    // when the component is first initialized assign an initial value to sections and other Grant App variables    
+    connectedCallback() {
+        // --- Need this timeout delay to allow record ID from Quick Action on record page to be set
+        // For some crazy reason LEX/LWC does not init record ID fast enough to init this call
+        setTimeout(() => {
+            console.log('Init App with ID:'+this.recordId);
+            //this.displayTitle = 'Grant Application: ' + this.grant.data ? this.grant.data.fields.Name.value : null;
+            // Change to call imperative insted of wire for data refreshes
+            getApplication({recordId: this.recordId})
+                .then((data) => {
+                    console.log('Grant Name: '+data.name);
+                    this.grantName = data.name;
+                    this.displayTitle = 'Grant Application: ' + data.name;
+                    this.status = data.status;
+                    
+                    if (data.selectedContentBlock){
+                        this.sectioncount = data.selectedContentBlock.length;
+                        for(var i=0; i<data.selectedContentBlock.length; i++)  {
+                            var item = data.selectedContentBlock[i];
+                            var tmpText = item.displaytext ? item.displaytext : 'Text placeholder'; // Set text value condition for null
+                            this.sections = [...this.sections ,{label: item.sectionname, 
+                                                                value: item.sectionid, // sfid for Section record
+                                                                appid: data.recordid, // Id for Grant Application record 
+                                                                hasblocks: true, 
+                                                                sectioncount: this.sectioncount, // pass number of sections to LWC for sorting
+                                                                sortorder: item.sortorder,
+                                                                selecteditem: item.selecteditemid,
+                                                                blockid: item.recordid, // sfid for Content Block record
+                                                                textblock: tmpText} ];  
+                            
+                                                                console.log('Text: '+item.displaytext);
+                        }                
+                    }      
+                    this.error = undefined;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.error = error;
+                    this.sections = undefined;    
+                });
+        }, 5);
+    }
+
+/* -- Need to to update data and cache=true does not fit here swicth using connected Callback with a GACKy Hack
+    @wire(getApplication, {recordId: '$recordId'})
+    wireApplication({error,data}){
+        if (data) {
+            console.log('Grant Name: '+data.name);
+            this.grantName = data.name;
+            this.displayTitle = 'Grant Application: ' + data.name;
+            this.status = data.status;
+            if (data.selectedContentBlock){
+                for(var i=0; i<data.selectedContentBlock.length; i++)  {
+                    var item = data.selectedContentBlock[i];
+                    var tmpText = item.displaytext ? item.displaytext : 'Text placeholder'; // Set text value condition for null
+                    this.sections = [...this.sections ,{label: item.sectionname, 
+                                                        value: item.sectionid, // sfid for Section record
+                                                        appid: data.recordid, // Id for Grant Application record 
+                                                        hasblocks: true, 
+                                                        selecteditem: item.selecteditemid,
+                                                        blockid: item.recordid, // sfid for Content Block record
+                                                        textblock: tmpText} ];  
+                    
+                                                        console.log('Text: '+item.displaytext);
+                }                
+            }      
             this.error = undefined;
         }else if(error){
             console.log(error);
@@ -74,7 +122,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             console.log('unknown error')
         }
     }
-
+*/
     exportGrantPdf(){
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
@@ -88,15 +136,18 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         //this.textBlock = event.detail;
         console.log('Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid);
         // Display toaster message
+        /*
         const evt = new ShowToastEvent({
             title: this._title,
             message: 'Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid,
             variant: this.variant,
         });
-        this.dispatchEvent(evt);        
+        this.dispatchEvent(evt);    
+        */    
     }
 
     updateGrant(){
+        /*
         console.log('Show Text Block:'+this.sections[0].textblock);
         // Display toaster message
         const evt = new ShowToastEvent({
@@ -105,32 +156,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             variant: this.variant,
         });
         this.dispatchEvent(evt);
-
+        */
+        this.closeModal();
     }
-    // when the component is first initialized assign an initial value to the `greekLetter` variable
-    //connectedCallback() {
-        //this.greekLetter = this.getRandomGreekLetter();
-        //this.displayTitle = 'Grant Application: ' + this.grant.data ? this.grant.data.fields.Name.value : null;
-    //}
 
-    // Handles click on the 'Show/hide content' button
-    /**
-    handleToggleClick() {
-        // retrieve the classList from the specific element
-        const contentBlockClasslist = this.template.querySelector(
-            '.lgc-id_content-toggle'
-        ).classList;
-        // toggle the hidden class
-        contentBlockClasslist.toggle('slds-hidden');
-
-        // if the current icon-name is `utility:preview` then change it to `utility:hide`
-        if (this.toggleIconName === 'utility:preview') {
-            this.toggleIconName = 'utility:hide';
-            this.toggleButtonLabel = 'Add content';
-        } else {
-            this.toggleIconName = 'utility:preview';
-            this.toggleButtonLabel = 'Add content';
-        }
-    }
-*/
 }

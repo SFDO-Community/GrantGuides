@@ -22,6 +22,7 @@
 		</targetConfig>
 		<targetConfig targets="lightning__FlowScreen">
 			<property name="section" label="section" type="String"/>
+			<property name="application" label="application" type="String"/>
         </targetConfig>	
 	</targetConfigs>
 </LightningComponentBundle>

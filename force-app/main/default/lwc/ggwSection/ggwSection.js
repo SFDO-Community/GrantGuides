@@ -1,38 +1,78 @@
 import { LightningElement, api , track } from "lwc";
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import saveSelectedSectionText from '@salesforce/apex/GGW_ApplicationCtrl.saveSelectedSectionText';
+import updateSelectedItemText from '@salesforce/apex/GGW_ApplicationCtrl.updateSelectedItemText';
 
 export default class GgwSection extends LightningElement {
     @api sectionTitle = 'Default Section';
     @api textBlock = 'Text placeholder';
     @api sectionId;
     @api sectionHasBlocks; // Boolean value if section has block allow to save
+    @api applicationId;
+    @api selectedItemId;
+    @api sectioncount;
+    @api sortorder;
     @track openModal = false;
     blockId;
+    saveSelectedText;
+    selectedItemOrderValue;
+    sectionorder = ['1','2','3','4'];
+    displayTitle; // Assmeble dynamic title
 
     showModal() {
         console.log('# Section ID: '+this.key);
         this.openModal = true;
-        this.textBlock = 'Text placehold';
+        // Seve initial selecetd text to restore later
+        this.saveSelectedText = this.textBlock;
     }
     // Close model no section change as cancel action
     closeModal() {
         this.openModal = false;
-        this.textBlock = 'Text placehold';
+        this.textBlock = this.saveSelectedText; // Restore initial text
     }
     // Save set selected section text and close modal
     saveCloseModal() {
         this.openModal = false;
 
-        // TODO
-        //if(this.sectionTitle == 'Statement of need'){
-        //    this.textBlock = 'The oceans are in more trouble than ever before. Right now it is estimated that up to 12 million metric tons of plastic—everything from plastic bottles and bags to microbeads—end up in the oceans each year. That is a truckload of trash every minute. Traveling on ocean currents, this plastic is now turning up in every corner of our planet, from Florida beaches to uninhabited Pacific islands. It is even being found in the deepest part of the ocean and trapped in Arctic ice.';
-        //}else{
-        //    this.textBlock = 'Donate to our online programs to learn more about protecting our oceans. Give The Gift Which Could Last A Lifetime, Inspire A Career, and Help Our Oceans. Fun Online Classes. Experienced Educators. Amenities: Outdoor Fun, Educational, Safe, Experienced Educators.';
-        //}
+            // Save selected text block data in SFDC
+            saveSelectedSectionText({itemid: this.selectedItemId, blockid: this.blockId})
+                .then((result) => {
+                    //this.contacts = result;
+                    console.log('Update App selected item: '+JSON.stringify(result));
+                    this.error = undefined;
+    
+                    // Display toaster message
+                    const evt = new ShowToastEvent({
+                        title: this._title,
+                        message: 'Grant Application was updated with text block.',
+                        variant: 'success',
+                    });
+                    this.dispatchEvent(evt);
+                })
+                .catch((error) => {
+                    this.error = error;
+    
+                    // Display ERROR toaster message
+                    const evt = new ShowToastEvent({
+                        title: this._title,
+                        message: this.error,
+                        variant: 'error',
+                    });
+                    this.dispatchEvent(evt);
+                    
+                });
+    
     }
 
     connectedCallback() {
         //this.subscribeToMessageChannel();
-        this.textBlock = 'Text placehold';
+        //this.textBlock = 'Text placehold';
+        //this.sectionTitle += ' Order - '+this.sortorder; 
+        this.displayTitle = this.sectionTitle + ' Order - '+this.sortorder;
+        this.sectionorder = [];
+        for(var i=0; i<this.sectioncount; i++)  {
+            this.sectionorder.push(i+1);
+        }
     }
 
     hanldeSelectedBlockChange(event){
@@ -48,5 +88,49 @@ export default class GgwSection extends LightningElement {
         // Dispatches the event.
         this.dispatchEvent(selectedBlockEvent);
 
+    }
+    saveRichText(event){
+        updateSelectedItemText({itemid: this.selectedItemId, richtext: this.textBlock})
+        .then((result) => {
+            //this.contacts = result;
+            console.log('Updated text on selected item: '+JSON.stringify(result));
+            this.error = undefined;
+
+            // Display toaster message
+            const evt = new ShowToastEvent({
+                title: this._title,
+                message: 'Text block updated.',
+                variant: 'success',
+            });
+            this.dispatchEvent(evt);
+        })
+        .catch((error) => {
+            this.error = error;
+
+            // Display ERROR toaster message
+            const evt = new ShowToastEvent({
+                title: this._title,
+                message: this.error,
+                variant: 'error',
+            });
+            this.dispatchEvent(evt);
+            
+        });
+    }
+    handleTextBlockChange(event){
+        this.textBlock = event.target.value;
+    }
+
+    handleReorderOnselect(event){
+        this.selectedItemOrderValue = event.detail.value;
+        this.sortorder = this.selectedItemOrderValue;
+        this.displayTitle = this.sectionTitle + ' Order - '+this.sortorder;
+        // call method apex to update sort order for selected item
+        // TODO -----
+    }
+
+    addBlockToLibrary(event){
+        // Create new text block to save for future use
+        // TODO ------
     }
 }

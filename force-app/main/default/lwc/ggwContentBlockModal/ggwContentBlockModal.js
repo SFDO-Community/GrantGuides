@@ -3,6 +3,7 @@ import getContentBlocks from '@salesforce/apex/GGW_ApplicationCtrl.getContentBlo
 
 export default class GgwContentBlockModal extends LightningElement {
     @api section; //= 'a021D000007NGK8QAO';
+    @api application;
     titleAvailableBlocks = 'No content blocks available'; // set default value
     contentblocks = [];
     selectedText = 'Text sample';

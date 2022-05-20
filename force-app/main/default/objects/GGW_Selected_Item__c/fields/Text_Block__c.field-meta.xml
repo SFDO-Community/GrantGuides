@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Text_Block__c</fullName>
+    <description>Formatted rich text holds a copy of block of content or new content for editing and grant.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Formatted rich text holds a copy of block of content or new content for editing and grant.</inlineHelpText>
+    <label>Text Block</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>Html</type>
+    <visibleLines>20</visibleLines>
+</CustomField>
