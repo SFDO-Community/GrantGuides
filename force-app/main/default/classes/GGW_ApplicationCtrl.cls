@@ -7,14 +7,7 @@
  */
 public without sharing class GGW_ApplicationCtrl {
     public GGW_ApplicationCtrl() {
-
     }
-
-    // APEX COUNT WORDS in Rich text
-    //GGW_Content_Block__c block = [SELECT Id, Name, Description__c, Section__c, CreatedDate FROM GGW_Content_Block__c WHERE Id = 'a011D000009yi31QAA'  LIMIT 1];
-
-    //integer cnt = block.Description__c.normalizeSpace().stripHtmlTags().replaceAll('\\S','').length() ;
-    //System.debug('### RICH Text words: '+cnt);
 
     // ------------------------------------    
     // shared classes
@@ -50,6 +43,7 @@ public without sharing class GGW_ApplicationCtrl {
     //public class GGW_SectionWrapperList {
     //    @AuraEnabled public List<GGW_SectionWrapper> sectionlist;
     //}
+
     public class GGW_ContentBlockWrapper {
         @AuraEnabled public String recordid;
         @AuraEnabled public String sectionid;
@@ -115,6 +109,7 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return app;
     }
+
     // Update text block selection, wire block to item and copy block text data for display and edits
     @AuraEnabled()
     public static void saveSelectedSectionText(String itemid, String blockid){
@@ -126,6 +121,7 @@ public without sharing class GGW_ApplicationCtrl {
         item.Text_Block__c = cBlock.Description__c; // Copy rich text from block to item for edits
         update item;
     }
+
     // Edit rich text inside item method called from Section component when edit rich text
     @AuraEnabled()
     public static void updateSelectedItemText(String itemid, String richtext){
@@ -134,6 +130,23 @@ public without sharing class GGW_ApplicationCtrl {
         item.Text_Block__c = richtext; // Update rich text from block to item on edit button click
         update item;
     }
+
+    /**
+     * Method to create a new ContentBlock add to section as part a library to later reuse
+     * on other Grant applications.
+     * 
+     */
+    @AuraEnabled
+    public static String addTextBlockToLibrary(String sectionid, String richtext){
+        GGW_Content_Block__c cb = new GGW_Content_Block__c();
+        cb.name = '[CHANGE] New Text Block'; // strange error Layout  Field:Name must not be Readonly
+        cb.Section__c = sectionid;
+        cb.Description__c = richtext;
+        insert cb;
+
+        return cb.Id+'';
+    }
+
     // Return all Suggested section for shorter list
     @AuraEnabled(cacheable=true)
     public static List<GGW_SectionWrapper> getSections(){
@@ -198,6 +211,12 @@ public without sharing class GGW_ApplicationCtrl {
         return cbwResultList;
     }
 
+    /**
+     * Create a new Grant Application record and also add all selected list of sections
+     * as selected items.
+     * Application starting point, user can add text blocks to build out thsi record
+     * 
+     */
     @AuraEnabled()
     public static GGW_Grant_Application__c newGrant(String name, List<String> sections){
         System.debug('## NEW GRANT Parm: '+name+' SECTIONS:'+sections);
