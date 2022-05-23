@@ -8,7 +8,9 @@
                 <lightning-button label="Export" onclick={exportGrantPdf}></lightning-button>
             </lightning-button-group>
     
+          <div ondragover={allowDrop} ondrop={drop}>  
             <template for:each={sections} for:item="sec">
+              <div key={sec.value} id={sec.value} draggable="true" ondragstart={drag}>
                 <c-ggw-section
                     section-title={sec.label}
                     text-block={sec.textblock}
@@ -21,7 +23,9 @@
                     onselectedtext={hanldeSelectedTextChange}
                     key={sec.value}
                 ></c-ggw-section>
-              </template>
+              </div>  
+            </template>
+          </div>  
         </lightning-card>
       
     </div>

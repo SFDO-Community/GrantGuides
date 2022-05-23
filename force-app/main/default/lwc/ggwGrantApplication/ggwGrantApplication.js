@@ -160,4 +160,21 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         this.closeModal();
     }
 
+    // --- DRAG ACTION
+
+    drag(event){
+        event.dataTransfer.setData("divId", event.target.id);
+    }
+    allowDrop(event){
+        event.preventDefault();
+    }
+    drop(event){
+        event.preventDefault();
+        var divId = event.dataTransfer.getData("divId");
+        console.log('DROP Section ID: '+divId);
+        var draggedElement = this.template.querySelector('#' +divId);
+        draggedElement.classList.add('completed'); 
+        event.target.appendChild(draggedElement);
+    }
+
 }
