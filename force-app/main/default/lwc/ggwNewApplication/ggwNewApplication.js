@@ -5,6 +5,7 @@ import { FlowNavigationNextEvent } from 'lightning/flowSupport';
 import getSections from '@salesforce/apex/GGW_ApplicationCtrl.getSections'; 
 import findSections from '@salesforce/apex/GGW_ApplicationCtrl.findSections';
 import newGrant from '@salesforce/apex/GGW_ApplicationCtrl.newGrant';
+import createNewSection from '@salesforce/apex/GGW_ApplicationCtrl.createNewSection';
 /** The delay used when debouncing event handlers before invoking Apex method. */
 const DELAY = 300;
 
@@ -19,16 +20,19 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     options = []; // List of Suggested sections
     searchKey = ''; // Seach key for find Sections
     // ---
+    basevalue = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommends selected items
+    baseoptions = []; // List of Suggested sections
 
     // --Search for sections
     valueSectionAdd = [];
     optionsSectionAdd = [];
     // ---
-
+    newSectionName;
     // --New Grant name & Status combo box
     grantNameValue;
     statusValue;
     // ---
+    /** App status si deafulted not setting by user coment for now
     get statusOptions() {
         return [
             { label: 'New', value: 'New' },
@@ -38,6 +42,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
             { label: 'Rejected', value: 'Rejected' },
         ];
     }
+    */
     // Status changes combo box handler
     handleStatusChange(event){
         this.statusValue = event.detail.value;
@@ -68,32 +73,39 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
             }
         }
 
-    // Select new section found from Search action
+    // Select new section checkbox found from Search action
+    // add section to the application list
     handleNewSectionAdd(e){
         this.valueSectionAdd = e.detail.value;
         console.log('Select Section: '+e.detail.value);
-        // Include selected section to Grap application list
-        // Collection has CSV list ov values need to split and get element/s selected by this event
-        const selArr = this.valueSectionAdd; //.split(',');
-        console.log('Split array: '+this.valueSectionAdd);
+        // Include selected section to Grant application list
+        // Collection has list ov values as array selected by this event
+        var tempSectionOptions = [];
+        var tempSectionValues = [];
+        for(var i=0; i<this.baseoptions.length; i++)  {
+            tempSectionOptions.push(this.baseoptions[i]);
+        }
+        for(var i=0; i<this.basevalue.length; i++)  {
+            tempSectionValues.push(this.basevalue[i]);
+        }
+        // Add or remove selevcted frmo search values to update Section sugested list
         for(var i=0; i<this.optionsSectionAdd.length; i++)  {
             // Get label
-            console.log('Section ID: '+this.optionsSectionAdd[i].value);
-            if(this.optionsSectionAdd[i].value == this.valueSectionAdd){
-                console.log('Add section: '+this.optionsSectionAdd[i].label+' ID:'+this.optionsSectionAdd[i].value);
-                // Lets push select new section to main list
-                this.options.push(this.optionsSectionAdd[i]);
-                this.value.push(this.optionsSectionAdd[i].value);
-            }
-    /*    
-            for(var j=0; j<selArr.length; j++){
-                if(this.optionsSectionAdd[i].value === selArr[j]){
-                    console.log('Add section: '+this.optionsSectionAdd[i]);
+            console.log('Section ID: '+this.optionsSectionAdd[i].label+' '+this.optionsSectionAdd[i].value);
+            for(var j=0; j<this.valueSectionAdd.length; j++){
+                if(this.optionsSectionAdd[i].value == this.valueSectionAdd[j]){
+                    console.log('Add section: '+this.optionsSectionAdd[i].label+' ID:'+this.optionsSectionAdd[i].value);
                     // Lets push select new section to main list
-                    this.options.push(this.optionsSectionAdd[i]);
+                    tempSectionOptions.push(this.optionsSectionAdd[i]);
+                    tempSectionValues.push(this.optionsSectionAdd[i].value);
                 }
-            }*/
+            }
         }
+        // REset
+        this.options = [];
+        this.options = tempSectionOptions;
+        this.value = [];
+        this.value = tempSectionValues;
     }
 
     // Seach method
@@ -108,16 +120,72 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         }, DELAY);
     }
 
+    /**
+    handleTest(e){
+        var tempSectionOptions = [{label: 'Grant Test0', value: 'a021D000007ONDcQ12'}];
+        var tempSectionValues = [];
+        console.log('Test checkbox group');
+        this.options = [];
+        this.value = [];
+        tempSectionOptions.push({label: 'Grant Test 2', value: 'a021D000007ONDcQAO'});
+        tempSectionValues.push('a021D000007ONDcQAO');
+
+        this.options = tempSectionOptions;
+        this.value = tempSectionValues;
+
+    }*/
+
+    handleSectionInputChange(event) {
+        this.newSectionName = event.detail.value;
+    }
     // CREATE NEW Section - use standard page layout
-    // Navigate to New Section record page
-    handleNewSection(){
+    // Navigate to New Section record page not baes UX
+    // Will use custom metho call instead
+    handleCreateNewSection(){
+        /* THIS METHOD TO NAVIAGTE STANDARD NEW RECORD
         this[NavigationMixin.Navigate]({
             type: 'standard__objectPage',
             attributes: {
                 objectApiName: 'GGW_Section__c',
                 actionName: 'new'
             }
-        });  
+        });  **/
+        // THIS WILL CALL APEX METHOD
+        if(this.newSectionName != null){
+            createNewSection({name: this.newSectionName})
+                .then((result) => {
+                    console.log('NEW SECTION: '+JSON.stringify(result));
+                    this.error = undefined;
+                    // Add new section to active list on LWC client side
+                    this.baseoptions.push({label: result.label, value: result.recordid});
+                    this.basevalue.push(result.recordid);
+                    // Reset
+                    this.options = [];
+                    this.options = this.baseoptions;
+                    this.value = [];
+                    this.value = this.basevalue;
+
+                    this.message = 'New Section was created with ID: ';
+                    this.variant = 'success';
+                })
+                .catch((error) => {
+                    this.error = error;
+                    //this.contacts = undefined;
+                    this.message = this.error;
+                    this.variant = 'error';
+                });
+        }else{
+            this.message = 'Please provide a name to create a new Section.';
+            this.variant = 'warning';
+        }
+        // Display toaster message
+        const evt = new ShowToastEvent({
+                title: this._title,
+                message: this.message,
+                variant: this.variant,
+        });
+        this.dispatchEvent(evt);
+
     }
 
 /** Sample data for options
@@ -139,8 +207,11 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
 
                 for(var i=0; i<data.length; i++)  {
                     this.options = [...this.options ,{label: data[i].label, value: data[i].recordid} ];  
+                    this.baseoptions = [...this.baseoptions ,{label: data[i].label, value: data[i].recordid} ];  
+
                     if(data[i].selected == true){
                         this.value.push(data[i].recordid);
+                        this.basevalue.push(data[i].recordid);
                     }
                 }                
                 this.error = undefined;

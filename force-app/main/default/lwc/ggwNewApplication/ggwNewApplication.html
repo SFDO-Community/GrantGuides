@@ -23,11 +23,12 @@
             <div class="slds-col">
                 <div class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
                     <lightning-checkbox-group name="Suggested sections to include"
-                        label="Suggested sections to include"
-                        options={options}
-                        value={value}
-                        onchange={handleIncludeSectionChange}>
+                    label="Suggested sections to include"
+                    options={options}
+                    value={value}
+                    onchange={handleIncludeSectionChange}>
                     </lightning-checkbox-group>
+
                 </div>        
             </div>
 
@@ -38,7 +39,8 @@
                         <lightning-layout vertical-align="end" class="slds-var-m-bottom_small">
                             <lightning-layout-item flexibility="grow">
 
-                                <div class="slds-var-m-around_medium">
+                                <div class="slds-var-m-around_medium">    
+
                                     <lightning-input
                                         type="search"
                                         onchange={handleSectionSearchChange}
@@ -63,12 +65,12 @@
                             class="slds-var-m-bottom_small"
                         >
                             <lightning-layout-item flexibility="grow">
-                                <lightning-input type="text" label="Create new section"></lightning-input>
+                                <lightning-input type="text" onchange={handleSectionInputChange} label="Create new section"></lightning-input>
                             </lightning-layout-item>
                             <lightning-layout-item class="slds-var-p-left_xx-small">
                                 <lightning-button
                                     label="New Section"
-                                    onclick={handleNewSection}
+                                    onclick={handleCreateNewSection}
                                 ></lightning-button>
                             </lightning-layout-item>
                         </lightning-layout>
