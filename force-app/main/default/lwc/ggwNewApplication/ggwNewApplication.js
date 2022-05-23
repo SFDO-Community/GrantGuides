@@ -5,6 +5,7 @@ import { FlowNavigationNextEvent } from 'lightning/flowSupport';
 import getSections from '@salesforce/apex/GGW_ApplicationCtrl.getSections'; 
 import findSections from '@salesforce/apex/GGW_ApplicationCtrl.findSections';
 import newGrant from '@salesforce/apex/GGW_ApplicationCtrl.newGrant';
+import createNewSection from '@salesforce/apex/GGW_ApplicationCtrl.createNewSection';
 /** The delay used when debouncing event handlers before invoking Apex method. */
 const DELAY = 300;
 
@@ -26,7 +27,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     valueSectionAdd = [];
     optionsSectionAdd = [];
     // ---
-
+    newSectionName;
     // --New Grant name & Status combo box
     grantNameValue;
     statusValue;
@@ -119,6 +120,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         }, DELAY);
     }
 
+    /**
     handleTest(e){
         var tempSectionOptions = [{label: 'Grant Test0', value: 'a021D000007ONDcQ12'}];
         var tempSectionValues = [];
@@ -131,17 +133,50 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         this.options = tempSectionOptions;
         this.value = tempSectionValues;
 
-    }
+    }*/
     // CREATE NEW Section - use standard page layout
-    // Navigate to New Section record page
-    handleNewSection(){
+    // Navigate to New Section record page not baes UX
+    // Will use custom metho call instead
+    handleCreateNewSection(){
+        /* THIS METHOD TO NAVIAGTE STANDARD NEW RECORD
         this[NavigationMixin.Navigate]({
             type: 'standard__objectPage',
             attributes: {
                 objectApiName: 'GGW_Section__c',
                 actionName: 'new'
             }
-        });  
+        });  **/
+        // THIS WILL CALL APEX METHOD
+        if(this.newSectionName != null){
+            createNewSection({name: this.newSectionName})
+                .then((result) => {
+                    console.log('NEW SECTION: '+JSON.stringify(result));
+                    this.error = undefined;
+                    // Add new section to active list on LWC client side
+                    this.options.push({label: result.label, value: result.recordid});
+                    this.value.push(result.recordid);
+
+                    this.message = 'New Section was created with ID: ';
+                    this.variant = 'success';
+                })
+                .catch((error) => {
+                    this.error = error;
+                    //this.contacts = undefined;
+                    this.message = this.error;
+                    this.variant = 'error';
+                });
+        }else{
+            this.message = 'Please provide a name to create a new Section.';
+            this.variant = 'warning';
+        }
+        // Display toaster message
+        const evt = new ShowToastEvent({
+                title: this._title,
+                message: this.message,
+                variant: this.variant,
+        });
+        this.dispatchEvent(evt);
+
     }
 
 /** Sample data for options

@@ -109,9 +109,11 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return app;
     }
-
-    // Update text block selection, wire block to item and copy block text data for display and edits
-    @AuraEnabled()
+    /**
+     * Update text block selection, wire block to item and copy block text data for display and edits
+     * 
+     */
+    @AuraEnabled
     public static void saveSelectedSectionText(String itemid, String blockid){
         GGW_Content_Block__c cBlock = [SELECT Id, Name, Description__c FROM GGW_Content_Block__c WHERE Id =: blockid LIMIT 1];
         // Construct selected Item to update
@@ -121,9 +123,25 @@ public without sharing class GGW_ApplicationCtrl {
         item.Text_Block__c = cBlock.Description__c; // Copy rich text from block to item for edits
         update item;
     }
-
+    /**
+     * Create new section on Grant landing home page component
+     * with defaulted values of Sugested and recommended.
+     * Assumption user needs new section on Grant that do not exist yet, this is
+     * general section NOT related yet to Grant record.
+     */
+    @AuraEnabled
+    public static GGW_SectionWrapper createNewSection(String name){
+        GGW_Section__c maxOrder = [SELECT Sort_Order__c FROM GGW_Section__c WHERE Suggested__c = true  ORDER BY Sort_Order__c desc LIMIT 1];
+        GGW_Section__c s = new GGW_Section__c();
+        s.Name = name;
+        s.Recommended__c = true;
+        s.Suggested__c = true;
+        s.Sort_Order__c = maxOrder.Sort_Order__c + 1;
+        insert s;
+        return new GGW_SectionWrapper(s);
+    }
     // Edit rich text inside item method called from Section component when edit rich text
-    @AuraEnabled()
+    @AuraEnabled
     public static void updateSelectedItemText(String itemid, String richtext){
         GGW_Selected_Item__c item = new GGW_Selected_Item__c();
         item.Id = itemid;
@@ -217,7 +235,7 @@ public without sharing class GGW_ApplicationCtrl {
      * Application starting point, user can add text blocks to build out thsi record
      * 
      */
-    @AuraEnabled()
+    @AuraEnabled
     public static GGW_Grant_Application__c newGrant(String name, List<String> sections){
         System.debug('## NEW GRANT Parm: '+name+' SECTIONS:'+sections);
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();

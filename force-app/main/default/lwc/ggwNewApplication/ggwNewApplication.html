@@ -65,12 +65,12 @@
                             class="slds-var-m-bottom_small"
                         >
                             <lightning-layout-item flexibility="grow">
-                                <lightning-input type="text" label="Create new section"></lightning-input>
+                                <lightning-input type="text" value={newSectionName} label="Create new section"></lightning-input>
                             </lightning-layout-item>
                             <lightning-layout-item class="slds-var-p-left_xx-small">
                                 <lightning-button
                                     label="New Section"
-                                    onclick={handleNewSection}
+                                    onclick={handleCreateNewSection}
                                 ></lightning-button>
                             </lightning-layout-item>
                         </lightning-layout>
