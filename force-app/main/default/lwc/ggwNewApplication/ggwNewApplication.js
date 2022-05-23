@@ -134,6 +134,10 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         this.value = tempSectionValues;
 
     }*/
+
+    handleSectionInputChange(event) {
+        this.newSectionName = event.detail.value;
+    }
     // CREATE NEW Section - use standard page layout
     // Navigate to New Section record page not baes UX
     // Will use custom metho call instead
@@ -153,8 +157,13 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                     console.log('NEW SECTION: '+JSON.stringify(result));
                     this.error = undefined;
                     // Add new section to active list on LWC client side
-                    this.options.push({label: result.label, value: result.recordid});
-                    this.value.push(result.recordid);
+                    this.baseoptions.push({label: result.label, value: result.recordid});
+                    this.basevalue.push(result.recordid);
+                    // Reset
+                    this.options = [];
+                    this.options = this.baseoptions;
+                    this.value = [];
+                    this.value = this.basevalue;
 
                     this.message = 'New Section was created with ID: ';
                     this.variant = 'success';
