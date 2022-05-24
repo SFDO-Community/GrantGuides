@@ -31,7 +31,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>pageSize</name>
-                    <value>5</value>
+                    <value>20</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:filterListCard</componentName>
                 <identifier>flexipage_filterListCard1</identifier>
@@ -61,7 +61,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>pageSize</name>
-                    <value>5</value>
+                    <value>10</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:filterListCard</componentName>
                 <identifier>flexipage_filterListCard2</identifier>

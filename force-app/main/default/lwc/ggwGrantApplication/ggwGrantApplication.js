@@ -17,16 +17,18 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     _title = 'Grant Application';
     message = 'Test';
     variant = 'success';
-    
-	closeModal() {
-		this.dispatchEvent(new CloseActionScreenEvent());
-	}
+    @track openModal = false;
 
-    
     toggleIconName = 'utility:preview';
     toggleButtonLabel = 'Add Content';
 
     sections = [];
+
+	closeModal() {
+		this.dispatchEvent(new CloseActionScreenEvent());
+        this.openModal = false;
+	}
+
     /* This standard call is replaced by Apex method getApplication with related blocks sections.
     @wire(getRecord, {recordId: '$recordId',fields: [GRANTNAME_FIELD]})
         wireGrantApp({error,data}){
@@ -130,6 +132,10 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                 apiName: 'Grant_Preview'
             }
         });
+    }
+    // Open section Modal to reorder
+    reorderSections(){
+        this.openModal = true;
     }
 
     hanldeSelectedTextChange(event){

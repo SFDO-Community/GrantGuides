@@ -70,7 +70,7 @@ export default class GgwSection extends LightningElement {
         //this.subscribeToMessageChannel();
         //this.textBlock = 'Text placehold';
         //this.sectionTitle += ' Order - '+this.sortorder; 
-        this.displayTitle = this.sectionTitle + ' Order - '+this.sortorder;
+        this.displayTitle = '['+this.sortorder+'] '+this.sectionTitle;
         this.sectionorder = [];
         for(var i=0; i<this.sectioncount; i++)  {
             this.sectionorder.push(i+1);

@@ -1,0 +1,23 @@
+<template>
+
+  <lightning-quick-action-panel header="Order Sections">
+  <div>
+
+    <lightning-datatable
+      key-field="id"
+      data={sections}
+      hide-checkbox-column
+      suppress-bottom-bar
+      columns={columns}>
+    </lightning-datatable>
+
+      </div>
+      <!--
+      <div slot="footer">
+        <lightning-button variant="neutral" label="Close" onclick={closeModal}></lightning-button>
+        <lightning-button variant="brand" label="Action" class="slds-m-left_x-small"></lightning-button>
+      </div>
+-->
+    </lightning-quick-action-panel>
+
+</template>

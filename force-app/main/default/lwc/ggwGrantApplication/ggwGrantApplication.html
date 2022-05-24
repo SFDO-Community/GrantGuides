@@ -5,11 +5,13 @@
       
         <lightning-card title={displayTitle} icon-name="utility:builder">
             <lightning-button-group slot="actions">
+              <lightning-button label="Reorder" onclick={reorderSections}></lightning-button>
                 <lightning-button label="Export" onclick={exportGrantPdf}></lightning-button>
             </lightning-button-group>
     
-          <div ondragover={allowDrop} ondrop={drop}>  
             <template for:each={sections} for:item="sec">
+              <div key={sec.value} ondragover={allowDrop} ondrop={drop}>  
+
               <div key={sec.value} id={sec.value} draggable="true" ondragstart={drag}>
                 <c-ggw-section
                     section-title={sec.label}
@@ -24,8 +26,9 @@
                     key={sec.value}
                 ></c-ggw-section>
               </div>  
+              </div>
             </template>
-          </div>  
+            
         </lightning-card>
       
     </div>
@@ -36,4 +39,29 @@
       <lightning-button variant="brand" label="Save" onclick={updateGrant} class="slds-m-left_x-small"></lightning-button>
     </div>
   </lightning-quick-action-panel>
+
+  <template if:true={openModal}>  
+        <!------Body Section-->
+
+    <div class="slds-modal slds-fade-in-open slds-backdrop">  
+      <div class="slds-modal__container">  
+        <div class="slds-modal__content slds-p-around_medium">  
+            <center>  
+            
+                <c-ggw-order-sections
+                  record-id={recordId}
+                ></c-ggw-order-sections>
+
+            </center>  
+        </div>  
+        <!------Footer Section -->
+          <div class="slds-modal__footer">  
+          <lightning-button icon-name="utility:save" label="Reorder" onclick={saveCloseModal}></lightning-button>
+          <lightning-button icon-name="utility:close" label="Cancel" variant="brand" onclick={closeModal}></lightning-button>  
+        </div>  
+      </div>  
+    </div>  
+  
+  </template>      
+
 </template>
