@@ -148,7 +148,21 @@ public without sharing class GGW_ApplicationCtrl {
         item.Text_Block__c = richtext; // Update rich text from block to item on edit button click
         update item;
     }
-
+    @AuraEnabled
+    public static void reorderSections(List<String> sectionList){
+        List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
+        Integer cnt = 1;
+        for (String s : sectionList){
+            GGW_Selected_Item__c ggws = new GGW_Selected_Item__c();
+            ggws.Id = s;
+            ggws.Sort_Order__c = cnt;
+            updateOrderList.add(ggws);
+            cnt++;
+        }
+        if(updateOrderList.size()>0){
+            update updateOrderList;
+        }
+    }
     /**
      * Method to create a new ContentBlock add to section as part a library to later reuse
      * on other Grant applications.

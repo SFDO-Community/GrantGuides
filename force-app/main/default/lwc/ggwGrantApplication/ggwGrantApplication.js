@@ -165,6 +165,10 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         */
         this.closeModal();
     }
+    // Order section change
+    handleSectionOrderChange(event){
+        this.closeModal();
+    }
 
     // --- DRAG ACTION
 
