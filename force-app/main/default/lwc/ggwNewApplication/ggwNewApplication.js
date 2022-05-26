@@ -1,7 +1,7 @@
 import { LightningElement , api, wire } from "lwc";
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { FlowNavigationNextEvent } from 'lightning/flowSupport';
+//import { FlowNavigationNextEvent } from 'lightning/flowSupport';
 import getSections from '@salesforce/apex/GGW_ApplicationCtrl.getSections'; 
 import findSections from '@salesforce/apex/GGW_ApplicationCtrl.findSections';
 import newGrant from '@salesforce/apex/GGW_ApplicationCtrl.newGrant';
@@ -50,7 +50,8 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     handleGrantNameChange(event) {
         this.grantNameValue = event.detail.value;
     }
-
+    // Search for existing sections taht are NOT part of suggested list
+    // There can be many sections that are not suggested but can be re-used
     @wire(findSections, { searchKey: '$searchKey' })
         wireFoundSections({error,data}){
             if (data) {
@@ -108,7 +109,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         this.value = tempSectionValues;
     }
 
-    // Seach method
+    // Search Input method - fires events when user inputs or change characters in Section search bar
     handleSectionSearchChange(event) {
         // Debouncing this method: Do not update the reactive property as long as this function is
         // being called within a delay of DELAY. This is to avoid a very large number of Apex method calls.
@@ -119,21 +120,6 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
             this.searchKey = searchKey;
         }, DELAY);
     }
-
-    /**
-    handleTest(e){
-        var tempSectionOptions = [{label: 'Grant Test0', value: 'a021D000007ONDcQ12'}];
-        var tempSectionValues = [];
-        console.log('Test checkbox group');
-        this.options = [];
-        this.value = [];
-        tempSectionOptions.push({label: 'Grant Test 2', value: 'a021D000007ONDcQAO'});
-        tempSectionValues.push('a021D000007ONDcQAO');
-
-        this.options = tempSectionOptions;
-        this.value = tempSectionValues;
-
-    }*/
 
     handleSectionInputChange(event) {
         this.newSectionName = event.detail.value;
@@ -187,20 +173,8 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         this.dispatchEvent(evt);
 
     }
-
-/** Sample data for options
-    get options() {
-        return [
-            { label: 'Statement of need', value: 'Statement of need' },
-            { label: 'Program narrative', value: 'Program narrative' },
-            { label: 'Plan of action', value: 'Plan of action' },
-            { label: 'Goals and objectives', value: 'Goals and objectives' },
-            { label: 'Measurable outcomes', value: 'Measurable outcomes' },
-            { label: 'Budget narrative', value: 'Budget narrative' },
-
-        ];
-    }
-*/
+    // Intialize seggested sections list for home page
+    // Used in checkbox group to select sections to use by Grant application
     @wire(getSections)
         wireSugestedSection({error,data}){
             if (data) {
@@ -239,28 +213,40 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         if(this.grantNameValue != null){
             // Create record/s for new app save and continue to next
             newGrant({name: this.grantNameValue, sections: this.value})
-            .then((result) => {
-                //this.contacts = result;
-                console.log('NEW GRANT: '+JSON.stringify(result));
-                this.error = undefined;
+                .then((result) => {
+                    //this.contacts = result;
+                    console.log('NEW GRANT: '+JSON.stringify(result));
+                    this.error = undefined;
 
-                // check if NEXT is allowed on this screen
-                console.log('NEXT Try Navigate IF FLOW');
-                if (this.availableActions.find((action) => action === 'NEXT')) {
-                    // navigate to the next screen
-                    console.log('Navigate FLOW NEXT IF Action is OK');
-                    const navigateNextEvent = new FlowNavigationNextEvent();
-                    this.dispatchEvent(navigateNextEvent);
-                }
-                this.message = 'New Grant Application was created with ID: ';
-                this.variant = 'success';
-            })
-            .catch((error) => {
-                this.error = error;
-                //this.contacts = undefined;
-                this.message = this.error;
-                this.variant = 'error';
-            });
+                    // check if NEXT is allowed on this screen
+                    /*
+                    console.log('NEXT Try Navigate IF FLOW');
+                    if (this.availableActions.find((action) => action === 'NEXT')) {
+                        // navigate to the next screen
+                        console.log('Navigate FLOW NEXT IF Action is OK');
+                        const navigateNextEvent = new FlowNavigationNextEvent();
+                        this.dispatchEvent(navigateNextEvent);
+                    }
+                    */
+                    this.message = 'New Grant Application was created with ID: ';
+                    this.variant = 'success';
+
+                    // Navigate to New Grant record page
+                    this[NavigationMixin.Navigate]({
+                        type: 'standard__recordPage',
+                        attributes: {
+                            recordId: result.Id,
+                            objectApiName: 'GGW_Grant_Application__c',
+                            actionName: 'view'
+                        }
+                    });
+                })
+                .catch((error) => {
+                    this.error = error;
+                    //this.contacts = undefined;
+                    this.message = this.error;
+                    this.variant = 'error';
+                });
         }else{
             this.message = 'Please provide a name to create a Grant application.';
             this.variant = 'warning';

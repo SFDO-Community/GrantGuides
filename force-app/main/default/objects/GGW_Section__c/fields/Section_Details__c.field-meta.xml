@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Section_Details__c</fullName>
+    <description>Text describing this section and limits, rules to apply</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Text describing this section and limits, rules to apply</inlineHelpText>
+    <label>Section Details</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

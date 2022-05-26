@@ -1,0 +1,20 @@
+<template>
+
+  <lightning-quick-action-panel header="Order Sections">
+    <div>
+      <lightning-dual-listbox name="sections"
+        source-label="Available Sections"
+        selected-label="Selected Sections"
+        options={sections}
+        value={selected}
+        onchange={handleSectionOrderChange}>
+      </lightning-dual-listbox>
+    </div>
+      
+      <div slot="footer">
+        <lightning-button variant="neutral" label="Cancel" onclick={closeQuickAction}></lightning-button>
+        <lightning-button variant="brand" label="Reorder" onclick={handleReorder} class="slds-m-left_x-small"></lightning-button>
+      </div>
+  </lightning-quick-action-panel>
+
+</template>
