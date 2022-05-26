@@ -256,7 +256,7 @@ public without sharing class GGW_ApplicationCtrl {
         if (name != null && name.length() > 0){
             gapp.Name = name;
             gapp.Status__c = 'Progress';
-            insert gapp;
+            insert gapp;            
             // Add selected sections itterate over selected section IDs param
             List<GGW_Selected_Item__c> selectedItems = new List<GGW_Selected_Item__c>();
             Integer itemSortOrder = 1;

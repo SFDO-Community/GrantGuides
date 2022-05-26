@@ -8,15 +8,11 @@ const columns = [
 ];
 
 export default class GgwOrderSections extends LightningElement {
-	@api
-	recordId; // For Grant Application record as header holdeing section Items
-	@api
-	objectApiName;
+	@api recordId; // For Grant Application record as header holdeing section Items
+	@api objectApiName;
     sections = [];
     columns = columns;
     rowOffset = 0;
-
-    //c/ggwBarChart
     grantName;
     displayTitle;
     status;
@@ -85,25 +81,27 @@ export default class GgwOrderSections extends LightningElement {
     //get selected() {
     //    return this._selected.length ? this._selected : 'none';
     //}
-
+    // Methdod called by list order LWC standard component when order changes
+    // List items rearenged by user
     handleSectionOrderChange(e){
         this.selected = e.detail.value;
         console.log('Order: '+this.selected);
         
     }
-
+    // Save reorder sections for Grant in Salesforce call APEX to save data
+    // Update Selected Items with new sort order
     handleReorder(){
         console.log('Call APEX to reOrder: '+this.selected);
         reorderSections({sectionList: this.selected})
-        .then((data) => {
-            console.log('REORDER RETURENED OK ');
-            this.error = undefined;
-        })
-        .catch((error) => {
-            console.log(error);
-            this.error = error;
-            this.sections = undefined;    
-        });
+            .then((data) => {
+                console.log('REORDER RETURENED OK ');
+                this.error = undefined;
+            })
+            .catch((error) => {
+                console.log(error);
+                this.error = error;
+                this.sections = undefined;    
+            });
         // Fire event to UI
         var neworder = {items: this.selected};
         const sectionOrderEvent = new CustomEvent("sectionorderchange", {
@@ -113,7 +111,6 @@ export default class GgwOrderSections extends LightningElement {
 
         // Dispatches the event.
         this.dispatchEvent(sectionOrderEvent);
-
 
         // Close
         this.closeQuickAction();

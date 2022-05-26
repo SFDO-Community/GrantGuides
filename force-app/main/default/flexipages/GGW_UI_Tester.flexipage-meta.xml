@@ -9,6 +9,10 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
+                <componentInstanceProperties>
+                    <name>recordId</name>
+                    <value>a001D0000058zp2QAA</value>
+                </componentInstanceProperties>
                 <componentName>ggwGrantApplication</componentName>
                 <identifier>c_ggwGrantApplication1</identifier>
             </componentInstance>

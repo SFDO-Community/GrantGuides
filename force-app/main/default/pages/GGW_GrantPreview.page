@@ -500,22 +500,6 @@ div[data-section-style="6"] ul ul ul ul ul ul li:before {
 </style>
 </head>
 <body>
-    <!--
-    <div id="lightningvf" />
-
-    <script>
-        $Lightning.use("c:ggwPreviewApp", function() {
-          $Lightning.createComponent("c:ggwGrantApplication",
-              { label : "Press Me!" },
-              "lightningvf",
-              function(cmp) {
-                console.log("button was created");
-                // do some stuff
-              }
-          );
-        });
-    </script>
--->
 
     <h1 id='temp:C:CQJeb278781ebae4fa1a2a1ac42b'><b><span style="color:#181818" textcolor="#181818">Grant Application: Project-X</span></b></h1>
 

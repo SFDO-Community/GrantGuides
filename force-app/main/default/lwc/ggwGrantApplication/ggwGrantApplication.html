@@ -1,8 +1,6 @@
 <template>
   <lightning-quick-action-panel header={displayTitle}>
     <div>
-      
-      
         <lightning-card title={displayTitle} icon-name="utility:builder">
             <lightning-button-group slot="actions">
               <lightning-button label="Reorder" onclick={reorderSections}></lightning-button>
@@ -10,9 +8,15 @@
             </lightning-button-group>
     
             <template for:each={sections} for:item="sec">
+              <!-- DRAG DROP NOT USED
               <div key={sec.value} ondragover={allowDrop} ondrop={drop}>  
 
               <div key={sec.value} id={sec.value} draggable="true" ondragstart={drag}>
+                  INSERT CODE here
+              </div>  
+              </div>
+
+              -->
                 <c-ggw-section
                     section-title={sec.label}
                     text-block={sec.textblock}
@@ -25,14 +29,10 @@
                     onselectedtext={hanldeSelectedTextChange}
                     key={sec.value}
                 ></c-ggw-section>
-              </div>  
-              </div>
             </template>
             
         </lightning-card>
-      
     </div>
-
 
     <div slot="footer">
       <lightning-button variant="neutral" label="Close" onclick={closeModal}></lightning-button>

@@ -2,7 +2,6 @@
 
   <lightning-quick-action-panel header="Order Sections">
     <div>
-
       <lightning-dual-listbox name="sections"
         source-label="Available Sections"
         selected-label="Selected Sections"
@@ -10,26 +9,12 @@
         value={selected}
         onchange={handleSectionOrderChange}>
       </lightning-dual-listbox>
-<!--
-  <div class="slds-box" >
-  <p>Selected values are: {selected}</p>
-  </div>      
-
-    <lightning-datatable
-      key-field="id"
-      data={sections}
-      hide-checkbox-column
-      suppress-bottom-bar
-      columns={columns}>
-    </lightning-datatable>
--->
-      </div>
+    </div>
       
       <div slot="footer">
         <lightning-button variant="neutral" label="Cancel" onclick={closeQuickAction}></lightning-button>
         <lightning-button variant="brand" label="Reorder" onclick={handleReorder} class="slds-m-left_x-small"></lightning-button>
       </div>
-
-    </lightning-quick-action-panel>
+  </lightning-quick-action-panel>
 
 </template>

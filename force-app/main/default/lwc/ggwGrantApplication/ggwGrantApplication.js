@@ -1,6 +1,7 @@
 import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { NavigationMixin } from 'lightning/navigation';
+import {refreshApex} from '@salesforce/apex';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import { getRecord } from 'lightning/uiRecordApi';
@@ -48,17 +49,18 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         }
         */
 
-    // when the component is first initialized assign an initial value to sections and other Grant App variables    
-    connectedCallback() {
+    queryGrantApplication(){
         // --- Need this timeout delay to allow record ID from Quick Action on record page to be set
         // For some crazy reason LEX/LWC does not init record ID fast enough to init this call
         setTimeout(() => {
             console.log('Init App with ID:'+this.recordId);
             //this.displayTitle = 'Grant Application: ' + this.grant.data ? this.grant.data.fields.Name.value : null;
+
             // Change to call imperative insted of wire for data refreshes
             getApplication({recordId: this.recordId})
                 .then((data) => {
                     console.log('Grant Name: '+data.name);
+                    this.sections = []; // Clear to reload
                     this.grantName = data.name;
                     this.displayTitle = 'Grant Application: ' + data.name;
                     this.status = data.status;
@@ -89,6 +91,10 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     this.sections = undefined;    
                 });
         }, 5);
+    }    
+    // when the component is first initialized assign an initial value to sections and other Grant App variables    
+    connectedCallback() {
+            this.queryGrantApplication();
     }
 
 /* -- Need to to update data and cache=true does not fit here swicth using connected Callback with a GACKy Hack
@@ -167,11 +173,20 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     }
     // Order section change
     handleSectionOrderChange(event){
+        
+       // TODO There strange porblem refresh of section list is late even data is reloaded
+       // MOdal Action box still not refresh, for now solve close box repoen will sho new order.
+    
+        // Arange new order sections on UI on client side
+        //refreshApex(this.handleLoad());
+        this.queryGrantApplication();
+        // Close modal
+        //this.openModal = false;
         this.closeModal();
     }
 
-    // --- DRAG ACTION
-
+    // --- DRAG ACTION NOT USED FOR NOW
+    /*
     drag(event){
         event.dataTransfer.setData("divId", event.target.id);
     }
@@ -186,5 +201,5 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         draggedElement.classList.add('completed'); 
         event.target.appendChild(draggedElement);
     }
-
+    */
 }
