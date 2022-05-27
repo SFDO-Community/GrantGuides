@@ -9,7 +9,7 @@
         <field>GGW_Grant_Application__c.Status__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Grant Key Metrics Report</name>
+    <name>Copy of Grant Key Metrics Report</name>
     <params>
         <name>co</name>
         <value>1</value>
