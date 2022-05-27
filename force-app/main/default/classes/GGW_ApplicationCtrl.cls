@@ -6,8 +6,6 @@
  * @version 1.0
  */
 public without sharing class GGW_ApplicationCtrl {
-    public GGW_ApplicationCtrl() {
-    }
 
     // ------------------------------------    
     // shared classes
