@@ -3,12 +3,6 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>ggwNewApplication</componentName>
-                <identifier>c_ggwNewApplication1</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>recordId</name>
                     <value>a001D0000058zp2QAA</value>
