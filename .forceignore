@@ -16,8 +16,18 @@ package.xml
 
 *profiles*
 
+#AuraDefinitionBundle:ggwPreviewApp*
 ##
-force-app/main/default/approvalProcesses/Case.TRL_Case_Approval_Process_EMEA.approvalProcess-meta.xml
+#force-app/main/default/approvalProcesses/Case.TRL_Case_Approval_Process_EMEA.approvalProcess-meta.xml
+
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewApp.app
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewApp.app-meta.xml
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewApp.auradoc
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewApp.css
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewApp.svg
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewAppController.js
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewAppHelper.js
+#force-app/main/default/aura/ggwPreviewApp/ggwPreviewAppRenderer.js
 
 force-app/main/default/profiles/Custom%3A Marketing Profile.profile-meta.xml
 force-app/main/default/profiles/Custom%3A Sales Profile.profile-meta.xml

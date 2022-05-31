@@ -147,7 +147,16 @@ public class GGW_ApplicationCtrlTest {
         Test.startTest();
         GGW_ApplicationCtrl.GGW_SectionWrapper sw = GGW_ApplicationCtrl.createNewSection(name);
         Test.stopTest();
-        // TODO coplete assertion checks and set up
+        // assertion checks and set up
+        GGW_Section__c maxOrder = [SELECT Sort_Order__c FROM GGW_Section__c WHERE Suggested__c = true  ORDER BY Sort_Order__c desc LIMIT 1];
+        GGW_Section__c newSec = [SELECT Id, Name, Sort_Order__c, Recommended__c, Suggested__c FROM GGW_Section__c WHERE ID =: sw.recordid];
+        System.assertEquals(name, sw.label);
+        // Ensure the order was set correct for new section as last in list
+        System.assertEquals(maxOrder.Sort_Order__c, newSec.Sort_Order__c);
+        // Ensure defaults selected check
+        System.assertEquals(newSec.Recommended__c,sw.selected);
+        System.assertEquals(true, newSec.Recommended__c);
+        System.assertEquals(true, newSec.Suggested__c);
     }
     @isTest
     static void testGetApplication(){
@@ -162,10 +171,14 @@ public class GGW_ApplicationCtrlTest {
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App', sections);
 
         Test.startTest();
-
         GGW_ApplicationCtrl.GGW_GrantApplicationWrapper appWrapper = GGW_ApplicationCtrl.getApplication(app.Id);
         Test.stopTest();
-        // TODO coplete assertion checks and set up
+        // assertion checks happy path and set up
+        System.assertEquals(app.Id, appWrapper.recordid);
+        System.assertEquals('Grant App',appWrapper.name);
+        System.assertEquals('Progress', appWrapper.status);
+        // Check selected Items created as content blocks wraper to number of sections
+        System.assertEquals(sections.size(),appWrapper.selectedContentBlock.size());
     }
     @isTest
     static void testSaveSelectedSectionText(){
