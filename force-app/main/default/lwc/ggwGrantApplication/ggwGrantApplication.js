@@ -138,12 +138,26 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         }
     }
 */
+    /**
+     * Navigate using Lightning Navi helpers to custom VFP to render PDF doc
+     * Preview of Grant application. This must pass rec ID parameter in state
+     * 
+     * ERROR: FOr some reason we allways get NULL rec ID in APEX controller for this page
+     * despite the fact there is URL parm set c__recordId visible in URL example
+     * https://velocity-java-707-dev-ed.lightning.force.com/lightning/n/GGW_Application_Preview?c__recordId=a001D0000058zp2
+     * 
+     * The navigation from Record page works OK using same methods but LEX passing context in other ways
+     * to controler extension from recorp page context.
+     */
     exportGrantPdf(){
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: 'Grant_Preview'
-            }
+                apiName: 'GGW_Application_Preview'
+            },
+            state: {
+                c__recordId: this.recordId  // Need this state object to pass parameters in LEX
+            }                               // LEX will strip all parameters such as recordID so  must add c__recordId
         });
     }
     // Open section Modal to reorder
