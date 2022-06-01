@@ -2,13 +2,19 @@
 
     <template if:true={showIntro}>
         <lightning-card title="New Grant Application Process" icon-name="custom:custom64">
- 
-            <div class="c-container slds-theme_default">
+            <lightning-button variant="brand" label="Start New Grant Application" title="Primary action" onclick={handleStart} class="slds-m-left_x-small"></lightning-button>
+
+
+            <!--         
+            <lightning-button label="Navi" title="Navi" onclick={handleNaviTest} class="slds-m-left_x-small"></lightning-button>
+
+                <div class="c-container slds-theme_default">
                 <lightning-layout multiple-rows="true">
                     <lightning-layout-item padding="around-small" size="12">
                         <div class="page-section page-header">
                             <h1>Create a winning grant application</h1>
                         </div>
+
                     </lightning-layout-item>
                     <lightning-layout-item padding="around-small" size="12">
                         <lightning-layout>
@@ -73,7 +79,8 @@
                         </lightning-layout>
                     </lightning-layout-item>
                 </lightning-layout>
-            </div>        
+            </div>      
+        -->  
         </lightning-card>
     </template>
 

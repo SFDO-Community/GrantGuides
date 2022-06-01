@@ -1,6 +1,6 @@
 import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
-import { NavigationMixin } from 'lightning/navigation';
+import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import {refreshApex} from '@salesforce/apex';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -25,11 +25,18 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     sections = [];
 
+    @track currentPageReference;
+    @wire(CurrentPageReference)
+    setCurrentPageReference(currentPageReference) {
+        this.currentPageReference = currentPageReference;
+        this.recordId = this.currentPageReference?.state?.c__recordId;
+        console.log('Grant ID:'+this.recordId);
+    }
+
 	closeModal() {
 		this.dispatchEvent(new CloseActionScreenEvent());
         this.openModal = false;
 	}
-
     /* This standard call is replaced by Apex method getApplication with related blocks sections.
     @wire(getRecord, {recordId: '$recordId',fields: [GRANTNAME_FIELD]})
         wireGrantApp({error,data}){

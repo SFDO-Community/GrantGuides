@@ -5,7 +5,6 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>recordId</name>
-                    <value>a001D0000058zp2QAA</value>
                 </componentInstanceProperties>
                 <componentName>ggwGrantApplication</componentName>
                 <identifier>c_ggwGrantApplication1</identifier>
@@ -14,7 +13,7 @@
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>GGW UI Tester</masterLabel>
+    <masterLabel>Grant Editor</masterLabel>
     <template>
         <name>flexipage:defaultAppHomeTemplate</name>
     </template>
