@@ -12,6 +12,14 @@
         <apexClass>GGW_ExportCtrl</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>GGW_ExportCustomCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>GGW_Util</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>Grants editor full permission set allows create or edit, delete grants</description>
     <fieldPermissions>
         <editable>true</editable>
@@ -41,6 +49,10 @@
     </objectPermissions>
     <pageAccesses>
         <apexPage>GGW_GrantPreview</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>GGW_GrantPreviewCustom</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <tabSettings>

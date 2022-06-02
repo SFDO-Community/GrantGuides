@@ -70,8 +70,8 @@ public without sharing class GGW_ApplicationCtrl {
             integer words = block.Description__c.normalizeSpace().stripHtmlTags().replaceAll('\\S','').length() ;
             this.wordcount = words;
             this.displaydate = block.CreatedDate.format('YYYY-MM'); // Format this to short
-            // TODO
-            this.displaybadge = 'Winner'; // TODO find how to fill this what make a tag?
+            // Temporary value for tag default
+            //this.displaybadge = ''; // TODO find how to fill this what make a tag?
             this.totalblocks = cnt;
         }
     }
@@ -146,6 +146,14 @@ public without sharing class GGW_ApplicationCtrl {
         item.Text_Block__c = richtext; // Update rich text from block to item on edit button click
         update item;
     }
+    // Delete Section as selected item junction for grant - remoes a section
+    @AuraEnabled
+    public static void deleteSection(String itemId){
+        GGW_Selected_Item__c item = new GGW_Selected_Item__c();
+        item.Id = itemId;
+        delete item;
+    }
+
     @AuraEnabled
     public static void reorderSections(List<String> sectionList){
         List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
@@ -234,11 +242,39 @@ public without sharing class GGW_ApplicationCtrl {
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                 Section__c, Section__r.Name, CreatedDate 
                                                 FROM GGW_Content_Block__c WHERE Section__c =: sectionId];
+        // Get map of block tags to display as badges
+        Map<String,List<String>> blockTags = getBlockTopics();
         for(GGW_Content_Block__c c : cbList){
             GGW_ContentBlockWrapper cbw = new GGW_ContentBlockWrapper(c, cbList.size());
+            if(blockTags.containsKey(c.Id)){
+                List<String> badgeList = blockTags.get(c.Id);
+                // TODO - HERE we get 1st tag string assign to display
+                // Only 1 badge tag shown today, this may need to be multiple Tags per block
+                if (badgeList.size()>0){
+                    cbw.displaybadge = badgeList[0];
+                }  
+            }
             cbwResultList.add(cbw);
         }
         return cbwResultList;
+    }
+    // Query Topics for content blocks, display tags/badge for each block
+    private static Map<String,List<String>> getBlockTopics(){
+        List<TopicAssignment> lst = [SELECT EntityType, EntityId, Topic.Name 
+                                        FROM TopicAssignment WHERE EntityType = 'GGW_Content_Block'];
+        Map<String,List<String>> mapTags = new Map<String,List<String>>();
+        for (TopicAssignment t : lst){
+            if(mapTags.containsKey(t.EntityId)){
+                List<String> badgeList = mapTags.get(t.EntityId);
+                badgeList.add(t.Topic.Name);
+                mapTags.put(t.EntityId, badgeList);
+            }else{
+                List<String> badgeList = new List<String>();
+                badgeList.add(t.Topic.Name);
+                mapTags.put(t.EntityId, badgeList);
+            }
+        }
+        return mapTags;
     }
 
     /**

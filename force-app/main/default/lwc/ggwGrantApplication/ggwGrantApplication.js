@@ -1,9 +1,10 @@
 import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
-import {refreshApex} from '@salesforce/apex';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+//import {refreshApex} from '@salesforce/apex';
+//import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+//import { updateRecord } from 'lightning/uiRecordApi';
 //import { getRecord } from 'lightning/uiRecordApi';
 //import ID_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Id';
 //import GRANTNAME_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Name';
@@ -27,11 +28,12 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     @track currentPageReference;
     @wire(CurrentPageReference)
-    setCurrentPageReference(currentPageReference) {
-        this.currentPageReference = currentPageReference;
-        this.recordId = this.currentPageReference?.state?.c__recordId;
-        console.log('Grant ID:'+this.recordId);
-    }
+        setCurrentPageReference(currentPageReference) {
+            this.currentPageReference = currentPageReference;
+            this.recordId = this.currentPageReference?.state?.c__recordId;
+            console.log('setCurrentPageReference: Grant ID:'+this.recordId);
+            this.queryGrantApplication();
+        }
 
 	closeModal() {
 		this.dispatchEvent(new CloseActionScreenEvent());
@@ -55,18 +57,18 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             }
         }
         */
-
+    
     queryGrantApplication(){
         // --- Need this timeout delay to allow record ID from Quick Action on record page to be set
         // For some crazy reason LEX/LWC does not init record ID fast enough to init this call
         setTimeout(() => {
-            console.log('Init App with ID:'+this.recordId);
+            console.log('queryGrantApplication: Init App with ID:'+this.recordId);
             //this.displayTitle = 'Grant Application: ' + this.grant.data ? this.grant.data.fields.Name.value : null;
 
             // Change to call imperative insted of wire for data refreshes
             getApplication({recordId: this.recordId})
                 .then((data) => {
-                    console.log('Grant Name: '+data.name);
+                    console.log('queryGrantApplication: Grant Name: '+data.name);
                     this.sections = []; // Clear to reload
                     this.grantName = data.name;
                     this.displayTitle = 'Grant Application: ' + data.name;
@@ -91,6 +93,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                         }                
                     }      
                     this.error = undefined;
+                    //updateRecord({ fields: { Id: this.recordId } });
                 })
                 .catch((error) => {
                     console.log(error);
@@ -101,9 +104,12 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     }    
     // when the component is first initialized assign an initial value to sections and other Grant App variables    
     connectedCallback() {
-            this.queryGrantApplication();
+        this.queryGrantApplication();
     }
-
+    handleDeleteSection(){
+        // Remove section from a list, call APEX
+        this.queryGrantApplication();
+    }
 /* -- Need to to update data and cache=true does not fit here swicth using connected Callback with a GACKy Hack
     @wire(getApplication, {recordId: '$recordId'})
     wireApplication({error,data}){
@@ -167,7 +173,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     hanldeSelectedTextChange(event){
         //this.textBlock = event.detail;
-        console.log('Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid);
+        console.log('hanldeSelectedTextChange: Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid);
         // Display toaster message
         /*
         const evt = new ShowToastEvent({
@@ -196,8 +202,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     handleSectionOrderChange(event){
         
        // TODO There strange porblem refresh of section list is late even data is reloaded
-       // MOdal Action box still not refresh, for now solve close box repoen will sho new order.
-    
+       // MOdal Action box still not refresh, for now solve close box repoen will show new order.
+       console.log('handleSectionOrderChange: ORDER Change event:'+this.recordId);
         // Arange new order sections on UI on client side
         //refreshApex(this.handleLoad());
         this.queryGrantApplication();

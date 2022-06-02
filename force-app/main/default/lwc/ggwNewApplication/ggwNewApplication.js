@@ -235,7 +235,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                     this[NavigationMixin.Navigate]({
                             type: 'standard__navItemPage',
                             attributes: {
-                                apiName: 'GGW_UI_Tester'
+                                apiName: 'GGW_Grant_Editor'
                             },
                             state: {
                                 c__recordId: result.Id
