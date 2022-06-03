@@ -33,8 +33,10 @@
                         <!-- Badge winner icon-name="utility:moneybag" -->
                         <lightning-badge label={block.displaydate} slot="footer"></lightning-badge>
                         <lightning-badge label={block.wordcount} slot="footer"></lightning-badge>
-                        <lightning-badge label={block.displaybadge} slot="footer"></lightning-badge>
-
+                        <!--<lightning-badge key={badge} label={block.displaybadge} slot="footer"></lightning-badge>-->
+                        <template for:each={block.badgeList} for:item="badge">
+                            <lightning-badge key={badge} label={badge} slot="footer"></lightning-badge>
+                        </template>
                     </lightning-card>
                 </div>
             </template>

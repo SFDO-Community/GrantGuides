@@ -49,7 +49,8 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String title; // Display title map to Name
         @AuraEnabled public String displaytext; // map to Description__c
         @AuraEnabled public Integer wordcount; // Derived from Rich tect field in APEX count words
-        @AuraEnabled public String displaybadge; // Tage to display on the badge (Winner etc)
+        @AuraEnabled public String displaybadge; // DEPRECATE Tag to display on the badge (Winner etc)
+        @AuraEnabled public List<String> badgeList; // Tags to display on the badge (Winner etc) from Topics
         @AuraEnabled public String displaydate; // Created date
         @AuraEnabled public Integer totalblocks;
         @AuraEnabled public Boolean isselected;
@@ -73,6 +74,7 @@ public without sharing class GGW_ApplicationCtrl {
             // Temporary value for tag default
             //this.displaybadge = ''; // TODO find how to fill this what make a tag?
             this.totalblocks = cnt;
+            this.badgeList = new List<String>(); // init empty list fill in later
         }
     }
 
@@ -251,7 +253,8 @@ public without sharing class GGW_ApplicationCtrl {
                 // TODO - HERE we get 1st tag string assign to display
                 // Only 1 badge tag shown today, this may need to be multiple Tags per block
                 if (badgeList.size()>0){
-                    cbw.displaybadge = badgeList[0];
+                    cbw.displaybadge = badgeList[0]; // DEPRECATED: switch to use list
+                    cbw.badgeList = badgeList;
                 }  
             }
             cbwResultList.add(cbw);
