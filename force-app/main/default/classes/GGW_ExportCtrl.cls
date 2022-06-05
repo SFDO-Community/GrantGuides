@@ -13,9 +13,20 @@ public without sharing class GGW_ExportCtrl {
 
     public GGW_ExportCtrl(ApexPages.StandardController stdController) {
         this.app = (GGW_Grant_Application__c)stdController.getRecord();
-        system.debug('### PDF VIew START CTRL '+this.recordId);
+        if(this.app != null && this.app.Id != null){
+            this.recordId = this.app.Id;
+        }else{
+            this.recordId = ApexPages.currentPage().getParameters().get('c__recordId');
+        }
+        // Get from saved state
+        if(this.recordId == null || this.recordId.length() == 0){
+            GGW_Grant_State__c st = GGW_Util.getGrantState();
+            if(st != null && st.Grant_Application__c != null){
+                this.recordId = st.Grant_Application__c;
+            }
+        }
         // set from URL Parm record ID
-        this.recordId = this.app.Id; //'a001D0000058zp2QAA';//ApexPages.currentPage().getParameters().get('id');
+        //this.recordId = this.app.Id; //'a001D0000058zp2QAA';//ApexPages.currentPage().getParameters().get('id');
         system.debug('### PDF VIew ID:'+this.recordId);
         this.items = GGW_Util.getSelectedItems(this.recordId);
         if(items != null && items.size()>0){

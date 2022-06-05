@@ -4,7 +4,7 @@
         <lightning-card title={displayTitle} icon-name="utility:builder">
             <lightning-button-group slot="actions">
               <lightning-button label="Reorder" onclick={reorderSections}></lightning-button>
-              <lightning-button label="Export" onclick={exportGrantPdf}></lightning-button>
+              <lightning-button label="Export" onclick={exportGrantVFPdf}></lightning-button>
             </lightning-button-group>
     
             <template for:each={sections} for:item="sec">
@@ -41,19 +41,17 @@
     </div>
   </lightning-quick-action-panel>
 
+  <!-- Display Reorder sections MOdal -->
   <template if:true={openModal}>  
-        <!------Body Section-->
-
+    <!------Body Section-->
     <div class="slds-modal slds-fade-in-open slds-backdrop">  
       <div class="slds-modal__container">  
         <div class="slds-modal__content slds-p-around_medium">  
             <center>  
-            
                 <c-ggw-order-sections
                   record-id={recordId}
                   onsectionorderchange={handleSectionOrderChange}
                 ></c-ggw-order-sections>
-
             </center>  
         </div>  
         <!------Footer Section 
@@ -64,7 +62,25 @@
         -->
       </div>  
     </div>  
-  
   </template>      
+  <!-- END REORDER Section Modal -->
+
+  <!-- Display EXPORT VFP PDF Mdal -->
+  <template if:true={openVFPExportModal}>  
+    <div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="Modalbox" class="slds-modal slds-modal_large">
+      <div class="slds-modal__container" style="width: 40%;">
+          <div class="slds-modal__header">
+              <p>Grant Details</p>
+          </div>
+          <div class="slds-modal__content slds-p-around--medium">  
+              <iframe src={grantPageURL} width="100%" height="500px;" frameborder="0"></iframe>
+          </div>
+          <div class="slds-modal__footer">
+              <lightning:button label="Close" onclick={closePDFModal}></lightning:button>
+          </div>
+      </div>
+    </div>
+  </template>
+  <!-- Display EXPORT VFP PDF Mdal -->
 
 </template>

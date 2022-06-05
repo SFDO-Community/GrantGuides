@@ -56,12 +56,10 @@
     </profileActionOverrides>
     <tabs>standard-home</tabs>
     <tabs>GGW_Grant_Editor</tabs>
-    <tabs>GGW_Grant_Application__c</tabs>
     <tabs>GGW_Section__c</tabs>
     <tabs>GGW_Content_Block__c</tabs>
     <tabs>GGW_Selected_Item__c</tabs>
-    <tabs>GGW_Application_Preview</tabs>
-    <tabs>Grant_Preview</tabs>
+    <tabs>GGW_Grant_Application__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Impact_Labs_GGW_UtilityBar</utilityBar>
 </CustomApplication>

@@ -67,7 +67,17 @@ export default class GgwOrderSections extends LightningElement {
                             //                                    id: item.sectionid, // sfid for Section record
                             //                                    } ];                              
                         }                
-                    }      
+                    }  
+                    // New sections
+                    if (data.unselectSectionList){
+                        for(var i=0; i<data.unselectSectionList.length; i++)  {
+                            var sect = data.unselectSectionList[i];
+                            // Use Selectors
+                            this.sections = [...this.sections ,{label: sect.label, 
+                                                                value: sect.recordId, // sfid for Section record
+                                                                } ];                              
+                        }                
+                    } 
                     this.error = undefined;
                 })
                 .catch((error) => {
@@ -92,7 +102,7 @@ export default class GgwOrderSections extends LightningElement {
     // Update Selected Items with new sort order
     handleReorder(){
         console.log('Call APEX to reOrder: '+this.selected);
-        reorderSections({sectionList: this.selected})
+        reorderSections({sectionList: this.selected, appId: this.recordId})
             .then((data) => {
                 console.log('REORDER RETURENED OK ');
                 this.error = undefined;

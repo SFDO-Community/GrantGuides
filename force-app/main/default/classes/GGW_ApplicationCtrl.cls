@@ -13,7 +13,7 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String recordid;
         @AuraEnabled public String name;
         @AuraEnabled public String status;
-
+        @AuraEnabled public List<GGW_SectionWrapper> unselectSectionList; // Used to add new sections to Grant
         @AuraEnabled public List<GGW_ContentBlockWrapper> selectedContentBlock; // Include Section and Text block
     }
     public class GGW_SectionWrapper {
@@ -86,6 +86,9 @@ public without sharing class GGW_ApplicationCtrl {
                                 Selected_Block__r.Description__c, Text_Block__c  
                                 FROM GGW_Selected_Item__c 
                                 WHERE Grant_Application__c =: recordId ORDER BY Sort_Order__c];
+        // Save state
+        GGW_Util.saveGrantState(recordId);
+        List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         if(appItems != null && appItems.size()>0){
             app.recordid = recordId;
@@ -157,18 +160,26 @@ public without sharing class GGW_ApplicationCtrl {
     }
 
     @AuraEnabled
-    public static void reorderSections(List<String> sectionList){
+    public static void reorderSections(List<String> sectionList, String appId){
         List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
         Integer cnt = 1;
         for (String s : sectionList){
+            Id sectionId = s; 
+            String objName = sectionId.getsobjecttype()+'';
             GGW_Selected_Item__c ggws = new GGW_Selected_Item__c();
-            ggws.Id = s;
-            ggws.Sort_Order__c = cnt;
+            if(objName.equals('GGW_Section__c')){ // Create new selected item junction fro section
+                ggws.GGW_Section__c = sectionId;
+                ggws.Grant_Application__c = appId;
+                ggws.Sort_Order__c = cnt;
+            }else{ // Update selected existing item junction
+                ggws.Id = s;
+                ggws.Sort_Order__c = cnt;
+            }
             updateOrderList.add(ggws);
             cnt++;
         }
         if(updateOrderList.size()>0){
-            update updateOrderList;
+            upsert updateOrderList; // Some records here exist some may be new added sections
         }
     }
     /**
@@ -199,6 +210,28 @@ public without sharing class GGW_ApplicationCtrl {
             swList.add(sw);
         }
         return swList;
+    }
+    // Return all available section in library
+    private static List<GGW_SectionWrapper> getLeftoverSections(List<GGW_Selected_Item__c> appItems){
+        List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
+        Set<String> setExcludeSections = getExcludeSectionSet(appItems);
+        Set<String> setOfSectionsWithBlock = getBlocksForSection();
+        List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
+                                                FROM GGW_Section__c ORDER BY Sort_Order__c];
+        for(GGW_Section__c s : sectionList){
+            if(!setExcludeSections.contains(s.Id)){
+                GGW_SectionWrapper sw = new GGW_SectionWrapper(s,setOfSectionsWithBlock);
+                swList.add(sw);
+            }
+        }
+        return swList;    
+    }
+    private static Set<String> getExcludeSectionSet(List<GGW_Selected_Item__c> appItems){
+        Set<String> section = new Set<String>();
+        for(GGW_Selected_Item__c item : appItems){
+            section.add(item.GGW_Section__c);
+        }
+        return section;
     }
     // Search any section by text key
     @AuraEnabled(cacheable=true)

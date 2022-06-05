@@ -19,11 +19,11 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     _title = 'Grant Application';
     message = 'Test';
     variant = 'success';
-    @track openModal = false;
-
+    @track openModal = false; // OPen Reorder modal
+    @track openVFPExportModal = false; // Open export modal
     toggleIconName = 'utility:preview';
     toggleButtonLabel = 'Add Content';
-
+    @track grantPageURL = '';
     sections = [];
 
     @track currentPageReference;
@@ -39,6 +39,36 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 		this.dispatchEvent(new CloseActionScreenEvent());
         this.openModal = false;
 	}
+    exportGrantVFPdf(){
+        //https://velocity-java-707-dev-ed.lightning.force.com/
+        // https://velocity-java-707-dev-ed--c.visualforce.com/apex/GGW_GrantPreview
+        //https://velocity-java-707-dev-ed--c.visualforce.com/apex/GGW_GrantPreviewCustom?c__recordId=a001D0000058zp2QAA
+        //this.grantPageURL = '/apex/GGW_GrantPreview?c__recordId='+this.recordId;
+        //this.openVFPExportModal = true;
+
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: {
+                apiName: 'Grant_Preview'
+            },
+            state: {
+                c__recordId: this.recordId  // Need this state object to pass parameters in LEX
+            }                               // LEX will strip all parameters such as recordID so  must add c__recordId
+        });
+/*
+        this[NavigationMixin.GenerateUrl]({
+            type: 'standard__webPage',
+            attributes: {
+                url: this.grantPageURL
+            }
+        }).then(generatedUrl => {
+            window.open(generatedUrl);
+        });
+*/
+    }
+    closePDFModal(){
+        this.openVFPExportModal = false;
+    }
     /* This standard call is replaced by Apex method getApplication with related blocks sections.
     @wire(getRecord, {recordId: '$recordId',fields: [GRANTNAME_FIELD]})
         wireGrantApp({error,data}){
@@ -154,7 +184,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
      * 
      * The navigation from Record page works OK using same methods but LEX passing context in other ways
      * to controler extension from recorp page context.
-     */
+     *
     exportGrantPdf(){
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
@@ -165,7 +195,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                 c__recordId: this.recordId  // Need this state object to pass parameters in LEX
             }                               // LEX will strip all parameters such as recordID so  must add c__recordId
         });
-    }
+    }*/
     // Open section Modal to reorder
     reorderSections(){
         this.openModal = true;

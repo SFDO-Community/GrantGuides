@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Applications_Submitted</fullName>
-    <columns>NAME</columns>
+    <columns>Application_Name__c</columns>
     <columns>Description__c</columns>
+    <columns>Status__c</columns>
+    <columns>CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>Status__c</field>

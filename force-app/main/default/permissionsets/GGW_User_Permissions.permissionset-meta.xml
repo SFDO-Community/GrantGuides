@@ -51,10 +51,6 @@
         <apexPage>GGW_GrantPreview</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
-    <pageAccesses>
-        <apexPage>GGW_GrantPreviewCustom</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
     <tabSettings>
         <tab>GGW_Content_Block__c</tab>
         <visibility>Visible</visibility>
