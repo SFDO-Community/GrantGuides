@@ -233,13 +233,22 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
 
                     // Navigate to New Grant record page
                     this[NavigationMixin.Navigate]({
+                            type: 'standard__navItemPage',
+                            attributes: {
+                                apiName: 'GGW_Grant_Editor'
+                            },
+                            state: {
+                                c__recordId: result.Id
+                            }
+                        });
+                    /** This navi to standard Grant record page    
                         type: 'standard__recordPage',
                         attributes: {
                             recordId: result.Id,
                             objectApiName: 'GGW_Grant_Application__c',
                             actionName: 'view'
                         }
-                    });
+                    }); */
                 })
                 .catch((error) => {
                     this.error = error;

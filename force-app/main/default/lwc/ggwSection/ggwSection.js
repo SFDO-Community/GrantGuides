@@ -3,7 +3,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import saveSelectedSectionText from '@salesforce/apex/GGW_ApplicationCtrl.saveSelectedSectionText';
 import updateSelectedItemText from '@salesforce/apex/GGW_ApplicationCtrl.updateSelectedItemText';
 import addTextBlockToLibrary  from '@salesforce/apex/GGW_ApplicationCtrl.addTextBlockToLibrary';
-
+import deleteSection from '@salesforce/apex/GGW_ApplicationCtrl.deleteSection';
 export default class GgwSection extends LightningElement {
     @api sectionTitle = 'Default Section';
     @api textBlock = 'Text placeholder';
@@ -20,7 +20,7 @@ export default class GgwSection extends LightningElement {
     sectionorder = ['1','2','3','4'];
     displayTitle; // Assmeble dynamic title
     _title = 'Section';
-
+    enableEdit = false;
     showModal() {
         console.log('# Section ID: '+this.key);
         this.openModal = true;
@@ -31,6 +31,9 @@ export default class GgwSection extends LightningElement {
     closeModal() {
         this.openModal = false;
         this.textBlock = this.saveSelectedText; // Restore initial text
+    }
+    handleEnableEdit(){
+        this.enableEdit = true;
     }
     // Save set selected section text and close modal
     saveCloseModal() {
@@ -65,7 +68,45 @@ export default class GgwSection extends LightningElement {
                 });
     
     }
+    // Delete Item section
+    handleDeleteSection(){
+        deleteSection({itemId: this.selectedItemId})
+            .then((result) => {
+                //this.contacts = result;
+                console.log('Delete item: '+this.selectedItemId);
+                this.error = undefined;
 
+                // Fire delete event to parent
+                // Bubble UP the deletesection event to parent.
+                var sectionObject = { section: this.selectedItemId };
+                const selectedBlockEvent = new CustomEvent("deletesection", {
+                    detail: sectionObject,
+                    bubbles: true
+                });
+        
+                // Dispatches the event.
+                this.dispatchEvent(selectedBlockEvent);
+
+                // Display toaster message
+                const evt = new ShowToastEvent({
+                    title: this._title,
+                    message: 'Dlete Grant section.',
+                    variant: 'success',
+                });
+                this.dispatchEvent(evt);
+            })
+            .catch((error) => {
+                this.error = error;
+
+                // Display ERROR toaster message
+                const evt = new ShowToastEvent({
+                    title: this._title,
+                    message: this.error,
+                    variant: 'error',
+                });
+                this.dispatchEvent(evt);
+            });
+    }
     connectedCallback() {
         //this.subscribeToMessageChannel();
         //this.textBlock = 'Text placehold';
@@ -115,6 +156,9 @@ export default class GgwSection extends LightningElement {
                 variant: 'success',
             });
             this.dispatchEvent(evt);
+
+            // Disable Edit panel
+            this.enableEdit = false;
         })
         .catch((error) => {
             this.error = error;

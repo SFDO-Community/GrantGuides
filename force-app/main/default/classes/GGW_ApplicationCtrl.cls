@@ -13,7 +13,7 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String recordid;
         @AuraEnabled public String name;
         @AuraEnabled public String status;
-
+        @AuraEnabled public List<GGW_SectionWrapper> unselectSectionList; // Used to add new sections to Grant
         @AuraEnabled public List<GGW_ContentBlockWrapper> selectedContentBlock; // Include Section and Text block
     }
     public class GGW_SectionWrapper {
@@ -49,7 +49,8 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String title; // Display title map to Name
         @AuraEnabled public String displaytext; // map to Description__c
         @AuraEnabled public Integer wordcount; // Derived from Rich tect field in APEX count words
-        @AuraEnabled public String displaybadge; // Tage to display on the badge (Winner etc)
+        @AuraEnabled public String displaybadge; // DEPRECATE Tag to display on the badge (Winner etc)
+        @AuraEnabled public List<String> badgeList; // Tags to display on the badge (Winner etc) from Topics
         @AuraEnabled public String displaydate; // Created date
         @AuraEnabled public Integer totalblocks;
         @AuraEnabled public Boolean isselected;
@@ -70,20 +71,32 @@ public without sharing class GGW_ApplicationCtrl {
             integer words = block.Description__c.normalizeSpace().stripHtmlTags().replaceAll('\\S','').length() ;
             this.wordcount = words;
             this.displaydate = block.CreatedDate.format('YYYY-MM'); // Format this to short
-            // TODO
-            this.displaybadge = 'Winner'; // TODO find how to fill this what make a tag?
+            // Temporary value for tag default
+            //this.displaybadge = ''; // TODO find how to fill this what make a tag?
             this.totalblocks = cnt;
+            this.badgeList = new List<String>(); // init empty list fill in later
         }
     }
 
     // Return Grant Aplication Wrapper object
     @AuraEnabled
     public static GGW_GrantApplicationWrapper getApplication(String recordId){
+        String tempId = recordId;
+        if(recordId == null){
+            GGW_Grant_State__c st = GGW_Util.getGrantState();
+            if (st != null && st.Grant_Application__c != null ){
+                tempId = st.Grant_Application__c;
+            }
+        }
+
         List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
                                 Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
                                 Selected_Block__r.Description__c, Text_Block__c  
                                 FROM GGW_Selected_Item__c 
-                                WHERE Grant_Application__c =: recordId ORDER BY Sort_Order__c];
+                                WHERE Grant_Application__c =: tempId ORDER BY Sort_Order__c];
+        // Save state
+        GGW_Util.saveGrantState(tempId);
+        List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         if(appItems != null && appItems.size()>0){
             app.recordid = recordId;
@@ -146,19 +159,35 @@ public without sharing class GGW_ApplicationCtrl {
         item.Text_Block__c = richtext; // Update rich text from block to item on edit button click
         update item;
     }
+    // Delete Section as selected item junction for grant - remoes a section
     @AuraEnabled
-    public static void reorderSections(List<String> sectionList){
+    public static void deleteSection(String itemId){
+        GGW_Selected_Item__c item = new GGW_Selected_Item__c();
+        item.Id = itemId;
+        delete item;
+    }
+
+    @AuraEnabled
+    public static void reorderSections(List<String> sectionList, String appId){
         List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
         Integer cnt = 1;
         for (String s : sectionList){
+            Id sectionId = s; 
+            String objName = sectionId.getsobjecttype()+'';
             GGW_Selected_Item__c ggws = new GGW_Selected_Item__c();
-            ggws.Id = s;
-            ggws.Sort_Order__c = cnt;
+            if(objName.equals('GGW_Section__c')){ // Create new selected item junction fro section
+                ggws.GGW_Section__c = sectionId;
+                ggws.Grant_Application__c = appId;
+                ggws.Sort_Order__c = cnt;
+            }else{ // Update selected existing item junction
+                ggws.Id = s;
+                ggws.Sort_Order__c = cnt;
+            }
             updateOrderList.add(ggws);
             cnt++;
         }
         if(updateOrderList.size()>0){
-            update updateOrderList;
+            upsert updateOrderList; // Some records here exist some may be new added sections
         }
     }
     /**
@@ -189,6 +218,28 @@ public without sharing class GGW_ApplicationCtrl {
             swList.add(sw);
         }
         return swList;
+    }
+    // Return all available section in library
+    private static List<GGW_SectionWrapper> getLeftoverSections(List<GGW_Selected_Item__c> appItems){
+        List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
+        Set<String> setExcludeSections = getExcludeSectionSet(appItems);
+        Set<String> setOfSectionsWithBlock = getBlocksForSection();
+        List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
+                                                FROM GGW_Section__c ORDER BY Sort_Order__c];
+        for(GGW_Section__c s : sectionList){
+            if(!setExcludeSections.contains(s.Id)){
+                GGW_SectionWrapper sw = new GGW_SectionWrapper(s,setOfSectionsWithBlock);
+                swList.add(sw);
+            }
+        }
+        return swList;    
+    }
+    private static Set<String> getExcludeSectionSet(List<GGW_Selected_Item__c> appItems){
+        Set<String> section = new Set<String>();
+        for(GGW_Selected_Item__c item : appItems){
+            section.add(item.GGW_Section__c);
+        }
+        return section;
     }
     // Search any section by text key
     @AuraEnabled(cacheable=true)
@@ -234,11 +285,40 @@ public without sharing class GGW_ApplicationCtrl {
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                 Section__c, Section__r.Name, CreatedDate 
                                                 FROM GGW_Content_Block__c WHERE Section__c =: sectionId];
+        // Get map of block tags to display as badges
+        Map<String,List<String>> blockTags = getBlockTopics();
         for(GGW_Content_Block__c c : cbList){
             GGW_ContentBlockWrapper cbw = new GGW_ContentBlockWrapper(c, cbList.size());
+            if(blockTags.containsKey(c.Id)){
+                List<String> badgeList = blockTags.get(c.Id);
+                // TODO - HERE we get 1st tag string assign to display
+                // Only 1 badge tag shown today, this may need to be multiple Tags per block
+                if (badgeList.size()>0){
+                    cbw.displaybadge = badgeList[0]; // DEPRECATED: switch to use list
+                    cbw.badgeList = badgeList;
+                }  
+            }
             cbwResultList.add(cbw);
         }
         return cbwResultList;
+    }
+    // Query Topics for content blocks, display tags/badge for each block
+    private static Map<String,List<String>> getBlockTopics(){
+        List<TopicAssignment> lst = [SELECT EntityType, EntityId, Topic.Name 
+                                        FROM TopicAssignment WHERE EntityType = 'GGW_Content_Block'];
+        Map<String,List<String>> mapTags = new Map<String,List<String>>();
+        for (TopicAssignment t : lst){
+            if(mapTags.containsKey(t.EntityId)){
+                List<String> badgeList = mapTags.get(t.EntityId);
+                badgeList.add(t.Topic.Name);
+                mapTags.put(t.EntityId, badgeList);
+            }else{
+                List<String> badgeList = new List<String>();
+                badgeList.add(t.Topic.Name);
+                mapTags.put(t.EntityId, badgeList);
+            }
+        }
+        return mapTags;
     }
 
     /**

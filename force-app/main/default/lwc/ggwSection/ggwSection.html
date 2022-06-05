@@ -2,27 +2,31 @@
     <lightning-card title={displayTitle} >
       <lightning-button-group slot="actions">
         <lightning-button-icon icon-name="utility:add"  alternative-text="Add block" title="Add block"  onclick={showModal}></lightning-button-icon>
+        <lightning-button-icon icon-name="utility:edit"  alternative-text="Edit" title="Edit block"  onclick={handleEnableEdit}></lightning-button-icon>
         <lightning-button-icon icon-name="utility:save"  alternative-text="Save" title="save" onclick={saveRichText}></lightning-button-icon>
         <lightning-button-icon icon-name="utility:insert_template"  alternative-text="Add to library" title="Add to library"  onclick={addBlockToLibrary}></lightning-button-icon>
+        <lightning-button-icon icon-name="utility:delete"  alternative-text="Delete section" title="Delete section"  onclick={handleDeleteSection}></lightning-button-icon>
+
   <!--
         <lightning-button-menu alternative-text="Order menu" variant="border-filled" icon-name="utility:settings" onselect={handleReorderOnselect}>
           <template for:each={sectionorder} for:item="ord">
             <lightning-menu-item value={ord} label={ord} key={ord}></lightning-menu-item>
             </template>
         </lightning-button-menu>
--->
+  -->
       </lightning-button-group>
         <div class="slds-box slds-box_xx-small slds-m-left_x-small slds-m-right_x-small slds-m-bottom_xx-small">            
-          <!--  READ ONLY version
-          <lightning-formatted-rich-text
+          <template if:false={enableEdit}>
+            <lightning-formatted-rich-text
                 value={textBlock}
             ></lightning-formatted-rich-text>
-          -->
+          </template>
+          <template if:true={enableEdit}>
             <lightning-input-rich-text
               value={textBlock}
               onchange={handleTextBlockChange}>
             </lightning-input-rich-text>
-
+          </template>  
         </div>   
     </lightning-card>
 
