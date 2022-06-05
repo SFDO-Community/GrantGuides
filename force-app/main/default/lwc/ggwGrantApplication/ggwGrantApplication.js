@@ -25,13 +25,20 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     toggleButtonLabel = 'Add Content';
     @track grantPageURL = '';
     sections = [];
+    container = 'modal';
+    showModalFooter = true;
 
     @track currentPageReference;
     @wire(CurrentPageReference)
         setCurrentPageReference(currentPageReference) {
             this.currentPageReference = currentPageReference;
             this.recordId = this.currentPageReference?.state?.c__recordId;
+            this.container = this.currentPageReference?.state?.c__uictx;
             console.log('setCurrentPageReference: Grant ID:'+this.recordId);
+            console.log('setCurrentPageReference: Container:'+this.container);
+            if(this.container == 'page'){
+                this.showModalFooter = false;
+            }
             this.queryGrantApplication();
         }
 
@@ -69,24 +76,6 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     closePDFModal(){
         this.openVFPExportModal = false;
     }
-    /* This standard call is replaced by Apex method getApplication with related blocks sections.
-    @wire(getRecord, {recordId: '$recordId',fields: [GRANTNAME_FIELD]})
-        wireGrantApp({error,data}){
-            if (data) {
-                console.log('Grant Name: '+data.fields.Name.value);
-                this.grantName = data.fields.Name.value;
-                this.displayTitle = 'Grant Application: ' + data.fields.Name.value;
-                this.error = undefined;
-            }else if(error){
-                console.log(error);
-                this.error = error;
-                //this.sections = undefined;
-            }else{
-                // eslint-disable-next-line no-console
-                console.log('unknown error');
-            }
-        }
-        */
     
     queryGrantApplication(){
         // --- Need this timeout delay to allow record ID from Quick Action on record page to be set
@@ -140,6 +129,89 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         // Remove section from a list, call APEX
         this.queryGrantApplication();
     }
+    // Open section Modal to reorder
+    reorderSections(){
+        this.openModal = true;
+    }
+
+    hanldeSelectedTextChange(event){
+        //this.textBlock = event.detail;
+        console.log('hanldeSelectedTextChange: Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid);
+        // Display toaster message
+        /*
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: 'Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid,
+            variant: this.variant,
+        });
+        this.dispatchEvent(evt);    
+        */    
+    }
+
+    updateGrant(){
+        /*
+        console.log('Show Text Block:'+this.sections[0].textblock);
+        // Display toaster message
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: 'Show Text Block:'+this.sections[0].textblock,
+            variant: this.variant,
+        });
+        this.dispatchEvent(evt);
+        */
+        this.closeModal();
+    }
+    // Order section change
+    handleSectionOrderChange(event){
+        
+       // TODO There strange porblem refresh of section list is late even data is reloaded
+       // MOdal Action box still not refresh, for now solve close box repoen will show new order.
+       console.log('handleSectionOrderChange: ORDER Change event:'+this.recordId);
+        // Arange new order sections on UI on client side
+        //refreshApex(this.handleLoad());
+        this.queryGrantApplication();
+        // Close modal
+        //this.openModal = false;
+        this.closeModal();
+    }
+
+    /* This standard call is replaced by Apex method getApplication with related blocks sections.
+    @wire(getRecord, {recordId: '$recordId',fields: [GRANTNAME_FIELD]})
+        wireGrantApp({error,data}){
+            if (data) {
+                console.log('Grant Name: '+data.fields.Name.value);
+                this.grantName = data.fields.Name.value;
+                this.displayTitle = 'Grant Application: ' + data.fields.Name.value;
+                this.error = undefined;
+            }else if(error){
+                console.log(error);
+                this.error = error;
+                //this.sections = undefined;
+            }else{
+                // eslint-disable-next-line no-console
+                console.log('unknown error');
+            }
+        }
+        */
+
+    // --- DRAG ACTION NOT USED FOR NOW
+    /*
+    drag(event){
+        event.dataTransfer.setData("divId", event.target.id);
+    }
+    allowDrop(event){
+        event.preventDefault();
+    }
+    drop(event){
+        event.preventDefault();
+        var divId = event.dataTransfer.getData("divId");
+        console.log('DROP Section ID: '+divId);
+        var draggedElement = this.template.querySelector('#' +divId);
+        draggedElement.classList.add('completed'); 
+        event.target.appendChild(draggedElement);
+    }
+    */
+
 /* -- Need to to update data and cache=true does not fit here swicth using connected Callback with a GACKy Hack
     @wire(getApplication, {recordId: '$recordId'})
     wireApplication({error,data}){
@@ -196,67 +268,5 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             }                               // LEX will strip all parameters such as recordID so  must add c__recordId
         });
     }*/
-    // Open section Modal to reorder
-    reorderSections(){
-        this.openModal = true;
-    }
 
-    hanldeSelectedTextChange(event){
-        //this.textBlock = event.detail;
-        console.log('hanldeSelectedTextChange: Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid);
-        // Display toaster message
-        /*
-        const evt = new ShowToastEvent({
-            title: this._title,
-            message: 'Section:'+event.detail.section+' TXT: '+event.detail.text+' BlockID:'+event.detail.blockid,
-            variant: this.variant,
-        });
-        this.dispatchEvent(evt);    
-        */    
-    }
-
-    updateGrant(){
-        /*
-        console.log('Show Text Block:'+this.sections[0].textblock);
-        // Display toaster message
-        const evt = new ShowToastEvent({
-            title: this._title,
-            message: 'Show Text Block:'+this.sections[0].textblock,
-            variant: this.variant,
-        });
-        this.dispatchEvent(evt);
-        */
-        this.closeModal();
-    }
-    // Order section change
-    handleSectionOrderChange(event){
-        
-       // TODO There strange porblem refresh of section list is late even data is reloaded
-       // MOdal Action box still not refresh, for now solve close box repoen will show new order.
-       console.log('handleSectionOrderChange: ORDER Change event:'+this.recordId);
-        // Arange new order sections on UI on client side
-        //refreshApex(this.handleLoad());
-        this.queryGrantApplication();
-        // Close modal
-        //this.openModal = false;
-        this.closeModal();
-    }
-
-    // --- DRAG ACTION NOT USED FOR NOW
-    /*
-    drag(event){
-        event.dataTransfer.setData("divId", event.target.id);
-    }
-    allowDrop(event){
-        event.preventDefault();
-    }
-    drop(event){
-        event.preventDefault();
-        var divId = event.dataTransfer.getData("divId");
-        console.log('DROP Section ID: '+divId);
-        var draggedElement = this.template.querySelector('#' +divId);
-        draggedElement.classList.add('completed'); 
-        event.target.appendChild(draggedElement);
-    }
-    */
 }

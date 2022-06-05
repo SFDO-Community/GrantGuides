@@ -35,10 +35,13 @@
         </lightning-card>
     </div>
 
-    <div slot="footer">
-      <lightning-button variant="neutral" label="Close" onclick={closeModal}></lightning-button>
-      <lightning-button variant="brand" label="Save" onclick={updateGrant} class="slds-m-left_x-small"></lightning-button>
-    </div>
+    <template if:true={showModalFooter}>
+      <div slot="footer">
+        <lightning-button variant="neutral" label="Close" onclick={closeModal}></lightning-button>
+        <lightning-button variant="brand" label="Save" onclick={updateGrant} class="slds-m-left_x-small"></lightning-button>
+      </div>
+    </template>
+
   </lightning-quick-action-panel>
 
   <!-- Display Reorder sections MOdal -->
