@@ -81,13 +81,21 @@ public without sharing class GGW_ApplicationCtrl {
     // Return Grant Aplication Wrapper object
     @AuraEnabled
     public static GGW_GrantApplicationWrapper getApplication(String recordId){
+        String tempId = recordId;
+        if(recordId == null){
+            GGW_Grant_State__c st = GGW_Util.getGrantState();
+            if (st != null && st.Grant_Application__c != null ){
+                tempId = st.Grant_Application__c;
+            }
+        }
+
         List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
                                 Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
                                 Selected_Block__r.Description__c, Text_Block__c  
                                 FROM GGW_Selected_Item__c 
-                                WHERE Grant_Application__c =: recordId ORDER BY Sort_Order__c];
+                                WHERE Grant_Application__c =: tempId ORDER BY Sort_Order__c];
         // Save state
-        GGW_Util.saveGrantState(recordId);
+        GGW_Util.saveGrantState(tempId);
         List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         if(appItems != null && appItems.size()>0){
