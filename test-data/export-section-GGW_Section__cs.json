@@ -1,0 +1,103 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef1"
+            },
+            "Name": "Impact narrative",
+            "Recommended__c": false,
+            "Section_Details__c": null,
+            "Sort_Order__c": 9,
+            "Suggested__c": false
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef2"
+            },
+            "Name": "Plan of action",
+            "Recommended__c": true,
+            "Section_Details__c": null,
+            "Sort_Order__c": 3,
+            "Suggested__c": true
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef3"
+            },
+            "Name": "Goals and objectives",
+            "Recommended__c": false,
+            "Section_Details__c": null,
+            "Sort_Order__c": 3,
+            "Suggested__c": true
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef4"
+            },
+            "Name": "Budget narrative",
+            "Recommended__c": true,
+            "Section_Details__c": null,
+            "Sort_Order__c": 4,
+            "Suggested__c": true
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef5"
+            },
+            "Name": "Program narrative",
+            "Recommended__c": false,
+            "Section_Details__c": null,
+            "Sort_Order__c": 1,
+            "Suggested__c": true
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef6"
+            },
+            "Name": "Measurable outcomes",
+            "Recommended__c": true,
+            "Section_Details__c": null,
+            "Sort_Order__c": 5,
+            "Suggested__c": true
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef7"
+            },
+            "Name": "Statement of need",
+            "Recommended__c": true,
+            "Section_Details__c": null,
+            "Sort_Order__c": 2,
+            "Suggested__c": true
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef8"
+            },
+            "Name": "Executive Summary",
+            "Recommended__c": true,
+            "Section_Details__c": "(maximum 500 words) Provide a brief summary of the project)\r\nExecutive Summary of Project (maximum 500 words) Provide a brief summary of the project that may be used as a project description for our grant adjudication and communication purposes.",
+            "Sort_Order__c": 1,
+            "Suggested__c": true
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef9"
+            },
+            "Name": "Project Objectives",
+            "Recommended__c": true,
+            "Section_Details__c": "Briefly describe the community and the issue your project is designed to address. If the project has been offered before, briefly describe the results and any changes that have been made to improve outcomes.",
+            "Sort_Order__c": 2,
+            "Suggested__c": true
+        }
+    ]
+}
