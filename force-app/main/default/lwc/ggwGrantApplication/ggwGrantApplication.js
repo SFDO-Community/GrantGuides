@@ -3,7 +3,7 @@ import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
 //import {refreshApex} from '@salesforce/apex';
-//import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import { updateRecord } from 'lightning/uiRecordApi';
 //import { getRecord } from 'lightning/uiRecordApi';
 //import ID_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Id';
@@ -41,8 +41,12 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             }
             this.queryGrantApplication();
         }
-
-	closeModal() {
+    
+    reloadSections(){
+        this.queryGrantApplication();
+    }
+	
+    closeModal() {
 		this.dispatchEvent(new CloseActionScreenEvent());
         this.openModal = false;
 	}
@@ -169,10 +173,20 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
        console.log('handleSectionOrderChange: ORDER Change event:'+this.recordId);
         // Arange new order sections on UI on client side
         //refreshApex(this.handleLoad());
-        this.queryGrantApplication();
         // Close modal
         //this.openModal = false;
         this.closeModal();
+        // Display toaster message
+        
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: 'Updated grant sections order or add new section',
+            variant: this.variant,
+        });
+        this.dispatchEvent(evt);    
+
+        // Reload data
+        this.queryGrantApplication();
     }
 
     /* This standard call is replaced by Apex method getApplication with related blocks sections.
