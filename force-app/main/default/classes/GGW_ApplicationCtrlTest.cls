@@ -203,10 +203,19 @@ public class GGW_ApplicationCtrlTest {
     }
     @isTest
     static void testReorderSections(){
+        // Query all suggested sections
+        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App Order', sections);
         // List of selecte Iteam IDs - GGW_Selected_Item__c
         List<String> itemList =  new List<String>();
         Test.startTest();
-        GGW_ApplicationCtrl.reorderSections(itemList);
+        GGW_ApplicationCtrl.reorderSections(itemList, app.Id);
         Test.stopTest();
         // TODO coplete assertion checks and set up
     }

@@ -96,13 +96,13 @@ public without sharing class GGW_ApplicationCtrl {
                                 WHERE Grant_Application__c =: tempId ORDER BY Sort_Order__c];
         // Save state
         GGW_Util.saveGrantState(tempId);
-        List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
+        //List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         if(appItems != null && appItems.size()>0){
             app.recordid = recordId;
             app.name = appItems[0].Application_Name__c;
             app.status = appItems[0].Grant_Application__r.Status__c;
-
+            app.unselectSectionList = getLeftoverSections(appItems);
             List<GGW_ContentBlockWrapper> contentList = new List<GGW_ContentBlockWrapper>();
             for(GGW_Selected_Item__c item : appItems){
                 GGW_ContentBlockWrapper cbw = new GGW_ContentBlockWrapper();
@@ -227,7 +227,9 @@ public without sharing class GGW_ApplicationCtrl {
         List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
                                                 FROM GGW_Section__c ORDER BY Sort_Order__c];
         for(GGW_Section__c s : sectionList){
+            system.debug('## Left Section: '+s.Name+' ID: '+s.Id);
             if(!setExcludeSections.contains(s.Id)){
+                system.debug('## Include Section: '+s.Name+' ID: '+s.Id);
                 GGW_SectionWrapper sw = new GGW_SectionWrapper(s,setOfSectionsWithBlock);
                 swList.add(sw);
             }

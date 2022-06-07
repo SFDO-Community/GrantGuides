@@ -16,23 +16,25 @@ ACTIVEDAYS="${2:-30}"
 echo "--- START DEPLOYMENT FOR: $ORG_ALIAS"
 echo "--- New ORG will be active for: $ACTIVEDAYS"
 # Set user alias from org name
-TRLUSER="${ORG_ALIAS}-user"
+TESTUSER="${ORG_ALIAS}-user"
 
 # Create new scratch org 30 days max
 sfdx force:org:create --setdefaultusername --setalias $ORG_ALIAS --definitionfile config/project-scratch-def.json -d $ACTIVEDAYS || { echo 'Scratch org create failed' ; exit 1; }
 
 # Create test user
-sfdx force:user:create --setalias $TRLUSER --definitionfile config/user-def.json || { echo 'Scratch org User create failed' ; exit 1; }
-sfdx force:user:display -u $TRLUSER
+sfdx force:user:create --setalias $TESTUSER --definitionfile config/user-def.json || { echo 'Scratch org User create failed' ; exit 1; }
+sfdx force:user:display -u $TESTUSER
 
 # Push source
 sfdx force:source:push -u $ORG_ALIAS || { echo 'Source push failed' ; exit 1; }
 
 # Assign Permission Set to users
+sfdx force:user:permset:assign -n GGW_User_Permissions -u $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
+sfdx force:user:permset:assign --permsetname GGW_User_Permissions --onbehalfof $TESTUSER -u $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
 
 # Push sample data
-# sfdx force:data:tree:import -u ggw --plan test-data/export-ggw-plan.json
-
+sfdx force:data:tree:import -u $ORG_ALIAS --plan test-data/export-section-GGW_Section__c-plan.json
+sfdx force:data:tree:import -u ggw1 --plan test-data/export-section-GGW_Section__c-plan.json
 # Run Tests - optional step
 
 # Open new org

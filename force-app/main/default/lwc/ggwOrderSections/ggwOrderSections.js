@@ -70,11 +70,13 @@ export default class GgwOrderSections extends LightningElement {
                     }  
                     // New sections
                     if (data.unselectSectionList){
+                        console.log('UN-Selected: '+data.unselectSectionList);
                         for(var i=0; i<data.unselectSectionList.length; i++)  {
                             var sect = data.unselectSectionList[i];
+                            console.log(i + ' section: '+sect.label);
                             // Use Selectors
                             this.sections = [...this.sections ,{label: sect.label, 
-                                                                value: sect.recordId, // sfid for Section record
+                                                                value: sect.recordid, // sfid for Section record
                                                                 } ];                              
                         }                
                     } 
@@ -96,7 +98,7 @@ export default class GgwOrderSections extends LightningElement {
     handleSectionOrderChange(e){
         this.selected = e.detail.value;
         console.log('Order: '+this.selected);
-        
+        //console.log('EVENT: '+JSON.stringify(e.detail));
     }
     // Save reorder sections for Grant in Salesforce call APEX to save data
     // Update Selected Items with new sort order
