@@ -14,11 +14,11 @@ In order to repurpose content from my previously submitted grant applications, a
 
 ### UX Storyboard Prototype
 
-![GrantGuides Storyboard UX]({{ site.baseurl }}/images/GrantGuides_Storyboard_Flow.png)
+![GrantGuides Storyboard UX](https://github.com/Salesforce-org-Impact-Labs/GrantGuides/images/GrantGuides_Storyboard_Flow.png)
 
 ### Data Model
 
-![Grants app Data Model]({{ site.baseurl }}/images/Grants_App_Data_Model.png)
+![Grants app Data Model](https://github.com/Salesforce-org-Impact-Labs/GrantGuides/images/Grants_App_Data_Model.png)
 
 ### Grant Preview/Export
 Preview grant document is implemented using VisualForce page rendered as PDF that enables user to view and download a document.
