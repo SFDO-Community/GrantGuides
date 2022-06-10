@@ -56,13 +56,14 @@
             <!------Footer Section-->  
             <div class="slds-modal__footer">  
               <!-- TODO ONLY Show Save button is there are available Blocks for section 
+                 
               <template if:true={sectionHasBlocks}>
                 <lightning-button label="Save" onclick={saveCloseModal}></lightning-button>  
               </template>
-              -->
-              <lightning-button icon-name="utility:close" label="Cancel" onclick={closeModal}></lightning-button>  
-              <lightning-button icon-name="utility:save" label="Save" variant="brand" onclick={saveCloseModal}></lightning-button>
-            </div>  
+            -->
+            <lightning-button icon-name="utility:close" label="Cancel" onclick={closeModal} class="slds-var-m-right_xx-small"></lightning-button>  
+            <lightning-button icon-name="utility:save" label="Save" variant="brand" onclick={saveCloseModal} class="slds-var-m-left_xx-small"></lightning-button>
+          </div>  
           </div>  
         </div>  
     </template>      
