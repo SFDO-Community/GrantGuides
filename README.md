@@ -29,7 +29,25 @@ The HTML/CSS styles for this page `GGW_GrantPreview` are managed as static resou
 
 ## Salesforce DX Project: Next Steps
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+The GrantsGuides is a Salesforce DX project that can deploy to a target org in 2 methods.
+
+1. Install as unlocked package [Link GrantGuides](TBD)
+
+
+2. Deploy as metadata using scratch or developer org.
+
+If you are a developer and want to customize or test-drive this app in a scratch org, this repo provides a helper script that allows for Quick Start. Follow bellow comands to set up a new scratch org.
+
+```
+$ git clone https://github.com/Salesforce-org-Impact-Labs/GrantGuides.git
+
+$ cd GrantGuides
+
+$ scripts/dx/dxorg <org alias>
+```
+After this script executes the new scratch org will be created from your DevHub and source code pushed to new org. At this point you are ready to test and build. Happy blazing new trails.
+
+Now you have new org and thsi app deployed, what’s next? Here are some documentation resources to get you started if you are new to SFDX.
 
 ## How Do You Plan to Deploy Your Changes?
 
