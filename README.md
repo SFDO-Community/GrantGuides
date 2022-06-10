@@ -10,6 +10,23 @@ In order to write winning grants, as a grant writer, I need assistance assemblin
 ### Use Case
 In order to repurpose content from my previously submitted grant applications, as a grant writer, I need a way to store and quickly access my past grant proposal content.
 
+## Technical Design
+
+### UX Storyboard Prototype
+
+![GrantGuides Storyboard UX]({{ site.baseurl }}/images/GrantGuides_Storyboard_Flow.png)
+
+### Data Model
+
+![Grants app Data Model]({{ site.baseurl }}/images/Grants_App_Data_Model.png)
+
+### Grant Preview/Export
+Preview grant document is implemented using VisualForce page rendered as PDF that enables user to view and download a document.
+
+This page `GGW_GrantPreview` implimented using standard APEX controller extension for the reason to use this page as custom action on Grant record page as well as stand alone VisualForce Tab.
+
+The HTML/CSS styles for this page `GGW_GrantPreview` are managed as static resource. The CSS file is in a folder `resources/css/ggw_grant_preview.css`
+
 ## Salesforce DX Project: Next Steps
 
 Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
