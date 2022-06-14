@@ -2,7 +2,7 @@
 <ReportFolder xmlns="http://soap.sforce.com/2006/04/metadata">
     <folderShares>
         <accessLevel>Manage</accessLevel>
-        <sharedTo>test-kdhrnflzy1zq@example.com</sharedTo>
+        <sharedTo>iandrosov@grants.lab.demo</sharedTo>
         <sharedToType>User</sharedToType>
     </folderShares>
     <name>GGW Reports</name>
