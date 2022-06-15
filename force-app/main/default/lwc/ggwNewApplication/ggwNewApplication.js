@@ -15,11 +15,12 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     message = 'New grant was created';
     variant = 'success';
     @api availableActions = [];
-    // --List of checkobxes gested section
-    value = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommends selected items
-    options = []; // List of Suggested sections
+    // -- List of checkobxes gested section
+    value = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommended selected Section IDs or items
+    options = []; // List of Suggested sections display as checkboxes list the values show what is suggested from data
     searchKey = ''; // Seach key for find Sections
-    // ---
+
+    // --- Hold the original list of values temporary
     basevalue = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommends selected items
     baseoptions = []; // List of Suggested sections
 
@@ -50,7 +51,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     handleGrantNameChange(event) {
         this.grantNameValue = event.detail.value;
     }
-    // Search for existing sections taht are NOT part of suggested list
+    // Search for existing sections that are NOT part of suggested list
     // There can be many sections that are not suggested but can be re-used
     @wire(findSections, { searchKey: '$searchKey' })
         wireFoundSections({error,data}){
@@ -73,8 +74,41 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                 console.log('unknown error')
             }
         }
+    // Intialize seggested sections list for home page
+    // Used in checkbox group to select sections to use by Grant application
+    @wire(getSections)
+        wireSugestedSection({error,data}){
+            if (data) {
 
-    // Select new section checkbox found from Search action
+                for(var i=0; i<data.length; i++)  {
+                    this.options = [...this.options ,{label: data[i].label, value: data[i].recordid} ];  
+                    this.baseoptions = [...this.baseoptions ,{label: data[i].label, value: data[i].recordid} ];  
+
+                    if(data[i].selected == true){
+                        this.value.push(data[i].recordid);
+                        this.basevalue.push(data[i].recordid);
+                    }
+                }                
+                this.error = undefined;
+            }else if(error){
+                console.log(error);
+                this.error = error;
+            }else{
+		        // eslint-disable-next-line no-console
+		        console.log('unknown error')
+            }
+        }
+
+    get selectedValues() {
+        return this.value.join(',');
+    }
+    // Event handler for sugested section checkbox group fir on select/deselect 
+    // section from the suggested list
+    handleIncludeSectionChange(e) {
+        this.value = e.detail.value;
+    }
+
+    // Select new section found from Search action - checkbox select action
     // add section to the application list
     handleNewSectionAdd(e){
         this.valueSectionAdd = e.detail.value;
@@ -83,11 +117,11 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         // Collection has list ov values as array selected by this event
         var tempSectionOptions = [];
         var tempSectionValues = [];
-        for(var i=0; i<this.baseoptions.length; i++)  {
-            tempSectionOptions.push(this.baseoptions[i]);
+        for(var i=0; i<this.options.length; i++)  {
+            tempSectionOptions.push(this.options[i]);
         }
-        for(var i=0; i<this.basevalue.length; i++)  {
-            tempSectionValues.push(this.basevalue[i]);
+        for(var i=0; i<this.value.length; i++)  {
+            tempSectionValues.push(this.value[i]);
         }
         // Add or remove selevcted frmo search values to update Section sugested list
         for(var i=0; i<this.optionsSectionAdd.length; i++)  {
@@ -172,39 +206,6 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
         });
         this.dispatchEvent(evt);
 
-    }
-    // Intialize seggested sections list for home page
-    // Used in checkbox group to select sections to use by Grant application
-    @wire(getSections)
-        wireSugestedSection({error,data}){
-            if (data) {
-
-                for(var i=0; i<data.length; i++)  {
-                    this.options = [...this.options ,{label: data[i].label, value: data[i].recordid} ];  
-                    this.baseoptions = [...this.baseoptions ,{label: data[i].label, value: data[i].recordid} ];  
-
-                    if(data[i].selected == true){
-                        this.value.push(data[i].recordid);
-                        this.basevalue.push(data[i].recordid);
-                    }
-                }                
-                this.error = undefined;
-            }else if(error){
-                console.log(error);
-                this.error = error;
-            }else{
-		        // eslint-disable-next-line no-console
-		        console.log('unknown error')
-            }
-        }
-
-
-    get selectedValues() {
-        return this.value.join(',');
-    }
-
-    handleIncludeSectionChange(e) {
-        this.value = e.detail.value;
     }
 
     // Create new Grant application event handler
