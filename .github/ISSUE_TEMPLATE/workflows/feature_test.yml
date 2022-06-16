@@ -11,7 +11,7 @@ on:
 
 jobs:
   unit_tests:
-    name: 'Run Apex tests'
+    name: 'Run Feature Build'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
           sfdx force:org:create --setdefaultusername --setalias dev1 -f config/project-scratch-def.json
       - name: Deploy Code
         run:
-          sfdx force:source:push
+          sfdx force:source:push -u dev1
       - name: Delete Scratch org
         run:
-          sfdx force:org:delete 
+          sfdx force:org:delete  -u dev1 -p
