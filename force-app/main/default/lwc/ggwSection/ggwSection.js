@@ -1,10 +1,14 @@
 import { LightningElement, api , track } from "lwc";
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
+import LightningConfirm from 'lightning/confirm';
+import LightningPrompt from 'lightning/prompt';
+
 import saveSelectedSectionText from '@salesforce/apex/GGW_ApplicationCtrl.saveSelectedSectionText';
 import updateSelectedItemText from '@salesforce/apex/GGW_ApplicationCtrl.updateSelectedItemText';
 import addTextBlockToLibrary  from '@salesforce/apex/GGW_ApplicationCtrl.addTextBlockToLibrary';
 import deleteSection from '@salesforce/apex/GGW_ApplicationCtrl.deleteSection';
-import { getConfirmation, handleConfirmationButtonClick } from 'c/ggwModalUtil';
+//import { getConfirmation, handleConfirmationButtonClick } from 'c/ggwModalUtil';
 
 
 export default class GgwSection extends LightningElement {
@@ -17,6 +21,7 @@ export default class GgwSection extends LightningElement {
     @api sectioncount;
     @api sortorder;
     @track openModal = false;
+
     @track confirmation;
 
     blockId;
@@ -76,9 +81,10 @@ export default class GgwSection extends LightningElement {
     // Delete Item section BUtton click handler call APEX method to delete here with 
     // confirmation Modal
     // This only delete selected ITEM junction from Grant and refresh UI for sections.
-    handleDeleteSection(){
+    async handleDeleteSection(){
         // Before delete add confirmation modal ensure user action not a mistake
         // Define the properties of our confirmation modal
+        /*
         let modalDetails = {
             text: 'Are you sure you want to delete section "'+ this.sectionTitle +'" from this grant?',  // Modal body text
             confirmButtonLabel: 'Delete',   // Label for the Confirm button
@@ -93,18 +99,36 @@ export default class GgwSection extends LightningElement {
             () => this.deleteSectionCall(),
             () => console.log('cancel delete section!')
         );
+        */
+            const result = await LightningConfirm.open({
+                message: 'Are you sure you want to delete section "'+ this.sectionTitle +'" from this grant?',  // Modal body text
+                //variant: 'headerless',
+                label: 'Confirm Delete Section',
+                // setting theme would have no effect
+            });
+            //Confirm has been closed
+            //result is true if OK was clicked
+            //and false if cancel was clicked
+            if(result == true){
+                // Delete section
+                this.deleteSectionCall();
+            }else{
+                console.log('cancel delete section!')
+            }
+            //console.log('Delete Confirm: '+result);
+        
     }
-    /**
+    /** DEPRECATED Using Lightning promprt Summer 22
      * Generic Modal Action button handler User confirms button click
      * called to handle the confirmation modal's custom onbuttonclick event
      * This method can be called for confirming many actions such as 
      * delete section or save block to library
      * @param {*} event - on button click
-     */
+     *
     handleConfirmationButtonModal(event){
         // We pass the event to the function in the utility class along with the confirmation object
         handleConfirmationButtonClick(event, this.confirmation);
-    }
+    }*/
     /**
      * Call APEX Method to delete selected item - setion from grant
      */
@@ -242,7 +266,7 @@ export default class GgwSection extends LightningElement {
      */
     addBlockToLibrary(){
         // Before delete add confirmation modal ensure user action not a mistake
-
+/*
         // Define the properties of our confirmation modal
         let modalDetails = {
             text: 'Are you sure you want to add this text block to section "'+ this.sectionTitle +'"?',  // Modal body text
@@ -258,6 +282,26 @@ export default class GgwSection extends LightningElement {
             () => this.saveNewTextBlock(),
             () => console.log('cancel add block to library!')
         );
+*/
+
+        LightningPrompt.open({
+            message: 'Are you sure you want to add this text block to section "'+ this.sectionTitle +'"? If yes please enter block name.',  // Modal body text
+            //theme defaults to "default"
+            label: 'Add Block to Library', // this is the header text
+            defaultValue: 'name new block', //this is optional
+        }).then((result) => {
+            //Prompt has been closed
+            //result is input text if OK clicked
+            //and null if cancel was clicked
+            if(result != null){
+                console.log('New block save Name: '+result);
+                // Add save ne block to libarary
+                this.saveNewTextBlock(result);
+            }else{
+                console.log('cancel save block!')
+            }    
+
+        });
 
     }
     /**
@@ -265,9 +309,9 @@ export default class GgwSection extends LightningElement {
      * to reuse later in other applications.
      * This new blocks can be tagged by users by adding Topic labels
      */
-    saveNewTextBlock(){
+    saveNewTextBlock(blockname){
         // Create new text block to save for future use
-        addTextBlockToLibrary({sectionid: this.sectionId, richtext: this.textBlock})
+        addTextBlockToLibrary({sectionid: this.sectionId, richtext: this.textBlock, name: blockname})
         .then((result) => {
             //this.contacts = result;
             //console.log('Updated text on selected item: '+result);
