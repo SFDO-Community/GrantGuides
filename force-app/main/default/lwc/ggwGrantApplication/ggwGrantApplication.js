@@ -130,7 +130,9 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         this.queryGrantApplication();
     }
     handleDeleteSection(){
-        // Remove section from a list, call APEX
+        // Section - selected item data has been deleted by Section component action
+        // here we only refresh UI/UX
+        // Remove section from a UI list, call APEX
         this.queryGrantApplication();
     }
     // Open section Modal to reorder

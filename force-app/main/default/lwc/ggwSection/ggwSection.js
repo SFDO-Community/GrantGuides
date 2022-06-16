@@ -4,6 +4,9 @@ import saveSelectedSectionText from '@salesforce/apex/GGW_ApplicationCtrl.saveSe
 import updateSelectedItemText from '@salesforce/apex/GGW_ApplicationCtrl.updateSelectedItemText';
 import addTextBlockToLibrary  from '@salesforce/apex/GGW_ApplicationCtrl.addTextBlockToLibrary';
 import deleteSection from '@salesforce/apex/GGW_ApplicationCtrl.deleteSection';
+import { getConfirmation, handleConfirmationButtonClick } from 'c/ggwModalUtil';
+
+
 export default class GgwSection extends LightningElement {
     @api sectionTitle = 'Default Section';
     @api textBlock = 'Text placeholder';
@@ -14,6 +17,8 @@ export default class GgwSection extends LightningElement {
     @api sectioncount;
     @api sortorder;
     @track openModal = false;
+    @track confirmation;
+
     blockId;
     saveSelectedText;
     selectedItemOrderValue;
@@ -68,8 +73,42 @@ export default class GgwSection extends LightningElement {
                 });
     
     }
-    // Delete Item section
+    // Delete Item section BUtton click handler call APEX method to delete here with 
+    // confirmation Modal
+    // This only delete selected ITEM junction from Grant and refresh UI for sections.
     handleDeleteSection(){
+        // Before delete add confirmation modal ensure user action not a mistake
+        // Define the properties of our confirmation modal
+        let modalDetails = {
+            text: 'Are you sure you want to delete section "'+ this.sectionTitle +'" from this grant?',  // Modal body text
+            confirmButtonLabel: 'Delete',   // Label for the Confirm button
+            confirmButtonVariant: 'destructive',    // Variant for the Confirm button
+            cancelButtonLabel: 'Cancel',   // Label for the Cancel button
+            header: 'Confirm Delete'    // Modal header text
+        };
+
+        this.confirmation = getConfirmation(
+            // this.confirmationModal,
+            modalDetails,
+            () => this.deleteSectionCall(),
+            () => console.log('cancel delete section!')
+        );
+    }
+    /**
+     * Generic Modal Action button handler User confirms button click
+     * called to handle the confirmation modal's custom onbuttonclick event
+     * This method can be called for confirming many actions such as 
+     * delete section or save block to library
+     * @param {*} event - on button click
+     */
+    handleConfirmationButtonModal(event){
+        // We pass the event to the function in the utility class along with the confirmation object
+        handleConfirmationButtonClick(event, this.confirmation);
+    }
+    /**
+     * Call APEX Method to delete selected item - setion from grant
+     */
+    deleteSectionCall(){
         deleteSection({itemId: this.selectedItemId})
             .then((result) => {
                 //this.contacts = result;
@@ -87,10 +126,10 @@ export default class GgwSection extends LightningElement {
                 // Dispatches the event.
                 this.dispatchEvent(selectedBlockEvent);
 
-                // Display toaster message
+                // Display toaster message for selected section item deleted from Salesforce completed
                 const evt = new ShowToastEvent({
                     title: this._title,
-                    message: 'Dlete Grant section.',
+                    message: 'Delete Grant section.',
                     variant: 'success',
                 });
                 this.dispatchEvent(evt);
@@ -195,12 +234,38 @@ export default class GgwSection extends LightningElement {
         // TODO ----- IMPLIMENT IF WE DCIDE to use this sorting event
     }
     /**
-     * Action button handler ADD Block TO LIBRARY on section toolbar, commit save changes adding new text block in Salesforce
+     * Action button handler ADD Block TO LIBRARY on section toolbar, 
+     * cofirm the action and commit save changes adding new text block in Salesforce
      * Add block text record to a related section recod, to collect content blocks library
      * 
      * @param {*} event 
      */
-    addBlockToLibrary(event){
+    addBlockToLibrary(){
+        // Before delete add confirmation modal ensure user action not a mistake
+
+        // Define the properties of our confirmation modal
+        let modalDetails = {
+            text: 'Are you sure you want to add this text block to section "'+ this.sectionTitle +'"?',  // Modal body text
+            confirmButtonLabel: 'Save',   // Label for the Confirm button
+            confirmButtonVariant: 'brand',    // Variant for the Confirm button from Lighting design componnets: brand, descructive, neutral
+            cancelButtonLabel: 'Cancel',   // Label for the Cancel button
+            header: 'Confirm Add to Library'    // Modal header text
+        };
+
+        this.confirmation = getConfirmation(
+            // this.confirmationModal,
+            modalDetails,
+            () => this.saveNewTextBlock(),
+            () => console.log('cancel add block to library!')
+        );
+
+    }
+    /**
+     * Call APEX methods to save new text block for given section
+     * to reuse later in other applications.
+     * This new blocks can be tagged by users by adding Topic labels
+     */
+    saveNewTextBlock(){
         // Create new text block to save for future use
         addTextBlockToLibrary({sectionid: this.sectionId, richtext: this.textBlock})
         .then((result) => {
@@ -229,6 +294,5 @@ export default class GgwSection extends LightningElement {
                 this.dispatchEvent(evt);
             }
         });
-
     }
 }
