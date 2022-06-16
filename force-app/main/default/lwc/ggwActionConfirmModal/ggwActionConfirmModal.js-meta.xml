@@ -1,0 +1,38 @@
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<apiVersion>52.0</apiVersion>
+	<isExposed>true</isExposed>
+	<masterLabel>Ggw action confirm modal</masterLabel>
+	<targets>
+		<target>lightning__AppPage</target>
+		<target>lightning__HomePage</target>
+		<target>lightning__RecordPage</target>
+		<target>lightning__FlowScreen</target>
+		<target>lightning__Tab</target>
+		<target>lightningCommunity__Page</target>
+	</targets>
+	<targetConfigs>
+		<targetConfig targets="lightning__AppPage">
+			<property name="message" type="String" default="" description="Text message to display on Modal confirmation" label="Message" placeholder="Are you sure you want to delete this item?" required="true" />
+			<supportedFormFactors>
+				<supportedFormFactor type="Small"/>
+				<supportedFormFactor type="Large"/>
+			</supportedFormFactors>
+		</targetConfig>
+		<targetConfig targets="lightning__HomePage">
+			<property name="message" type="String" default="" description="Text message to display on Modal confirmation" label="Message" placeholder="Are you sure you want to delete this item?" required="true" />
+			<supportedFormFactors>
+				<supportedFormFactor type="Large"/>
+			</supportedFormFactors>
+		</targetConfig>
+		<targetConfig targets="lightning__RecordPage">
+			<property name="message" type="String" default="" description="Text message to display on Modal confirmation" label="Message" placeholder="Are you sure you want to delete this item?" required="true" />
+			<supportedFormFactors>
+				<supportedFormFactor type="Small"/>
+				<supportedFormFactor type="Large"/>
+			</supportedFormFactors>
+		</targetConfig>
+		<targetConfig targets="lightning__FlowScreen">
+			<property name="message" type="String" default="" description="Text message to display on Modal confirmation" label="Message" required="true" />
+		</targetConfig>
+	</targetConfigs>
+</LightningComponentBundle>
