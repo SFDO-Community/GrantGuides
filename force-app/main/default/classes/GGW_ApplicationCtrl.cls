@@ -196,9 +196,12 @@ public without sharing class GGW_ApplicationCtrl {
      * 
      */
     @AuraEnabled
-    public static String addTextBlockToLibrary(String sectionid, String richtext){
+    public static String addTextBlockToLibrary(String sectionid, String richtext, String name){
         GGW_Content_Block__c cb = new GGW_Content_Block__c();
         cb.name = '[CHANGE] New Text Block'; // strange error Layout  Field:Name must not be Readonly
+        if(name != null){
+            cb.name = name; // replace given name
+        }
         cb.Section__c = sectionid;
         cb.Description__c = richtext;
         insert cb;
