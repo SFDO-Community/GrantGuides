@@ -133,7 +133,7 @@ public class GGW_ApplicationCtrlTest {
         String sectionid = sectionList[0].Id;
         String richtext = 'Adding new block text content to section to reuse. Example text';
         Test.startTest();
-        String str = GGW_ApplicationCtrl.addTextBlockToLibrary(sectionid, richtext);
+        String str = GGW_ApplicationCtrl.addTextBlockToLibrary(sectionid, richtext, 'Test block');
         Test.stopTest();
         // Check if new block was created with default name
         GGW_Content_Block__c block = [SELECT Id, Name, Section__c, Description__c FROM GGW_Content_Block__c WHERE Id =:str ];
