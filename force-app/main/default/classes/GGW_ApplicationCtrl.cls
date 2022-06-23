@@ -89,17 +89,14 @@ public without sharing class GGW_ApplicationCtrl {
             }
         }
 
-        List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
-                                Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
-                                Selected_Block__r.Description__c, Text_Block__c  
-                                FROM GGW_Selected_Item__c 
-                                WHERE Grant_Application__c =: tempId ORDER BY Sort_Order__c];
+        List<GGW_Selected_Item__c> appItems = querySelectedItemsByGrant(tempId);
+
         // Save state
         GGW_Util.saveGrantState(tempId);
         //List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         if(appItems != null && appItems.size()>0){
-            app.recordid = recordId;
+            app.recordid = tempId;
             app.name = appItems[0].Application_Name__c;
             app.status = appItems[0].Grant_Application__r.Status__c;
             app.unselectSectionList = getLeftoverSections(appItems);
@@ -170,18 +167,24 @@ public without sharing class GGW_ApplicationCtrl {
     @AuraEnabled
     public static void reorderSections(List<String> sectionList, String appId){
         List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
+        // Clean up items for reorder, delete items that are NOT on this list
+        cleanSelectedSections(sectionList, appId);
         Integer cnt = 1;
         for (String s : sectionList){
             Id sectionId = s; 
             String objName = sectionId.getsobjecttype()+'';
             GGW_Selected_Item__c ggws = new GGW_Selected_Item__c();
+            System.debug('### Obj: '+objName+' ID: '+s +' APP ID: '+appId);
             if(objName.equals('GGW_Section__c')){ // Create new selected item junction fro section
                 ggws.GGW_Section__c = sectionId;
                 ggws.Grant_Application__c = appId;
                 ggws.Sort_Order__c = cnt;
+                System.debug('## Add new section: '+s);
             }else{ // Update selected existing item junction
                 ggws.Id = s;
+                ggws.Grant_Application__c = appId;
                 ggws.Sort_Order__c = cnt;
+                System.debug('## Update existing section: '+s);
             }
             updateOrderList.add(ggws);
             cnt++;
@@ -190,6 +193,42 @@ public without sharing class GGW_ApplicationCtrl {
             upsert updateOrderList; // Some records here exist some may be new added sections
         }
     }
+    // Delete Grant selected section items that are not on the list to reorder function
+    private static void cleanSelectedSections(List<String> sectionList, String appId){
+        List<GGW_Selected_Item__c> appItems = querySelectedItemsByGrant(appId);
+        Set<String> sectionSet = new Set<String>(sectionList);
+        List<GGW_Selected_Item__c> removeItems = new List<GGW_Selected_Item__c>();
+        for(GGW_Selected_Item__c item : appItems){
+            if(!sectionSet.contains(String.valueOf(item.Id))){
+                removeItems.add(item);
+            }
+        }
+        if(removeItems.size()>0){
+            delete removeItems;
+        }
+    }
+    // Convert Selecetd Item to Map - NOT USED AT THIS TIME COMMENT
+    /** 
+    private Map<String,GGW_Selected_Item__c> getSelectedItemsMap(String appId){
+        List<GGW_Selected_Item__c> appItems = querySelectedItemsByGrant(appId);
+        Map<String,GGW_Selected_Item__c> mapGrantSelected = new Map<String,GGW_Selected_Item__c>();
+        for(GGW_Selected_Item__c item : appItems){
+            mapGrantSelected.put(item.Id,item);
+        }
+        return mapGrantSelected;
+    }
+    */
+
+    // Utility selector method
+    private static List<GGW_Selected_Item__c> querySelectedItemsByGrant(String appId){
+        List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
+                                Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
+                                Selected_Block__r.Description__c, Text_Block__c  
+                                FROM GGW_Selected_Item__c 
+                                WHERE Grant_Application__c =: appId ORDER BY Sort_Order__c];
+        return appItems;
+    }
+
     /**
      * Method to create a new ContentBlock add to section as part a library to later reuse
      * on other Grant applications.

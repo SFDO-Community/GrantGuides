@@ -1,5 +1,6 @@
 import { LightningElement , api } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
 import reorderSections from '@salesforce/apex/GGW_ApplicationCtrl.reorderSections';
 const columns = [
@@ -22,9 +23,9 @@ export default class GgwOrderSections extends LightningElement {
 	closeQuickAction() {
 		this.dispatchEvent(new CloseActionScreenEvent());
          // Fire event to UI
-         var neworder = {items: this.selected};
+         var cancelreorder = {action: 'close'};
          const sectionOrderEvent = new CustomEvent("sectionorderchange", {
-             detail: neworder,
+             detail: cancelreorder,
              bubbles: true
          });
  
@@ -112,7 +113,15 @@ export default class GgwOrderSections extends LightningElement {
             .catch((error) => {
                 console.log(error);
                 this.error = error;
-                this.sections = undefined;    
+                this.sections = undefined;  
+                
+                const evt = new ShowToastEvent({
+                    title: 'Reorder Error',
+                    message: this.error,
+                    variant: 'error',
+                });
+                this.dispatchEvent(evt);    
+        
             });
         // Fire event to UI
         var neworder = {items: this.selected};
