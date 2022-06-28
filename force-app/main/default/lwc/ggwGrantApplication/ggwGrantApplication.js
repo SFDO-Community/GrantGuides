@@ -93,6 +93,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                 .then((data) => {
                     console.log('queryGrantApplication: Grant Name: '+data.name);
                     this.sections = []; // Clear to reload
+                    this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
                     this.grantName = data.name;
                     this.displayTitle = 'Grant Application: ' + data.name;
                     this.status = data.status;
@@ -137,6 +138,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     }
     // Open section Modal to reorder
     reorderSections(){
+        console.log('REORDER MODAL for App: '+this.recordId);
         this.openModal = true;
     }
 
@@ -178,15 +180,15 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         // Close modal
         //this.openModal = false;
         this.closeModal();
-        // Display toaster message
-        
-        const evt = new ShowToastEvent({
-            title: this._title,
-            message: 'Updated grant sections order or add new section',
-            variant: this.variant,
-        });
-        this.dispatchEvent(evt);    
-
+        if(event.detail.items){
+            // Display toaster message if data was updated
+            const evt = new ShowToastEvent({
+                title: this._title,
+                message: 'Updated grant sections order or add new section',
+                variant: this.variant,
+            });
+            this.dispatchEvent(evt);    
+        }
         // Reload data
         this.queryGrantApplication();
     }
