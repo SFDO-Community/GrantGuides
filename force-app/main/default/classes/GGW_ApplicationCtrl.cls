@@ -139,7 +139,15 @@ public without sharing class GGW_ApplicationCtrl {
      */
     @AuraEnabled
     public static GGW_SectionWrapper createNewSection(String name){
-        GGW_Section__c maxOrder = [SELECT Sort_Order__c FROM GGW_Section__c WHERE Suggested__c = true  ORDER BY Sort_Order__c desc LIMIT 1];
+        List<GGW_Section__c> maxOrderList = [SELECT Sort_Order__c FROM GGW_Section__c WHERE Suggested__c = true  ORDER BY Sort_Order__c desc];
+        GGW_Section__c maxOrder = null;
+        /// Hnadle situation when Sort order is null - TODO MAY be goosd to require it
+        for(GGW_Section__c section : maxOrderList ){
+            if(section.Sort_Order__c != null && section.Sort_Order__c > 0){
+                maxOrder = section; // assigned MAX order object first found END LOOP here
+                break; // EXIST Loop
+            }
+        }
         GGW_Section__c s = new GGW_Section__c();
         s.Name = name;
         s.Recommended__c = true;
