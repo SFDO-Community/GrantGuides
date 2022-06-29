@@ -24,7 +24,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     toggleIconName = 'utility:preview';
     toggleButtonLabel = 'Add Content';
     @track grantPageURL = '';
-    sections = [];
+    @track sections = [];
+    currentSections = [];
     container = 'modal';
     showModalFooter = true;
 
@@ -93,6 +94,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                 .then((data) => {
                     console.log('queryGrantApplication: Grant Name: '+data.name);
                     this.sections = []; // Clear to reload
+                    this.currentSections = [];
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
                     this.grantName = data.name;
                     this.displayTitle = 'Grant Application: ' + data.name;
@@ -104,6 +106,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                             var item = data.selectedContentBlock[i];
                             var tmpText = item.displaytext ? item.displaytext : 'Text placeholder'; // Set text value condition for null
                             this.sections = [...this.sections ,{label: item.sectionname, 
+                                                                displaytitle: '['+item.sortorder+'] ' + item.sectionname,
                                                                 value: item.sectionid, // sfid for Section record
                                                                 appid: data.recordid, // Id for Grant Application record 
                                                                 hasblocks: true, 
@@ -114,7 +117,9 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                                                                 textblock: tmpText} ];  
                             
                                                                 console.log('Text: '+item.displaytext);
-                        }                
+                        }     
+                        // Save temp section value
+                        this.currentSections = this.sections;           
                     }      
                     this.error = undefined;
                     //updateRecord({ fields: { Id: this.recordId } });
@@ -129,12 +134,14 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     // when the component is first initialized assign an initial value to sections and other Grant App variables    
     connectedCallback() {
         this.queryGrantApplication();
+        //this.sections = this.currentSections;
     }
     handleDeleteSection(){
         // Section - selected item data has been deleted by Section component action
         // here we only refresh UI/UX
         // Remove section from a UI list, call APEX
         this.queryGrantApplication();
+        this.sections = this.currentSections;
     }
     // Open section Modal to reorder
     reorderSections(){
@@ -191,6 +198,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         }
         // Reload data
         this.queryGrantApplication();
+        this.sections = this.currentSections;
     }
 
     /* This standard call is replaced by Apex method getApplication with related blocks sections.
