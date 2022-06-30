@@ -9,6 +9,10 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import ID_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Id';
 //import GRANTNAME_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Name';
 
+const GRANT_TITLE = 'Grant Application';
+const GRANT_TITLE_HEADER = 'Grant Application: ';
+const GRANT_TITLE_ERROR = 'Grant Application do not exist, please create new or select existing grant.';
+
 export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
 	@api recordId;
 	@api objectApiName;
@@ -16,7 +20,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     displayTitle;
     status;
     sectioncount;
-    _title = 'Grant Application';
+    _title = GRANT_TITLE;
     message = 'Test';
     variant = 'success';
     @track openModal = false; // OPen Reorder modal
@@ -97,7 +101,11 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     this.currentSections = [];
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
                     this.grantName = data.name;
-                    this.displayTitle = 'Grant Application: ' + data.name;
+                    if(data.name){
+                        this.displayTitle = GRANT_TITLE_HEADER + data.name;
+                    }else{
+                        this.displayTitle = GRANT_TITLE_ERROR;
+                    }
                     this.status = data.status;
                     
                     if (data.selectedContentBlock){
@@ -127,7 +135,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                 .catch((error) => {
                     console.log(error);
                     this.error = error;
-                    this.sections = undefined;    
+                    this.sections = undefined;   
+                    this.displayTitle = GRANT_TITLE_ERROR; 
                 });
         }, 5);
     }    

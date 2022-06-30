@@ -229,8 +229,15 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                         this.dispatchEvent(navigateNextEvent);
                     }
                     */
-                    this.message = 'New Grant Application was created with ID: ';
+                    this.message = 'New Grant Application was created with ID: '+result.Id;
                     this.variant = 'success';
+                    // Display toaster message
+                    const evt = new ShowToastEvent({
+                        title: this._title,
+                        message: this.message,
+                        variant: this.variant,
+                    });
+                    this.dispatchEvent(evt);
 
                     // Navigate to New Grant record page
                     this[NavigationMixin.Navigate]({
@@ -256,18 +263,25 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                     //this.contacts = undefined;
                     this.message = this.error;
                     this.variant = 'error';
+                    // Display toaster message
+                    const evt = new ShowToastEvent({
+                        title: this._title,
+                        message: this.message,
+                        variant: this.variant,
+                    });
+                    this.dispatchEvent(evt);
                 });
         }else{
             this.message = 'Please provide a name to create a Grant application.';
             this.variant = 'warning';
-        }
-        // Display toaster message
-        const evt = new ShowToastEvent({
+            // Display toaster message
+            const evt = new ShowToastEvent({
                 title: this._title,
                 message: this.message,
                 variant: this.variant,
-        });
-        this.dispatchEvent(evt);
+            });
+            this.dispatchEvent(evt);
+        }
     
     }
 }
