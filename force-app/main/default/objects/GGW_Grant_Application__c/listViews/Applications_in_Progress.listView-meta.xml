@@ -5,7 +5,6 @@
     <columns>Description__c</columns>
     <columns>Status__c</columns>
     <columns>CREATED_DATE</columns>
-    <columns>Opportunity__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>Status__c</field>
