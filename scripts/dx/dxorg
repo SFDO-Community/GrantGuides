@@ -34,7 +34,7 @@ sfdx force:user:permset:assign --permsetname GGW_User_Permissions --onbehalfof $
 
 # Push sample data
 sfdx force:data:tree:import -u $ORG_ALIAS --plan test-data/export-section-GGW_Section__c-plan.json
-sfdx force:data:tree:import -u ggw1 --plan test-data/export-section-GGW_Section__c-plan.json
+#sfdx force:data:tree:import -u ggw --plan test-data/export-section-GGW_Section__c-plan.json
 # Run Tests - optional step
 
 # Open new org
