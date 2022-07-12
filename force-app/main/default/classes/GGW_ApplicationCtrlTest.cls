@@ -137,7 +137,7 @@ public class GGW_ApplicationCtrlTest {
         Test.stopTest();
         // Check if new block was created with default name
         GGW_Content_Block__c block = [SELECT Id, Name, Section__c, Description__c FROM GGW_Content_Block__c WHERE Id =:str ];
-        System.assertEquals('[CHANGE] New Text Block', block.Name);
+        System.assertEquals('Test block', block.Name);
         System.assertEquals(str, block.Id);
         System.assertEquals(sectionList[0].Id, block.Section__c);
     }

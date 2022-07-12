@@ -20,15 +20,15 @@ export default class GgwSection extends LightningElement {
     @api selectedItemId;
     @api sectioncount;
     @api sortorder;
-    @track openModal = false;
+    @api displayTitle; // Assmeble dynamic title '['+this.sortorder+'] '+this.sectionTitle;
 
+    @track openModal = false;
     @track confirmation;
 
     blockId;
     saveSelectedText;
     selectedItemOrderValue;
     sectionorder = ['1','2','3','4'];
-    displayTitle; // Assmeble dynamic title
     _title = 'Section';
     enableEdit = false;
     showModal() {

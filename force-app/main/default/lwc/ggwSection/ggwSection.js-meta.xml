@@ -26,6 +26,7 @@
 			<property name="sectionId" label="Section Id" type="String"/>
 			<property name="sectionHasBlocks" label="Has blocks" type="Boolean"/>
 			<property name="applicationId" label="Application Id" type="String"/>
+            <property name="displayTitle" label="Display Title" type="String"/>
         </targetConfig>	
 	</targetConfigs>
 </LightningComponentBundle>
