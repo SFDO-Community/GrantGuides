@@ -2,12 +2,12 @@ import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
-//import {refreshApex} from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import { updateRecord } from 'lightning/uiRecordApi';
 //import { getRecord } from 'lightning/uiRecordApi';
 //import ID_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Id';
 //import GRANTNAME_FIELD from '@salesforce/schema/GGW_Grant_Application__c.Name';
+//import {refreshApex} from '@salesforce/apex';
 
 const GRANT_TITLE = 'Grant Application';
 const GRANT_TITLE_HEADER = 'Grant Application: ';
@@ -31,7 +31,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     @track sections = [];
     currentSections = [];
     container = 'modal';
-    showModalFooter = true;
+    showModalFooter = false;
+    showCard = true; // Display Editor card if data grant exists ELSE show illustration
 
     @track currentPageReference;
     @wire(CurrentPageReference)
@@ -44,21 +45,25 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             if(this.container == 'page'){
                 this.showModalFooter = false;
             }
+            this.displayGrantCard();
             this.queryGrantApplication();
         }
     
     reloadSections(){
         this.queryGrantApplication();
     }
-	
+	displayGrantCard(){
+        if(this.recordId != null){
+            this.showCard = true; // SHo current Grant
+        }else{
+            this.showCard = false; // Display Illustration NO Grant Data yet
+        }
+    }
     closeModal() {
 		this.dispatchEvent(new CloseActionScreenEvent());
         this.openModal = false;
 	}
     exportGrantVFPdf(){
-        //https://velocity-java-707-dev-ed.lightning.force.com/
-        // https://velocity-java-707-dev-ed--c.visualforce.com/apex/GGW_GrantPreview
-        //https://velocity-java-707-dev-ed--c.visualforce.com/apex/GGW_GrantPreviewCustom?c__recordId=a001D0000058zp2QAA
         //this.grantPageURL = '/apex/GGW_GrantPreview?c__recordId='+this.recordId;
         //this.openVFPExportModal = true;
 
@@ -101,6 +106,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     this.currentSections = [];
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
                     this.grantName = data.name;
+                    this.displayGrantCard(); // nadle UX display fo main card or illustration NO Data
                     if(data.name){
                         this.displayTitle = GRANT_TITLE_HEADER + data.name;
                     }else{
@@ -229,23 +235,6 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         }
         */
 
-    // --- DRAG ACTION NOT USED FOR NOW
-    /*
-    drag(event){
-        event.dataTransfer.setData("divId", event.target.id);
-    }
-    allowDrop(event){
-        event.preventDefault();
-    }
-    drop(event){
-        event.preventDefault();
-        var divId = event.dataTransfer.getData("divId");
-        console.log('DROP Section ID: '+divId);
-        var draggedElement = this.template.querySelector('#' +divId);
-        draggedElement.classList.add('completed'); 
-        event.target.appendChild(draggedElement);
-    }
-    */
 
 /* -- Need to to update data and cache=true does not fit here swicth using connected Callback with a GACKy Hack
     @wire(getApplication, {recordId: '$recordId'})
