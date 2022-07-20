@@ -158,6 +158,7 @@ public class GGW_ApplicationCtrlTest {
         System.assertEquals(true, newSec.Recommended__c);
         System.assertEquals(true, newSec.Suggested__c);
     }
+
     @isTest
     static void testGetApplication(){
         // Query all suggested sections
@@ -191,15 +192,19 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant Sections', sections);
-        List<GGW_Selected_Item__c> selItemList = [SELECT Id, Name, GGW_Section__c,Grant_Application__c, Sort_Order__c 
-                                                FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
+        List<GGW_Selected_Item__c> selItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        //List<GGW_Selected_Item__c> selItemList = [SELECT Id, Name, GGW_Section__c,Grant_Application__c, Sort_Order__c 
+        //                                        FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
         String itemid = selItemList[0].Id; 
         String sectionId = selItemList[0].GGW_Section__c;
         Test.startTest();
         List<GGW_ApplicationCtrl.GGW_ContentBlockWrapper> bwList = GGW_ApplicationCtrl.getContentBlocks(sectionId);
+        String blocktext = bwList[0].displaytext; // Save rich text from Block Wrappert to assert later
         GGW_ApplicationCtrl.saveSelectedSectionText(itemid, bwList[0].recordid);
         Test.stopTest();
-        // TODO coplete assertion checks and set up
+        // assertion checks that item saved the Block text
+        List<GGW_Selected_Item__c> savedItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        System.assertEquals(blocktext, savedItemList[0].Text_Block__c); 
     }
     @isTest
     static void testReorderSections(){
@@ -212,12 +217,24 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App Order', sections);
-        // List of selecte Iteam IDs - GGW_Selected_Item__c
+        List<GGW_Selected_Item__c> selItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        // List of selected Iteam IDs - GGW_Selected_Item__c
         List<String> itemList =  new List<String>();
+        // FLip order first/last
+        String first = selItemList[0].Id;
+        String last = selItemList[selItemList.size()-1].Id;
+        for (GGW_Selected_Item__c item:selItemList){
+            itemList.add(item.Id);
+        }
+        itemList[0] = last;
+        itemList[selItemList.size()-1] = first;
         Test.startTest();
         GGW_ApplicationCtrl.reorderSections(itemList, app.Id);
         Test.stopTest();
-        // TODO coplete assertion checks and set up
+        // Check fliped order
+        List<GGW_Selected_Item__c> selOrderedList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        System.assertEquals(last, selOrderedList[0].Id);                                             
+        System.assertEquals(first, selOrderedList[selOrderedList.size()-1].Id);
     }
     @isTest
     static void testUpdateSelectedItemText(){
@@ -230,13 +247,46 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant', sections);
-        List<GGW_Selected_Item__c> selItemList = [SELECT Id, Name,GGW_Section__c,Grant_Application__c, Sort_Order__c 
+        List<GGW_Selected_Item__c> selItemList = [SELECT Id, Name, Text_Block__c, GGW_Section__c,Grant_Application__c, Sort_Order__c 
                                                 FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
         String itemid = selItemList[0].Id; 
         String richtext = 'Update this text for section block.';
+        Integer count = selItemList.size();
         Test.startTest();
         GGW_ApplicationCtrl.updateSelectedItemText(itemid, richtext);
         Test.stopTest();
-        // TODO coplete assertion checks and set up
+
+        System.assertEquals(count, selItemList.size());
+        // Check text was updated, query again to get updated record
+        GGW_Selected_Item__c selItem = [SELECT Id, Name, Text_Block__c, GGW_Section__c, Grant_Application__c, Sort_Order__c 
+                                                FROM GGW_Selected_Item__c WHERE Id =:itemid];
+        System.assertEquals(richtext, selItem.Text_Block__c);
     }
+
+    @isTest
+    static void testDeleteSectionItem(){
+        // Query all suggested sections
+        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant Delete section', sections);
+        List<GGW_Selected_Item__c> selItemList = [SELECT Id, Name,GGW_Section__c,Grant_Application__c, Sort_Order__c 
+                                                FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
+        String itemid = selItemList[0].Id; 
+        Integer sectionCount = selItemList.size();
+        Test.startTest();
+        GGW_ApplicationCtrl.deleteSection(itemId);
+        Test.stopTest();
+
+        List<GGW_Selected_Item__c> newItemList = [SELECT Id, Name,GGW_Section__c,Grant_Application__c, Sort_Order__c 
+                                                FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
+
+        // Check that item was deleted
+        System.assertEquals(sectionCount-1, newItemList.size());
+    }
+
 }
