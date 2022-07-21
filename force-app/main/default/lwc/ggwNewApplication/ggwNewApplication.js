@@ -246,7 +246,8 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                                 apiName: 'GGW_Grant_Editor'
                             },
                             state: {
-                                c__recordId: result.Id
+                                c__recordId: result.Id,
+                                c__uictx: 'page'
                             }
                         });
                     /** This navi to standard Grant record page    
