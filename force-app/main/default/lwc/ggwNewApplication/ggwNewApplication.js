@@ -40,7 +40,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
             { label: 'Progress', value: 'Progress' },
             { label: 'Submited', value: 'Submited' },
             { label: 'Complete', value: 'Complete' },
-            { label: 'Rejected', value: 'Rejected' },
+            { label: 'Declined', value: 'Declined' },
         ];
     }
     */

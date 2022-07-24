@@ -9,7 +9,7 @@
     <filters>
         <field>Status__c</field>
         <operation>equals</operation>
-        <value>Rejected</value>
+        <value>Declined</value>
     </filters>
-    <label>Applications Rejected</label>
+    <label>Applications Declined</label>
 </ListView>

@@ -31,9 +31,9 @@
                 <label>Complete</label>
             </value>
             <value>
-                <fullName>Rejected</fullName>
+                <fullName>Declined</fullName>
                 <default>false</default>
-                <label>Rejected</label>
+                <label>Declined</label>
             </value>
         </valueSetDefinition>
     </valueSet>
