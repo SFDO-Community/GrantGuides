@@ -228,7 +228,7 @@ public without sharing class GGW_ApplicationCtrl {
     */
 
     // Utility selector method
-    private static List<GGW_Selected_Item__c> querySelectedItemsByGrant(String appId){
+    public static List<GGW_Selected_Item__c> querySelectedItemsByGrant(String appId){
         List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
                                 Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
                                 Selected_Block__r.Description__c, Text_Block__c  
@@ -320,6 +320,8 @@ public without sharing class GGW_ApplicationCtrl {
 
         return s1;
     }
+    /** DEPERCATED
+     * Not used method, leaving commende code for reference
     private static Map<String, List<GGW_Content_Block__c>> getSectionBlocks(){
         Map<String, List<GGW_Content_Block__c>> blockMap = new Map<String, List<GGW_Content_Block__c>>();
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
@@ -330,7 +332,7 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return blockMap;
     }
-
+    */
     @AuraEnabled(cacheable=true)
     public static List<GGW_ContentBlockWrapper> getContentBlocks(String sectionId){
         List<GGW_ContentBlockWrapper> cbwResultList = new List<GGW_ContentBlockWrapper>();

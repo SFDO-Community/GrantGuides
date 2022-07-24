@@ -58,7 +58,7 @@ public class GGW_ExportCtrlTest {
 
     @isTest
     static void testExportCtrl(){
-        // Unit test for conroller extention
+        // Unit test for conroller extention when used as part of record page context
         // Query all suggested sections
         List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
@@ -80,5 +80,33 @@ public class GGW_ExportCtrlTest {
         System.assertEquals(app.Name, grantExportController.appName);
         // 3 section expected to be added to grand
         System.assertEquals(3, grantExportController.items.size());
+    }
+
+    @isTest
+    static void testExportWithPage(){
+        // Unit test for conroller extention when NOT Record page but pass parameter recordId
+        // Query all suggested sections
+        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+        // Create new Gran application and set up selected Items
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant', sections);
+        // Need to save state record
+        GGW_Grant_State__c st = new GGW_Grant_State__c();
+        st.Grant_Application__c = app.Id;
+        insert st;
+
+        // Create dummy Grant object as empty
+        GGW_Grant_Application__c app_empty = new GGW_Grant_Application__c();
+        Test.startTest();
+        ApexPages.StandardController stdGrant = new ApexPages.StandardController(app_empty);
+	    GGW_ExportCtrl grantExportController  = new GGW_ExportCtrl(stdGrant);
+        Test.stopTest();
+
+
     }
 }
