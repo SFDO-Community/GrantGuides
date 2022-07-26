@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
 import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
@@ -194,11 +200,11 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     // Order section change
     handleSectionOrderChange(event){
         
-       // TODO There strange porblem refresh of section list is late even data is reloaded
-       // MOdal Action box still not refresh, for now solve close box repoen will show new order.
+       // TODO There strange problem refresh of section list is late even data is reloaded
+       // Modal Action box still not refresh, for now solve close box repoen will show new order.
        console.log('handleSectionOrderChange: ORDER Change event:'+this.recordId);
         // Arange new order sections on UI on client side
-        //refreshApex(this.handleLoad());
+        // refreshApex(this.handleLoad());
         // Close modal
         //this.openModal = false;
         this.closeModal();

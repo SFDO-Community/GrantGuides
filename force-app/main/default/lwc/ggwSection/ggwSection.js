@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
 import { LightningElement, api , track } from "lwc";
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -8,8 +14,6 @@ import saveSelectedSectionText from '@salesforce/apex/GGW_ApplicationCtrl.saveSe
 import updateSelectedItemText from '@salesforce/apex/GGW_ApplicationCtrl.updateSelectedItemText';
 import addTextBlockToLibrary  from '@salesforce/apex/GGW_ApplicationCtrl.addTextBlockToLibrary';
 import deleteSection from '@salesforce/apex/GGW_ApplicationCtrl.deleteSection';
-//import { getConfirmation, handleConfirmationButtonClick } from 'c/ggwModalUtil';
-
 
 export default class GgwSection extends LightningElement {
     @api sectionTitle = 'Default Section';
@@ -84,22 +88,6 @@ export default class GgwSection extends LightningElement {
     async handleDeleteSection(){
         // Before delete add confirmation modal ensure user action not a mistake
         // Define the properties of our confirmation modal
-        /*
-        let modalDetails = {
-            text: 'Are you sure you want to delete section "'+ this.sectionTitle +'" from this grant?',  // Modal body text
-            confirmButtonLabel: 'Delete',   // Label for the Confirm button
-            confirmButtonVariant: 'destructive',    // Variant for the Confirm button
-            cancelButtonLabel: 'Cancel',   // Label for the Cancel button
-            header: 'Confirm Delete'    // Modal header text
-        };
-
-        this.confirmation = getConfirmation(
-            // this.confirmationModal,
-            modalDetails,
-            () => this.deleteSectionCall(),
-            () => console.log('cancel delete section!')
-        );
-        */
             const result = await LightningConfirm.open({
                 message: 'Are you sure you want to delete section "'+ this.sectionTitle +'" from this grant?',  // Modal body text
                 //variant: 'headerless',
@@ -266,24 +254,6 @@ export default class GgwSection extends LightningElement {
      */
     addBlockToLibrary(){
         // Before delete add confirmation modal ensure user action not a mistake
-/*
-        // Define the properties of our confirmation modal
-        let modalDetails = {
-            text: 'Are you sure you want to add this text block to section "'+ this.sectionTitle +'"?',  // Modal body text
-            confirmButtonLabel: 'Save',   // Label for the Confirm button
-            confirmButtonVariant: 'brand',    // Variant for the Confirm button from Lighting design componnets: brand, descructive, neutral
-            cancelButtonLabel: 'Cancel',   // Label for the Cancel button
-            header: 'Confirm Add to Library'    // Modal header text
-        };
-
-        this.confirmation = getConfirmation(
-            // this.confirmationModal,
-            modalDetails,
-            () => this.saveNewTextBlock(),
-            () => console.log('cancel add block to library!')
-        );
-*/
-
         LightningPrompt.open({
             message: 'Are you sure you want to add this text block to section "'+ this.sectionTitle +'"? If yes please enter block name.',  // Modal body text
             //theme defaults to "default"
@@ -300,7 +270,6 @@ export default class GgwSection extends LightningElement {
             }else{
                 console.log('cancel save block!')
             }    
-
         });
 
     }

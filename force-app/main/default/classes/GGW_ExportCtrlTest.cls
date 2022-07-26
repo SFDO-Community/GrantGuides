@@ -1,10 +1,12 @@
-/**
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * 
  * GGW_ExportCtrlTest unt test for APEX controller extension 
  * class support GGW_Grant_Application__c record page.
  * Used to render preview of Grant application as PDF
- * 
- * @author Igor Androsov
- * @version 1.0
  */
 @IsTest
 public class GGW_ExportCtrlTest {

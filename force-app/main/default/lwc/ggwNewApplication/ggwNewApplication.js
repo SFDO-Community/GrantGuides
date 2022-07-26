@@ -1,7 +1,13 @@
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
 import { LightningElement , api, wire } from "lwc";
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-//import { FlowNavigationNextEvent } from 'lightning/flowSupport';
+//import { FlowNavigationNextEvent } from 'lightning/flowSupport'; // This can be usefull if using inside Flow navigation conrol
 import getSections from '@salesforce/apex/GGW_ApplicationCtrl.getSections'; 
 import findSections from '@salesforce/apex/GGW_ApplicationCtrl.findSections';
 import newGrant from '@salesforce/apex/GGW_ApplicationCtrl.newGrant';
