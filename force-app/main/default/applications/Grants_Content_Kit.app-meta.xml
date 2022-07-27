@@ -9,18 +9,18 @@
         <pageOrSobjectType>standard-home</pageOrSobjectType>
     </actionOverrides>
     <brand>
-        <headerColor>#D48D1C</headerColor>
-        <logo>lionggw</logo>
+        <headerColor>#1DCA54</headerColor>
+        <logo>GrantKit_Icon</logo>
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
-    <description>Impact Labs Guide to Grant Writing</description>
+    <description>Grants Content Kit - Impact Labs Guide to Grant Writing</description>
     <formFactors>Small</formFactors>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
-    <label>Impact Labs GGW</label>
+    <label>Grants Content Kit</label>
     <navType>Standard</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
