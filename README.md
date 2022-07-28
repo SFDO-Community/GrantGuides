@@ -1,4 +1,4 @@
-# GrantGuides
+# Grants Content Kit
 
 Community-based organizations are often small and scrappy with limited time and resources. They need funding in order to continue to serve their communities and oftentimes secure that funding through grants. Global philanthropic funding (https://www.mckinsey.com/business-functions/sustainability/our-insights/its-time-for-philanthropy-to-step-up-the-fight-against-climate-change) related to climate change is minimal compared with the scale of the challenge and securing that funding is competitive. Grant writing is a long and tedious process that is often not a staffed position at a CBO. There is also a considerable amount of turnover at these smaller organizations which means institutional knowledge often leaves with that turnover. The staff member writing grants needs assistance crafting their message and telling their story in order to write winning grants and secure funding. 
 
@@ -48,6 +48,9 @@ $ scripts/dx/dxorg <org alias>
 After this script executes the new scratch org will be created from your DevHub and source code pushed to new org. At this point you are ready to test and build. Happy blazing new trails.
 
 Now you have new org and thsi app deployed, what’s next? Here are some documentation resources to get you started if you are new to SFDX.
+
+### Post Installation requirements
+Grants Content Kit app is using Topics to tag content, the target org needs to enebale topics feature after installing this package. Enable topics for the orgspecific for object Content Block: API Name `GGW_Content_Block__c` [How To Enable Topics for objects](https://help.salesforce.com/s/articleView?id=sf.knowledge_topics.htm&type=5)
 
 ## How Do You Plan to Deploy Your Changes?
 

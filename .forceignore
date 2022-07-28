@@ -15,6 +15,7 @@ package.xml
 #AppSwitcher.appMenu
 
 *profiles*
+*profilePasswordPolicies*
 
 #AuraDefinitionBundle:ggwPreviewApp*
 ##
