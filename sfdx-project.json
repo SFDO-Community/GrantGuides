@@ -5,7 +5,7 @@
       "default": true
     }
   ],
-  "name": "ggw",
+  "name": "Grants Content Kit",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "54.0"
