@@ -1,9 +1,10 @@
-/**
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * 
  * GGW_UtilTest unit test for utility class support GGW.
- * 
- * 
- * @author Igor Androsov
- * @version 1.0
  */
 @IsTest
 public class GGW_UtilTest {

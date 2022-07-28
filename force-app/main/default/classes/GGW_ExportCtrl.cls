@@ -1,9 +1,11 @@
-/**
- * GGW_ExportCtrl controller class for VFP Export and render.
- * Standard controller extension used for Standard record page action
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  * 
- * @author Igor Androsov
- * @version 1.0
+ * GGW_ExportCtrl controller class for VFP Export and render.
+ * Standard controller extension used for Standard record page action 
  */
 public without sharing class GGW_ExportCtrl {
     public String recordId {get; set;}

@@ -1,10 +1,12 @@
 
-/**
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * 
  * GGW_Util class for support utility methods on Grant application.
  * Used by standard and Custom controller
- * 
- * @author Igor Androsov
- * @version 1.0
  */
 public class GGW_Util {
     // Pass Grant application ID record
