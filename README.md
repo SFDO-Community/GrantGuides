@@ -1,14 +1,10 @@
 # Grants Content Kit
 
-Community-based organizations are often small and scrappy with limited time and resources. They need funding in order to continue to serve their communities and oftentimes secure that funding through grants. Global philanthropic funding (https://www.mckinsey.com/business-functions/sustainability/our-insights/its-time-for-philanthropy-to-step-up-the-fight-against-climate-change) related to climate change is minimal compared with the scale of the challenge and securing that funding is competitive. Grant writing is a long and tedious process that is often not a staffed position at a CBO. There is also a considerable amount of turnover at these smaller organizations which means institutional knowledge often leaves with that turnover. The staff member writing grants needs assistance crafting their message and telling their story in order to write winning grants and secure funding. 
+Community-based organizations are often small and scrappy with limited time and resources. They need funding in order to continue to serve their communities and oftentimes secure that funding through grants. [Global philanthropic funding] (https://www.mckinsey.com/business-functions/sustainability/our-insights/its-time-for-philanthropy-to-step-up-the-fight-against-climate-change) related to climate change is minimal compared with the scale of the challenge and securing that funding is competitive. Grant writing is a long and tedious process that is often not a staffed position at a CBO. There is also a considerable amount of turnover at these smaller organizations which means institutional knowledge often leaves with that turnover. The staff member writing grants needs assistance crafting their message and telling their story in order to write winning grants and secure funding. 
 
 ## Solution Overview 
 
-### Epic
-In order to write winning grants, as a grant writer, I need assistance assembling the necessary content and telling my best story. 
-
-### Use Case
-In order to repurpose content from my previously submitted grant applications, as a grant writer, I need a way to store and quickly access my past grant proposal content.
+The Grants Content Kit helps organizations write award-winning grants faster and more easily. Co-designed and developed by our Community of volunteers who participated in the [Climate Justice Impact Lab](https://www.salesforce.org/blog/impact-labs-three-climate-justice/?_ga=2.248248132.297731808.1659462956-2124390505.1659462956), the Grants Content Kit was developed for community-based organizations focused on climate justice who struggle to tell their story and write winning grants. The kit stores and organizes grant proposal content in Salesforce, allowing grant writers to streamline applications starting with their best content. 
 
 ## Technical Design
 
@@ -66,3 +62,6 @@ The `sfdx-project.json` file contains useful configuration information for your 
 - [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
 - [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
 - [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+
+## Questions and Community Support
+Join the [Grants Content Kit Trailblazer Group] (https://trailhead.salesforce.com/trailblazer-community/groups/0F94S000000kJbMSAU?tab=discussion&sort=LAST_MODIFIED_DATE_DESC) to post questions about the solution and collaborate with other members of the community to further build out the solution. The Grants Content Kit is a free and open source solution co-designed and developed by our community. 
