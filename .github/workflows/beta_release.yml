@@ -1,0 +1,25 @@
+name: beta release
+
+on:
+  workflow_dispatch:
+    branches:
+      - 'main'
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+
+jobs:
+  unit_tests:
+    name: 'Run Beta release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install sfdx
+        run: |
+          mkdir sfdx
+          wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz | tar xJ -C sfdx --strip-components 1
+          echo $(realpath sfdx/bin) >> $GITHUB_PATH
+      - name: Authenticate Dev Hub
+        run: |
+          echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
+          sfdx force:auth:sfdxurl:store -f sfdx_auth -d
