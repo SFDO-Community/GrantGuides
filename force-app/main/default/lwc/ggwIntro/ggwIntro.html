@@ -101,7 +101,13 @@
             </div>
             </div>
             <footer class="slds-card__footer">
-                <lightning-button variant="brand" label="Start New Grant Application" title="Primary action" onclick={handleStart} class="slds-m-left_x-small"></lightning-button>
+                <template if:true={showStartAppBtn}>
+                    <lightning-button variant="brand" label="Start New Grant Application" title="Primary action" onclick={handleStart} class="slds-m-left_x-small"></lightning-button>
+                </template>
+                <!-- Conditional display data insert for start with empty sectionns -->
+                <template if:true={showDataImportBtn}>
+                    <lightning-button variant="brand" label="Start Sample Data Import" title="Primary action" onclick={handleDataImport} class="slds-m-left_x-small"></lightning-button>
+                </template>
             </footer>
       
 
