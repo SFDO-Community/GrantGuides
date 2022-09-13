@@ -4,37 +4,46 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { LightningElement, wire  } from "lwc";
+import { LightningElement } from "lwc";
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import insertSampleSections from '@salesforce/apex/GGW_SampleData.insertSampleSections';
 import isSectionExists from '@salesforce/apex/GGW_SampleData.isSectionExists';
-import GGW_AGNOSTIC from '@salesforce/resourceUrl/ggw_start_image';
+import GGW_AGNOSTIC_IMG from '@salesforce/resourceUrl/ggw_start_image';
+
+const INTRO_HEADER_TXT = 'Start New Grant';
+const INTRO_TXT = 'Select new grant sections';
+const INTRO_HEADER_IMPORT_TXT = 'No Data';
+const INTRO_IMPORT_TXT = 'Initialize Grant Kit from sample data';    
 
 export default class GgwIntro extends NavigationMixin(LightningElement) {
     title;
-    header; // = 'Grant';
     displaytext;
     error;
     _title = 'Notification';
+    header = INTRO_HEADER_TXT;
+    introtext = INTRO_TXT;
     camaImage;
-    ggwAgnostic = GGW_AGNOSTIC;
+    ggwAgnostic = GGW_AGNOSTIC_IMG;
     showIntro = true;
     showStart = false;
     showDataImportBtn = true;
-    showStartAppBtn = false;
+    showStartAppBtn = true;
+    isloaded = true;
 
     handleStart(){
         this.showIntro = false;
         this.showStart = true; 
     }
     handleDataImport(){
+        this.isloaded = false; // Show Spinner
         insertSampleSections()
             .then((result) => {
                 //this.contacts = result;
                 console.log('SAMPL DATA: '+JSON.stringify(result));
                 this.error = undefined;
-
+                this.header = INTRO_HEADER_TXT;
+                this.introtext = INTRO_TXT;
                 this.showStartAppBtn=true;
                 this.showDataImportBtn=false;
 
@@ -45,7 +54,7 @@ export default class GgwIntro extends NavigationMixin(LightningElement) {
                     variant: 'success',
                 });
                 this.dispatchEvent(evt);
-
+                this.isloaded = true; // Hide Spinner - DONE
             })
             .catch((error) => {
                 this.error = error;            
@@ -56,6 +65,7 @@ export default class GgwIntro extends NavigationMixin(LightningElement) {
                     variant: 'error',
                 });
                 this.dispatchEvent(evt);
+                this.isloaded = true; // Hide Spinner - DONE
             });
     }
     handleNaviTest(){
@@ -70,23 +80,31 @@ export default class GgwIntro extends NavigationMixin(LightningElement) {
         });
     }  
     
-    @wire(isSectionExists)
-    wireIsSectionExists({error,data}){
-        if (data) {
-            this.showDataImportBtn = data;
-            if(this.showDataImportBtn){
-                this.showStartAppBtn = false;
-            }else{
-                this.showStartAppBtn = true;
-            }
-            this.error = undefined;
-        }else if(error){
-            console.log(error);
-            this.error = error;
-        }else{
-            // eslint-disable-next-line no-console
-            console.log('unknown error')
-        }
+    checkDataImport(){
+        isSectionExists()    
+            .then ((data) => {
+                console.log('isSectionExists: '+data);
+                
+                if(data == true){ // If section exists TRUE NO Import
+                    this.header = INTRO_HEADER_TXT;
+                    this.introtext = INTRO_TXT;            
+                    this.showDataImportBtn = false;
+                    this.showStartAppBtn = true;
+                }else{
+                    this.header = INTRO_HEADER_IMPORT_TXT;
+                    this.introtext = INTRO_IMPORT_TXT;    
+                    this.showStartAppBtn = false;
+                    this.showDataImportBtn = true;
+                }
+                this.error = undefined;
+            })
+            .catch((error) => {
+                console.log(error);
+                this.error = error;
+            });
     }
-
+    connectedCallback() {
+        this.checkDataImport();
+    }
+    
 }

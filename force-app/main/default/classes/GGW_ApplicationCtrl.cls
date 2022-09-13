@@ -154,7 +154,12 @@ public without sharing class GGW_ApplicationCtrl {
         s.Name = name;
         s.Recommended__c = true;
         s.Suggested__c = true;
-        s.Sort_Order__c = maxOrder.Sort_Order__c + 1;
+        // Fix for issue #67 WHne pkg installed omn fresh org NO sample section data defult sort to 1
+        if(maxOrder != null){
+            s.Sort_Order__c = maxOrder.Sort_Order__c + 1;
+        }else{
+            s.Sort_Order__c = 1; // 1st value section
+        }
         insert s;
         return new GGW_SectionWrapper(s);
     }

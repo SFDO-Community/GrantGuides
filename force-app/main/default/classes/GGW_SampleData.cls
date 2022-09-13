@@ -45,7 +45,7 @@ public with sharing class GGW_SampleData {
         return sectionData;
     }
     // Check if any section records exists
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Boolean isSectionExists(){
         List<GGW_Section__c> lst = [SELECT Id, Name FROM GGW_Section__c LIMIT 10];
         Boolean state = false;

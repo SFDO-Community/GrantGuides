@@ -2,7 +2,11 @@
 
     <template if:true={showIntro}>
         <lightning-card title="New Grant Application Process" icon-name="custom:custom64">
-        
+   
+            <template if:false={isloaded}>
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template>
+
             <div class="slds-illustration slds-illustration_small">
             <svg class="slds-illustration__svg" viewBox="0 0 454 182" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -96,8 +100,8 @@
                 </g>
             </svg>
             <div class="slds-text-longform">
-                <h3 class="slds-text-heading_medium">Start New Grant</h3>
-                <p class="slds-text-body_regular">Select new grant sctions</p>
+                <h3 class="slds-text-heading_medium">{header}</h3>
+                <p class="slds-text-body_regular">{introtext}</p>
             </div>
             </div>
             <footer class="slds-card__footer">
@@ -106,7 +110,7 @@
                 </template>
                 <!-- Conditional display data insert for start with empty sectionns -->
                 <template if:true={showDataImportBtn}>
-                    <lightning-button variant="brand" label="Start Sample Data Import" title="Primary action" onclick={handleDataImport} class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="brand-outline" label="Initialize Sample Data" title="Primary action" onclick={handleDataImport} class="slds-m-left_x-small"></lightning-button>
                 </template>
             </footer>
       
