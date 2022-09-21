@@ -1,4 +1,7 @@
-<!-- sldsValidatorIgnore -->
+<!-- sldsValidatorIgnore 
+                <lightning-button label="Export" onclick={exportGrantVFPdf}></lightning-button>
+
+-->
 <template>
   <template if:true={showCard}>
     <lightning-quick-action-panel header={displayTitle}>
@@ -7,7 +10,14 @@
               <lightning-button-group slot="actions">
                 <lightning-button label="Reorder" onclick={reorderSections}></lightning-button>
                 <lightning-button icon-name="utility:refresh"  alternative-text="Refresh" title="Refresh" onclick={reloadSections}></lightning-button>
-                <lightning-button label="Export" onclick={exportGrantVFPdf}></lightning-button>
+
+                <lightning-button-menu onselect={handleExportMenuSelect} alternative-text="Export menu" 
+                                        variant="border" title="Export"
+                                        label="Export"
+                                        tooltip="Choose format to export" icon-name="utility:down">
+                  <lightning-menu-item value="exportPDF" label="PDF"></lightning-menu-item>
+                  <lightning-menu-item value="exportWORD" label="Word"></lightning-menu-item>
+                </lightning-button-menu>
               </lightning-button-group>
       
               <template for:each={sections} for:item="sec">

@@ -69,6 +69,29 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 		this.dispatchEvent(new CloseActionScreenEvent());
         this.openModal = false;
 	}
+    handleExportMenuSelect(event){
+        const selectedItemValue = event.detail.value;
+        console.log('## handleExportMenuSelect: '+selectedItemValue);
+        if(selectedItemValue == 'exportPDF'){
+            this.exportGrantVFPdf();
+        }
+        if(selectedItemValue == 'exportWORD'){
+           this.exportGrantVFWord(); 
+        }
+    }
+    exportGrantVFWord(){
+        // Tab name - Grant Preview Word
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: {
+                apiName: 'Grant_Preview_Word'
+            },
+            state: {
+                c__recordId: this.recordId  // Need this state object to pass parameters in LEX
+            }                               // LEX will strip all parameters such as recordID so  must add c__recordId
+        });
+
+    }
     exportGrantVFPdf(){
         //this.grantPageURL = '/apex/GGW_GrantPreview?c__recordId='+this.recordId;
         //this.openVFPExportModal = true;

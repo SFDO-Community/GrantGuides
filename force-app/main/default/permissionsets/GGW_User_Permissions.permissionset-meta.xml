@@ -320,6 +320,10 @@
         <apexPage>GGW_GrantPreview</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
+    <pageAccesses>
+        <apexPage>GGW_GrantPreviewWord</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <tabSettings>
         <tab>GGW_Content_Block__c</tab>
         <visibility>Visible</visibility>
@@ -342,6 +346,10 @@
     </tabSettings>
     <tabSettings>
         <tab>Grant_Preview</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Grant_Preview_Word</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <userPermissions>

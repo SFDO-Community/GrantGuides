@@ -1,0 +1,33 @@
+<apex:page standardController="GGW_Grant_Application__c" extensions="GGW_ExportCtrl" showHeader="false" contentType="application/msword#{!appName}.doc" sidebar="false" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+<html>
+    
+    <head>
+        <title>Grant Application: {!appName}</title>
+        <meta charset="UTF-8"></meta>
+        <link href="http://fonts.googleapis.com/css?family=Crimson+Text:400,400italic,700,700italic|Roboto:400,700,700italic,400italic" rel="stylesheet" type="text/css"></link>
+        
+        <style></style>
+        <apex:stylesheet value="{!URLFOR($Resource.GGWStyles, 'resources/css/gww_grant_preview.css')}"/>
+    </head>
+    <body>
+
+        <h1 id='temp:C:CQJeb278781ebae4fa1a2a1ac42b'>
+            <b><span style="color:#181818" textcolor="#181818">{!appName}</span></b>
+        </h1>
+
+        <apex:repeat value="{!items}" var="item" id="theItemRepeat">
+            <h3 id='temp:C:CQJ7784f8c1101544c3b3dc3f648'>
+                <b><span style="color:#181818" textcolor="#181818">
+                    <apex:outputText value="{!item.Section_Name__c}" id="sectionName"/>
+                </span></b>
+            </h3>
+
+            <span style="color:#181818" textcolor="#181818">
+                <apex:outputText value="{!item.Text_Block__c}" escape="false" id="textBlock"/>
+            </span>
+            <br/>
+
+        </apex:repeat>
+    </body>
+</html>
+</apex:page>
