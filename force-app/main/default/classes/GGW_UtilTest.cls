@@ -157,4 +157,22 @@ public class GGW_UtilTest {
         System.assertEquals(sections.size(), lstItems.size()); 
 
     }
+    @isTest
+    static void testQueryGrantApp(){
+        // Query all suggested sections
+        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App', sections);
+
+        Test.startTest();
+        GGW_Grant_Application__c grant = GGW_Util.queryGrantApp(app.Id);
+        Test.stopTest();    
+        System.assertEquals(grant.Name, 'Grant App'); 
+        
+    }
 }

@@ -19,6 +19,12 @@ public class GGW_Util {
                         FROM GGW_Selected_Item__c WHERE Grant_Application__c =: appId ORDER BY Sort_Order__c];
         return items;
     }
+    public static GGW_Grant_Application__c queryGrantApp(String appId){
+        return [SELECT Id, Name, Application_Name__c, Logo_Download_Url__c, 
+                        DistributionPublicUrl__c, Status__c, Description__c 
+                FROM GGW_Grant_Application__c WHERE Id =: appId LIMIT 1];
+    }
+
     // Save Grant state for User
     public static void saveGrantState(String grantId){
         GGW_Grant_State__c st = getGrantState();

@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2022, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * 
+ * GGW_SampleData class to seed sample section data for Grants.
+ * Used by LWC component to read sample data from file stored in static resource with Grants package
+ */
 public with sharing class GGW_SampleData {
 
     public class GGW_Section {

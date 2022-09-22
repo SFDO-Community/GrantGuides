@@ -10,6 +10,7 @@
 public without sharing class GGW_ExportCtrl {
     public String recordId {get; set;}
     public String appName {get;set;}
+    public String logoURL {get; set;}
     public List<GGW_Selected_Item__c> items {get; set;}
     private final GGW_Grant_Application__c app;
 
@@ -30,11 +31,17 @@ public without sharing class GGW_ExportCtrl {
         // set from URL Parm record ID
         //this.recordId = this.app.Id; //'a001D0000058zp2QAA';//ApexPages.currentPage().getParameters().get('id');
         system.debug('### PDF VIew ID:'+this.recordId);
-        this.items = GGW_Util.getSelectedItems(this.recordId);
-        if(items != null && items.size()>0){
-            this.appName = items[0].Application_Name__c;
-        }else{
-            this.appName = 'This view requires a Grant record, missing.';
+        this.appName = 'This view requires a Grant record, missing.';
+        if(this.recordId != null && this.recordId.length() > 0){
+            GGW_Grant_Application__c app = GGW_Util.queryGrantApp(this.recordId.escapeHtml4());
+            if(app != null && app.Logo_Download_Url__c != null){
+                this.logoURL = app.Logo_Download_Url__c;
+            }
+        
+            this.items = GGW_Util.getSelectedItems(this.recordId.escapeHtml4());
+            if(items != null && items.size()>0){
+                this.appName = items[0].Application_Name__c;
+            }
         }
 
     }

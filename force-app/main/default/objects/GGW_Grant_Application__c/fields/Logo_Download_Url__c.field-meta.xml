@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Logo_Download_Url__c</fullName>
+    <description>URL for public image download used for LWC or page display</description>
+    <externalId>false</externalId>
+    <inlineHelpText>URL for public image download used for LWC or page display</inlineHelpText>
+    <label>Logo Download Url</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Url</type>
+</CustomField>

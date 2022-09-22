@@ -1,7 +1,4 @@
-<!-- sldsValidatorIgnore 
-                <lightning-button label="Export" onclick={exportGrantVFPdf}></lightning-button>
-
--->
+<!-- sldsValidatorIgnore -->
 <template>
   <template if:true={showCard}>
     <lightning-quick-action-panel header={displayTitle}>
@@ -15,11 +12,44 @@
                                         variant="border" title="Export"
                                         label="Export"
                                         tooltip="Choose format to export" icon-name="utility:down">
+                  <lightning-menu-item value="exportHTML" label="HTML"></lightning-menu-item>  
                   <lightning-menu-item value="exportPDF" label="PDF"></lightning-menu-item>
                   <lightning-menu-item value="exportWORD" label="Word"></lightning-menu-item>
                 </lightning-button-menu>
               </lightning-button-group>
-      
+
+              <template if:true={showCard}>
+                <div class="slds-box slds-box_xx-small slds-m-left_x-small slds-m-right_x-small slds-m-bottom_xx-small">            
+
+                    <lightning-layout>
+                        <lightning-layout-item padding="around-small">
+                            <div class="header-column">
+                                <lightning-file-upload
+                                          label="Grant Logo"
+                                          name="fileUploader"
+                                          accept={acceptedFormats}
+                                          record-id={recordId}
+                                          onuploadfinished={handleUploadFinished}
+                                >
+                                </lightning-file-upload>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item padding="around-small">
+                            <div class="header-column">
+                              <div class="custom-box">
+                                <template if:true={noLogoDisplay}>
+                                  <lightning-icon icon-name="utility:image" alternative-text="Utility image" title="Image"></lightning-icon>
+                                </template>
+                                <template if:false={noLogoDisplay}>
+                                  <img src={contentDownloadUrl} alt="Logo Image" height="100px" width="100px"/>
+                                </template>
+                              </div>
+                            </div>
+                        </lightning-layout-item>  
+                    </lightning-layout>
+                </div>
+              </template>
+
               <template for:each={sections} for:item="sec">
                   <c-ggw-section
                       section-title={sec.label}

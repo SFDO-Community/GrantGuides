@@ -8,6 +8,7 @@ import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
+import createConetentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createConetentDistribution';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import { updateRecord } from 'lightning/uiRecordApi';
 //import { getRecord } from 'lightning/uiRecordApi';
@@ -23,6 +24,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 	@api recordId;
 	@api objectApiName;
     @api grantName;
+    @api contentDownloadUrl;// = 'https://data-drive-2030-dev-ed.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&versionId=0680R000001qFvW&operationContext=DELIVERY&contentId=05T0R0000069df5&page=0&d=/a/0R0000008lyn/kf5IDPjQuijS940z47u73Rnb2zSvfmkdSXUpc5S2oSU&oid=00D0R000000nmUQ&dpt=null&viewId=';
+    noLogoDisplay = true; // Display empty avatar instead of logo
     displayTitle;
     status;
     sectioncount;
@@ -69,6 +72,35 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 		this.dispatchEvent(new CloseActionScreenEvent());
         this.openModal = false;
 	}
+    get acceptedFormats() {
+        return ['.jpg', '.png'];
+    }
+
+    handleUploadFinished(event) {
+        // Get the list of uploaded files
+        const uploadedFiles = event.detail.files;
+        // Example of data result from upload operation
+        // Need to create a public URL in APEX to get Download URL from file to display.
+        // Todo that need to Create ContentDistribution record from data below, send contentVersionId as parameter
+        // [{"name":"comm-acm.png","documentId":"0690R000001qBDEQA2","contentVersionId":"0680R000001qG2hQAE","contentBodyId":"05T0R0000069drGUAQ","mimeType":"image/png"}]
+        console.log('## FILE: '+JSON.stringify(uploadedFiles));
+        //alert('No. of files uploaded : ' + uploadedFiles.length + ' ID: ' + uploadedFiles[0].documentId);
+
+        createConetentDistribution({grantId: this.recordId, cvid: uploadedFiles[0].contentVersionId})
+            .then((data) => {
+                console.log('URL: '+data);
+                alert('IMAGE URL: ' + data);
+                this.contentDownloadUrl = data;
+                this.noLogoDisplay = false;
+                this.error = undefined;
+            })
+            .catch((error) => {
+                console.log(error);
+                this.error = error;
+                this.noLogoDisplay = true;
+            });
+
+    }    
     handleExportMenuSelect(event){
         const selectedItemValue = event.detail.value;
         console.log('## handleExportMenuSelect: '+selectedItemValue);
@@ -78,6 +110,23 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         if(selectedItemValue == 'exportWORD'){
            this.exportGrantVFWord(); 
         }
+        if(selectedItemValue == 'exportHTML'){
+            this.exportGrantVFHTML(); 
+         }
+ 
+    }
+    exportGrantVFHTML(){
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: {
+                apiName: 'Grant_Preview'
+            },
+            state: {
+                c__recordId: this.recordId,
+                c__format: 'html'              // Need this state object to pass parameters in LEX
+            }                               // LEX will strip all parameters such as recordID so  must add c__recordId
+        });
+       
     }
     exportGrantVFWord(){
         // Tab name - Grant Preview Word
@@ -99,10 +148,11 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: 'Grant_Preview'
+                apiName: 'Grant_Preview_PDF'
             },
             state: {
-                c__recordId: this.recordId  // Need this state object to pass parameters in LEX
+                c__recordId: this.recordId,  // Need this state object to pass parameters in LEX
+                c__format: 'pdf'
             }                               // LEX will strip all parameters such as recordID so  must add c__recordId
         });
 /*
@@ -135,6 +185,13 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     this.currentSections = [];
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
                     this.grantName = data.name;
+                    // Conditianal display of logo if it is available or show empty placeholder image
+                    if (data.logodisplayurl != null){
+                        this.contentDownloadUrl = data.logodisplayurl; // load display URL logo
+                        this.noLogoDisplay = false;
+                    }else{
+                        this.noLogoDisplay = true;
+                    }
                     this.displayGrantCard(); // nadle UX display fo main card or illustration NO Data
                     if(data.name){
                         this.displayTitle = GRANT_TITLE_HEADER + data.name;
