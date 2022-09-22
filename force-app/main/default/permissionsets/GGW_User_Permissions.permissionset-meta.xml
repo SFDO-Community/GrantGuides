@@ -119,6 +119,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>GGW_Grant_Application__c.DistributionPublicUrl__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>GGW_Grant_Application__c.Logo_Download_Url__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>GGW_Grant_Application__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -320,6 +330,14 @@
         <apexPage>GGW_GrantPreview</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
+    <pageAccesses>
+        <apexPage>GGW_GrantPreviewPdf</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>GGW_GrantPreviewWord</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <tabSettings>
         <tab>GGW_Content_Block__c</tab>
         <visibility>Visible</visibility>
@@ -342,6 +360,14 @@
     </tabSettings>
     <tabSettings>
         <tab>Grant_Preview</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Grant_Preview_PDF</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Grant_Preview_Word</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <userPermissions>

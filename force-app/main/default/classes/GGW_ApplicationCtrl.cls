@@ -15,6 +15,7 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String recordid;
         @AuraEnabled public String name;
         @AuraEnabled public String status;
+        @AuraEnabled public String logodisplayurl;
         @AuraEnabled public List<GGW_SectionWrapper> unselectSectionList; // Used to add new sections to Grant
         @AuraEnabled public List<GGW_ContentBlockWrapper> selectedContentBlock; // Include Section and Text block
     }
@@ -92,13 +93,16 @@ public without sharing class GGW_ApplicationCtrl {
         }
 
         List<GGW_Selected_Item__c> appItems = querySelectedItemsByGrant(tempId);
-
+        GGW_Grant_Application__c grant = GGW_Util.queryGrantApp(tempId);
         // Save state
         GGW_Util.saveGrantState(tempId);
         //List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         if(appItems != null && appItems.size()>0){
             app.recordid = tempId;
+            if(grant != null && grant.Logo_Download_Url__c != null){
+                app.logodisplayurl = grant.Logo_Download_Url__c;
+            }
             app.name = appItems[0].Application_Name__c;
             app.status = appItems[0].Grant_Application__r.Status__c;
             app.unselectSectionList = getLeftoverSections(appItems);
@@ -118,6 +122,43 @@ public without sharing class GGW_ApplicationCtrl {
             app.selectedContentBlock = contentList;
         }
         return app;
+    }
+    /**
+     * Creating ContentDistribution record 
+     * parameter: contentVersionId
+     * response return URL image
+     * 
+     * SELECT Id, LinkedEntityId, ContentDocumentId, ShareType, Visibility FROM ContentDocumentLink WHERE LinkedEntityId = 'a010R00000FYjbAQAT'
+
+SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId = '0690R000001qBEgQAM'
+     */
+    @AuraEnabled
+    public static String createConetentDistribution(String grantId, String cvid){
+        ContentVersion file = [SELECT Id, Title 
+                                FROM ContentVersion 
+                                WHERE Id =: cvid];
+        // Creating ContentDistribution record 
+        ContentDistribution cdr = new ContentDistribution(
+                                            Name = file.Title,
+                                            ContentVersionId = file.Id,
+                                            PreferencesAllowViewInBrowser = true );
+        insert cdr;
+        // After Distribution record need to get DistributionPublicUrl, ContentDownloadUrl 
+        // and update Grant record to use these for display
+        ContentDistribution cdURL = [SELECT Id, Name, ContentVersionId, 
+                                            ContentDownloadUrl, DistributionPublicUrl 
+                                            FROM ContentDistribution WHERE Id =: cdr.Id LIMIT 1];
+        System.debug('## ContentDownloadUrl:'+cdURL.ContentDownloadUrl);
+        System.debug('## DistributionPublicUrl: '+cdURL.DistributionPublicUrl);
+        // Update Grant with new logo
+        if(cdURL.ContentDownloadUrl != null){
+            GGW_Grant_Application__c app = new GGW_Grant_Application__c();
+            app.Id = grantId;
+            app.DistributionPublicUrl__c = cdURL.DistributionPublicUrl; // Logo public URL
+            app.Logo_Download_Url__c = cdURL.ContentDownloadUrl; // Logo display URL
+            update app;
+        }
+        return cdURL.ContentDownloadUrl;
     }
     /**
      * Update text block selection, wire block to item and copy block text data for display and edits
@@ -243,7 +284,6 @@ public without sharing class GGW_ApplicationCtrl {
                                 WHERE Grant_Application__c =: appId ORDER BY Sort_Order__c];
         return appItems;
     }
-
     /**
      * Method to create a new ContentBlock add to section as part a library to later reuse
      * on other Grant applications.

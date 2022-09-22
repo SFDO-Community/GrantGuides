@@ -1,4 +1,4 @@
-<apex:page standardController="GGW_Grant_Application__c" extensions="GGW_ExportCtrl" showHeader="false" applyBodyTag="false" renderAs="html">
+<apex:page standardController="GGW_Grant_Application__c" extensions="GGW_ExportCtrl" showHeader="false" applyBodyTag="false" renderAs="pdf">
     
     <head>
         <title>Grant Application: {!appName}</title>
