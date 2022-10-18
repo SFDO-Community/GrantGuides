@@ -10,7 +10,7 @@ The Grants Content Kit helps organizations write award-winning grants faster and
 
 ### UX Storyboard Prototype
 
-![GrantGuides Storyboard UX](https://github.com/Salesforce-org-Impact-Labs/GrantGuides/blob/main/images/GrantGuides_Storyboard_Flow.png)
+![GrantGuides Storyboard UX](https://github.com/Salesforce-org-Impact-Labs/GrantGuides/blob/main/images/GrantGuides_Storyboard_Flow.png?raw=true)
 
 ### Data Model
 
@@ -39,14 +39,19 @@ $ git clone https://github.com/Salesforce-org-Impact-Labs/GrantGuides.git
 
 $ cd GrantGuides
 
-$ scripts/dx/dxorg <org alias>
+$ scripts/dx/dxorg <org alias> <OPTIONAL: days for scratch org. Default 30>
 ```
 After this script executes the new scratch org will be created from your DevHub and source code pushed to new org. At this point you are ready to test and build. Happy blazing new trails.
 
-Now you have new org and thsi app deployed, what’s next? Here are some documentation resources to get you started if you are new to SFDX.
+There are other usefull `sfdx` helper scripts can be found in `scripts/dx` directory:
+
+* `dxtest <org alias>` - Script to run all APEX unit tests on scratch org for this project
+* `dxuser <org alias>` - Create a QA/Test ser on scratch org 
+
+Now you have new org and this app deployed, what’s next? Here are some documentation resources to get you started if you are new to SFDX.
 
 ### Post Installation requirements
-Grants Content Kit app is using Topics to tag content, the target org needs to enebale topics feature after installing this package. Enable topics for the orgspecific for object Content Block: API Name `GGW_Content_Block__c` [How To Enable Topics for objects](https://help.salesforce.com/s/articleView?id=sf.knowledge_topics.htm&type=5)
+Grants Content Kit app is using Topics to tag content, the target org needs to enable topics feature after installing this package. Enable topics for the org specific for object Content Block: API Name `GGW_Content_Block__c` [How To Enable Topics for objects](https://help.salesforce.com/s/articleView?id=sf.knowledge_topics.htm&type=5)
 
 ## How Do You Plan to Deploy Your Changes?
 
