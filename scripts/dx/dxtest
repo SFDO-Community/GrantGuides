@@ -1,0 +1,22 @@
+#!/bin/sh
+
+##########################################################################################
+#
+#   Author: Igor Androsov 2022
+#
+#   Script to run APEX Unit Tests for project
+#   For more details on sfdx testing refer to: 
+#   https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_testing.htm
+##########################################################################################
+
+# Run all unit tests on new Scratch org environment asynchronous
+# Set input prameter values org alias
+
+ORG_ALIAS="$1"
+
+echo "--- START UNIT TESTS FOR: $ORG_ALIAS"
+
+# Run Tests - optional step
+sfdx force:apex:test:run  -c -v -r human -u $ORG_ALIAS
+
+echo "--- END UNIT TESTS FOR: $ORG_ALIAS"
