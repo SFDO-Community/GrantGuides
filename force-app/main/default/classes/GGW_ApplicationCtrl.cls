@@ -136,7 +136,7 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
     public static String createConetentDistribution(String grantId, String cvid){
         ContentVersion file = [SELECT Id, Title 
                                 FROM ContentVersion 
-                                WHERE Id =: cvid];
+                                WHERE Id =: cvid WITH SECURITY_ENFORCED];
         // Creating ContentDistribution record 
         ContentDistribution cdr = new ContentDistribution(
                                             Name = file.Title,
@@ -147,7 +147,8 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         // and update Grant record to use these for display
         ContentDistribution cdURL = [SELECT Id, Name, ContentVersionId, 
                                             ContentDownloadUrl, DistributionPublicUrl 
-                                            FROM ContentDistribution WHERE Id =: cdr.Id LIMIT 1];
+                                    FROM ContentDistribution 
+                                    WHERE Id =: cdr.Id WITH SECURITY_ENFORCED LIMIT 1];
         System.debug('## ContentDownloadUrl:'+cdURL.ContentDownloadUrl);
         System.debug('## DistributionPublicUrl: '+cdURL.DistributionPublicUrl);
         // Update Grant with new logo
@@ -166,7 +167,9 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
      */
     @AuraEnabled
     public static void saveSelectedSectionText(String itemid, String blockid){
-        GGW_Content_Block__c cBlock = [SELECT Id, Name, Description__c FROM GGW_Content_Block__c WHERE Id =: blockid LIMIT 1];
+        GGW_Content_Block__c cBlock = [SELECT Id, Name, Description__c 
+                                        FROM GGW_Content_Block__c 
+                                        WHERE Id =: blockid WITH SECURITY_ENFORCED LIMIT 1];
         // Construct selected Item to update
         GGW_Selected_Item__c item = new GGW_Selected_Item__c();
         item.Id = itemid;
@@ -182,7 +185,9 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
      */
     @AuraEnabled
     public static GGW_SectionWrapper createNewSection(String name){
-        List<GGW_Section__c> maxOrderList = [SELECT Sort_Order__c FROM GGW_Section__c WHERE Suggested__c = true  ORDER BY Sort_Order__c desc];
+        List<GGW_Section__c> maxOrderList = [SELECT Sort_Order__c 
+                                                FROM GGW_Section__c 
+                                                WHERE Suggested__c = true WITH SECURITY_ENFORCED ORDER BY Sort_Order__c desc];
         GGW_Section__c maxOrder = null;
         /// Hnadle situation when Sort order is null - TODO MAY be goosd to require it
         for(GGW_Section__c section : maxOrderList ){
@@ -281,7 +286,7 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
                                 Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
                                 Selected_Block__r.Description__c, Text_Block__c  
                                 FROM GGW_Selected_Item__c 
-                                WHERE Grant_Application__c =: appId ORDER BY Sort_Order__c];
+                                WHERE Grant_Application__c =: appId WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
         return appItems;
     }
     /**
@@ -309,7 +314,8 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
         Set<String> setOfSectionsWithBlock = getBlocksForSection();
         List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
-                                                FROM GGW_Section__c WHERE Suggested__c = true ORDER BY Sort_Order__c];
+                                                FROM GGW_Section__c 
+                                                WHERE Suggested__c = true WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
         for(GGW_Section__c s : sectionList){
             GGW_SectionWrapper sw = new GGW_SectionWrapper(s,setOfSectionsWithBlock);
             swList.add(sw);
@@ -322,7 +328,7 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         Set<String> setExcludeSections = getExcludeSectionSet(appItems);
         Set<String> setOfSectionsWithBlock = getBlocksForSection();
         List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
-                                                FROM GGW_Section__c ORDER BY Sort_Order__c];
+                                                FROM GGW_Section__c WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
         for(GGW_Section__c s : sectionList){
             system.debug('## Left Section: '+s.Name+' ID: '+s.Id);
             if(!setExcludeSections.contains(s.Id)){
@@ -347,7 +353,9 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         if(searchKey != null && searchKey.length() > 0){
             String key = '%' + searchKey + '%';
             List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, Sort_Order__c 
-                FROM GGW_Section__c WHERE Name LIKE :key AND Suggested__c = false ORDER BY Sort_Order__c LIMIT 20];
+                                                  FROM GGW_Section__c 
+                                                  WHERE Name LIKE :key AND Suggested__c = false 
+                                                  WITH SECURITY_ENFORCED ORDER BY Sort_Order__c LIMIT 20];
                 
                 for(GGW_Section__c s : sectionList){
                     GGW_SectionWrapper sw = new GGW_SectionWrapper(s);
@@ -360,7 +368,7 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         Set<String> s1 = new Set<String>();
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                 Section__c, Section__r.Name, CreatedDate 
-                                                FROM GGW_Content_Block__c ORDER BY Section__c];
+                                              FROM GGW_Content_Block__c WITH SECURITY_ENFORCED ORDER BY Section__c];
         for(GGW_Content_Block__c c : cbList){
             s1.add(c.Id);
         }   
@@ -385,7 +393,8 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         List<GGW_ContentBlockWrapper> cbwResultList = new List<GGW_ContentBlockWrapper>();
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                 Section__c, Section__r.Name, CreatedDate 
-                                                FROM GGW_Content_Block__c WHERE Section__c =: sectionId];
+                                                FROM GGW_Content_Block__c 
+                                                WHERE Section__c =: sectionId WITH SECURITY_ENFORCED];
         // Get map of block tags to display as badges
         Map<String,List<String>> blockTags = getBlockTopics();
         for(GGW_Content_Block__c c : cbList){
@@ -406,7 +415,8 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
     // Query Topics for content blocks, display tags/badge for each block
     private static Map<String,List<String>> getBlockTopics(){
         List<TopicAssignment> lst = [SELECT EntityType, EntityId, Topic.Name 
-                                        FROM TopicAssignment WHERE EntityType = 'GGW_Content_Block'];
+                                        FROM TopicAssignment 
+                                        WHERE EntityType = 'GGW_Content_Block' WITH SECURITY_ENFORCED];
         Map<String,List<String>> mapTags = new Map<String,List<String>>();
         for (TopicAssignment t : lst){
             if(mapTags.containsKey(t.EntityId)){

@@ -8,6 +8,8 @@
  * Used by LWC component to read sample data from file stored in static resource with Grants package
  */
 public with sharing class GGW_SampleData {
+    private static final String IMPORT_DATA_CANCELLED = 'Section data already exists. IMPORT CANCELLED';
+
     public class GGW_Attributes {
         public String type;
         public String referenceId;
@@ -50,21 +52,25 @@ public with sharing class GGW_SampleData {
                 sectionNewList.add(gs);
             }
             if(sectionNewList.size() > 0){
-                insert sectionNewList;
+                SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, sectionNewList);
+                insert decision.getRecords();
                 str += ' import complete. ';
-                system.debug('## enter insertSampleSections: data inserted OK');
-                // Sections inserted in same order as initial list
-                // Map new section IDs to references in JSON file to link with related text blocks
-                Map<String,String> sectionMap = new Map<String,String>();
-                Integer count = 0;
-                for (GGW_Section__c s : sectionNewList){
-                    GGW_Section dataJsonSection = lst[count];
-                    system.debug('## Ref Section: '+dataJsonSection.attributes.referenceId + ' sfid: '+s.Id);
-                    sectionMap.put(dataJsonSection.attributes.referenceId, s.Id);
-                    count++;
-                }
+                    system.debug('## enter insertSampleSections: data inserted OK');
+                    // Sections inserted in same order as initial list
+                    // Map new section IDs to references in JSON file to link with related text blocks
+                    Map<String,String> sectionMap = new Map<String,String>();
+                    Integer count = 0;
+                    for (GGW_Section__c s : sectionNewList){
+                        GGW_Section dataJsonSection = lst[count];
+                        system.debug('## Ref Section: '+dataJsonSection.attributes.referenceId + ' sfid: '+s.Id);
+                        sectionMap.put(dataJsonSection.attributes.referenceId, s.Id);
+                        count++;
+                    }
+                    // Assemble response message text for Sections and Content Blocks
                 str += insertContentBlocks(sectionMap);
             }
+        }else{
+            str = IMPORT_DATA_CANCELLED;
         }
         return str;
     }
@@ -92,7 +98,8 @@ public with sharing class GGW_SampleData {
             blockNewList.add(newBlock);
         }
         if(blockNewList.size() > 0){
-           insert blockNewList;
+           SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, blockNewList); 
+           insert decision.getRecords();
            str += ' import complete.';
            system.debug('## enter insertContentBlocks: data inserted OK');
         }
@@ -100,7 +107,7 @@ public with sharing class GGW_SampleData {
     }
     // GGW_SampleData.insertSections();
     public static List<GGW_Section> readSectionData(){
-        StaticResource sr= [SELECT Id, body FROM StaticResource WHERE Name = 'GGWSectionData'];
+        StaticResource sr= [SELECT Id, body FROM StaticResource WHERE Name = 'GGWSectionData' WITH SECURITY_ENFORCED];
         String contents = sr.body.toString();
         List<GGW_Section> sectionData = (List<GGW_Section>)System.JSON.deserialize(contents, List<GGW_Section>.class);
 
@@ -108,7 +115,7 @@ public with sharing class GGW_SampleData {
         return sectionData;
     }
     public static List<GGW_Content_Block> readContentBlockData(){
-        StaticResource sr= [SELECT Id, body FROM StaticResource WHERE Name = 'GGWContentBlockData'];
+        StaticResource sr= [SELECT Id, body FROM StaticResource WHERE Name = 'GGWContentBlockData' WITH SECURITY_ENFORCED];
         String contents = sr.body.toString();
         List<GGW_Content_Block> contentBlockData = (List<GGW_Content_Block>)System.JSON.deserialize(contents, List<GGW_Content_Block>.class);
         return contentBlockData;
@@ -116,7 +123,7 @@ public with sharing class GGW_SampleData {
     // Check if any section records exists
     @AuraEnabled
     public static Boolean isSectionExists(){
-        List<GGW_Section__c> lst = [SELECT Id, Name FROM GGW_Section__c LIMIT 10];
+        List<GGW_Section__c> lst = [SELECT Id, Name FROM GGW_Section__c WITH SECURITY_ENFORCED LIMIT 10];
         Boolean state = false;
         if (lst != null && lst.size()>0){
             state = true;
