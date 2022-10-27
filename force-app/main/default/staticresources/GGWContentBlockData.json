@@ -1,0 +1,233 @@
+
+[
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef1"
+            },
+            "Name": "I Am Ocean",
+            "Description": "<p><span style=\"font-size: 18px; color: rgb(62, 61, 64);\">In coastal regions around the world, environmental health is interlaced with cultural health and when one erodes, so does the other. </span><i style=\"font-size: 18px; color: rgb(62, 61, 64);\">I Am Ocean</i><span style=\"font-size: 18px; color: rgb(62, 61, 64);\"> offers a participatory experience for people living in communities perched precariously on the cusp of colossal change to candidly share their views about their ocean environment. Drawing on the power of their own voice, participants provide a glimpse into life in their region and their personal connection to the ocean as only they can. Whether a Bajao fisherman in the Philippines who is adopting new approaches to feed his family, a cultural leader in Hawaii whose ocean stewardship originates at the summit of Mauna Kea, or an Unangan community in the Pribilof Islands who are tackling the effects of marine debris, each contributor not only challenges assumptions about what science looks like, but what its voice sounds like. Our aim, however, is not to “</span><i style=\"font-size: 18px; color: rgb(62, 61, 64);\">give</i><span style=\"font-size: 18px; color: rgb(62, 61, 64);\"> people a voice” —a phrase laced with arrogance as it assumes lack of agency by participants. Rather, we strive to turn the teller and hearer dynamic on its head. Instead of “telling” stories about the ocean, we start by </span><i style=\"font-size: 18px; color: rgb(62, 61, 64);\">listening</i><span style=\"font-size: 18px; color: rgb(62, 61, 64);\"> to those who have intimate knowledge and experience with it and then provide a platform so that others may hear and learn from them. By refraining from inserting our own voice, values or belief systems into the videos, we allow for a more holistic story to emerge.</span></p>",
+            "Section": "GGW_Section__cRef1",
+            "Short_Description": "I Am Ocean"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef2"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p>Text placeholder - <b>JUST DO Something</b> is our plan of action</p>",
+            "Section": "GGW_Section__cRef2",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef3"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p>Text placeholder try edit this text and save lets edit this text. <b>Then add to library</b> to reuse later on.</p>",
+            "Section": "GGW_Section__cRef3",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef4"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p>This is my new <i>TEXT BLOCK</i> try to add this.</p>",
+            "Section": "GGW_Section__cRef3",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef5"
+            },
+            "Name": "Awarded budget",
+            "Description": "<p>These award-winning grant proposals were chosen as the most effective by a panel of judges. Each proposal reflects a unique voice and style, while adhering to sound grant writing principles.</p><p><br></p>",
+            "Section": "GGW_Section__cRef4",
+            "Short_Description": "Awarded budget"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef6"
+            },
+            "Name": "Green Pilot Program",
+            "Description": "<p>The Environmental Green Pilot Program Proposal is an example of a proposal using Proposal Pack to pitch an environmental green pilot program to a community to reduce utility costs through renewable energy use.</p><p><br></p><p>This is a good example to follow for anyone writing a project proposal. This example shows how our Proposal Packs can be used for virtually any type of proposal. In this example a consortium of businesses specializing in self-sustaining communities is proposing a project to a community to reduce utility and energy costs by using renewable resources.</p><p><br></p><p>Organizations and individuals proposing community based or renewable energy based projects. Anyone proposing a project.</p>",
+            "Section": "GGW_Section__cRef5",
+            "Short_Description": "Green Pilot Program Proposal"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef7"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p>The Environmental Green Pilot Program Proposal is an example of a proposal using Proposal Pack to pitch an environmental green pilot program to a community to reduce utility costs through renewable energy use.</p><p><br></p><p>This is a good example to follow for anyone writing a project proposal. This example shows how our Proposal Packs can be used for virtually any type of proposal. In this example a consortium of businesses specializing in self-sustaining communities is proposing a project to a community to reduce utility and energy costs by using renewable resources.</p><p><br></p><p>Organizations and individuals proposing community based or renewable energy based projects. Anyone proposing a project.</p><p>TEST NEW SECTION</p>",
+            "Section": "GGW_Section__cRef5",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef8"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "Text placeholder",
+            "Section": "GGW_Section__cRef5",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef9"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p>The Environmental Green Pilot Program Proposal is an example of a proposal using Proposal Pack to pitch an environmental green pilot program to a community to reduce utility costs through renewable energy use.</p><p><br></p><p>This is a good example to follow for anyone writing a project proposal. This example shows how our Proposal Packs can be used for virtually any type of proposal. In this example a consortium of businesses specializing in self-sustaining communities is proposing a project to a community to reduce utility and energy costs by using renewable resources.</p><p><br></p><p>Organizations and individuals proposing community based or renewable energy based projects. Anyone proposing a project.</p><p>TEST NEW SECTION</p>",
+            "Section": "GGW_Section__cRef5",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef10"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p>The Environmental Green Pilot Program Proposal is an example of a proposal using Proposal Pack to pitch an environmental green pilot program to a community to reduce utility costs through renewable energy use.</p><p><br></p><p>This is a good example to follow for anyone writing a project proposal. This example shows how our Proposal Packs can be used for virtually any type of proposal. In this example a consortium of businesses specializing in self-sustaining communities is proposing a project to a community to reduce utility and energy costs by using renewable resources.</p><p><br></p><p>Organizations and individuals proposing community based or renewable energy based projects. Anyone proposing a project.</p><p>TEST NEW SECTION</p>",
+            "Section": "GGW_Section__cRef5",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef11"
+            },
+            "Name": "Env measure outcome",
+            "Description": "<p>The Environmental Green Pilot Program Proposal is an example of a proposal using Proposal Pack to pitch an environmental green pilot program to a community to reduce utility costs through renewable energy use.</p><p><br></p><p>This is a good example to follow for anyone writing a project proposal. This example shows how our Proposal Packs can be used for virtually any type of proposal. In this example a consortium of businesses specializing in self-sustaining communities is proposing a project to a community to reduce utility and energy costs by using renewable resources.</p><p><br></p><p>Organizations and individuals proposing community based or renewable energy based projects. Anyone proposing a project.</p>",
+            "Section": "GGW_Section__cRef6",
+            "Short_Description": "Test short"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef12"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Donate to our online programs to learn more about protecting our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Give The Gift Which Could Last A Lifetime, Inspire A Career, and Help Our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Fun Online Classes. Experienced Educators. Amenities: Outdoor Fun, Educational, Safe, Experienced Educators.</span></p>",
+            "Section": "GGW_Section__cRef7",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef13"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p><span style=\"font-family: arial, sans-serif; font-size: 14px;\">Donate to our online programs to learn more about protecting our </span><b style=\"font-family: arial, sans-serif; font-size: 14px;\">oceans</b><span style=\"font-family: arial, sans-serif; font-size: 14px;\">. Give The Gift Which Could Last A Lifetime, Inspire A Career, and Help Our </span><b style=\"font-family: arial, sans-serif; font-size: 14px;\">Oceans</b><span style=\"font-family: arial, sans-serif; font-size: 14px;\">. Fun Online Classes. Experienced Educators. Amenities: Outdoor Fun, Educational, Safe, Experienced Educators.</span></p><p><br></p><p><span style=\"font-family: arial, sans-serif; font-size: 14px;\">Test Update</span></p>",
+            "Section": "GGW_Section__cRef7",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef14"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Donate to our online programs to learn more about protecting our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Give The Gift Which Could Last A Lifetime, Inspire A Career, and Help Our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Fun Online Classes. Experienced Educators. Amenities: Outdoor Fun, Educational, Safe, Experienced Educators.</span></p>",
+            "Section": "GGW_Section__cRef7",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef15"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Donate to our online programs to learn more about protecting our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Give The Gift Which Could Last A Lifetime, Inspire A Career, and Help Our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Fun Online Classes. Experienced Educators. Amenities: Outdoor Fun, Educational, Safe, Experienced Educators.</span></p>",
+            "Section": "GGW_Section__cRef7",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef16"
+            },
+            "Name": "Project Blue",
+            "Description": "<p>In the early stages of the design process, using lorem ipsum instead of realistic content might help you try out different design concepts quickly. However, while it’s okay to use lorem ipsum text in low-fidelity prototypes where you’re simply focusing on getting feedback on the interface’s layout and the font, it prohibits you from taking a content-first approach with your designs.</p>",
+            "Section": "GGW_Section__cRef7",
+            "Short_Description": "Statement of need"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef17"
+            },
+            "Name": "Foundation Blue Sea",
+            "Description": "<p><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Donate to our online programs to learn more about protecting our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Give The Gift Which Could Last A Lifetime, Inspire A Career, and Help Our </span><b style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">Oceans</b><span style=\"font-size: 14px; font-family: arial, sans-serif; color: rgb(77, 81, 86);\">. Fun Online Classes. Experienced Educators. Amenities: Outdoor Fun, Educational, Safe, Experienced Educators.</span></p>",
+            "Section": "GGW_Section__cRef7",
+            "Short_Description": "Foundation Blue Sea"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef18"
+            },
+            "Name": "Project X",
+            "Description": "<p>The oceans are in more trouble than ever before.</p><p><br></p><p>Right now it is estimated that up to 12 million metric tons of plastic—everything from plastic bottles and bags to microbeads—end up in the oceans each year. That’s a truckload of trash every minute.</p><p><br></p><p>Traveling on ocean currents, this plastic is now turning up in every corner of our planet, from Florida beaches to uninhabited Pacific islands. It is even being found in the deepest part of the ocean and trapped in Arctic ice.</p>",
+            "Section": "GGW_Section__cRef7",
+            "Short_Description": "Project X"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef19"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p>this is a test Exec Summary</p>",
+            "Section": "GGW_Section__cRef8",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef20"
+            },
+            "Name": "Executive Summary block",
+            "Description": "<p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">The Anytown Centre for Inclusion and Learning works to reduce barriers facing young </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: Calibri; font-size: 12pt;\"> </span><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">adults with complex physical disabilities. We create opportunities through our Inclusive </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">Social Club, the Teaching and Learning Centre, the Summer Literacy Program, and Path to Future Endeavours. </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">The Inclusive Social Club is led by five vibrant young adults with and without </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">disabilities that plan and carry out monthly social, recreational, and physically </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">active events for young adults with complex physical disabilities, volunteers, and the </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">entire community. Our staff work with, and mentor, the planning team to increase </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">their leadership skills and to develop program planning skills (assessing, planning, </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">promoting, implementing, and evaluating). The team actively recruits and orientates </span><i style=\"color: rgb(18, 17, 17); font-family: Calibri; font-size: 10pt;\"> </i></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">volunteer university students to assist with event implementation. </span></p><p><span style=\"color: rgb(18, 17, 17); font-family: BradleyHandITCTT; font-size: 12pt;\">Two events are offered, the largest event is an adapted hip-hop initiative held monthly. The second event changes monthly, is typically scheduled on weekends or in the evenings, and can include a variety of activities such as barbeques, sports events, bowling, and holiday celebrations. </span></p>",
+            "Section": "GGW_Section__cRef8",
+            "Short_Description": "Executive Summary of Project block"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef21"
+            },
+            "Name": "[CHANGE] New Text Block",
+            "Description": "<p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">The Anytown Centre for Inclusion and Learning works to reduce barriers facing young </span></p><p><span style=\"font-size: 12pt; font-family: Calibri;\"> </span><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">adults with complex physical disabilities. We create opportunities through our Inclusive </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">Social Club, the Teaching and Learning Centre, the Summer Literacy Program, and Path to Future Endeavours. </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">I&#39;ve updated this - The Inclusive Social Club is led by five vibrant young adults with and without </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">disabilities that plan and carry out monthly social, recreational, and physically </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">active events for young adults with complex physical disabilities, volunteers, and the </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">entire community. Our staff work with, and mentor, the planning team to increase </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">their leadership skills and to develop program planning skills (assessing, planning, </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">promoting, implementing, and evaluating). The team actively recruits and orientates </span><i style=\"font-size: 10pt; font-family: Calibri;\"> </i></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">volunteer university students to assist with event implementation. </span></p><p><span style=\"font-size: 12pt; font-family: BradleyHandITCTT;\">Two events are offered, the largest event is an adapted hip-hop initiative held monthly. The second event changes monthly, is typically scheduled on weekends or in the evenings, and can include a variety of activities such as barbeques, sports events, bowling, and holiday celebrations. </span></p>",
+            "Section": "GGW_Section__cRef8",
+            "Short_Description": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef22"
+            },
+            "Name": "Improvement Made Block",
+            "Description": "<p>The Inclusive Sicial Club has been ongoing for three years. yearourmemberscomplete Describe who will participate in and/or benefit from the project.</p><p>surveys and we continue to see them become more engaged and less isolated which leads to healthier lives. The number of new and returning members has increased each year. In the past two years we have went from 20 members to 45, and we are projecting over 50 in the coming year. As well, many volunteers have reported that the experience has improved their skills and added to their education. The only change this year is the addition of a hip-hop dance class once a month, which is based on the feedback received from our members.</p><p><br></p>",
+            "Section": "GGW_Section__cRef9",
+            "Short_Description": "Improvement Made Block"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef23"
+            },
+            "Name": "Main Project Objectives block",
+            "Description": "<p>The Inclusive Social Club aims to address three issues. First is to reduce the multitude of barriers that young adults with disabilities encounter to participate in community social activities. Through program education and participation, barriers such as lack of knowledge and social ineffectiveness will be reduced. By providing events that are</p><p> truly accessible and free of charge, environmental barriers can also be decreased.</p><p>Project Objectives Briefly describe the community and the issue your project is designed to Second is the lack of opportunities for adults with complex disabilities to actively</p><p>address. If the project has been offered before, briefly describe the results and any changes</p><p>engage in leadership opportunities, gain employment skills, and to participate in</p><p>that have been made to the project to improve outcomes for participants.</p><p>the community in a meaningful way. Through working with and mentoring the five member team, we plan to support young adults in gaining experience and developing leadership skills.</p><p>Finally, the social club is an opportunity for all young adults in the community to develop skills, participate in community activities and work alongside their peers</p>",
+            "Section": "GGW_Section__cRef9",
+            "Short_Description": "Main Project Objectives"
+        }
+]
