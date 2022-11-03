@@ -54,6 +54,7 @@ public with sharing class GGW_SampleData {
             if(sectionNewList.size() > 0){
                 SObjectAccessDecision decision = Security.stripInaccessible(AccessType.CREATABLE, sectionNewList);
                 insert decision.getRecords();
+                sectionNewList = decision.getRecords(); // Copy List with new IDs from decision to sectionNewList to ref
                 str += ' import complete. ';
                     system.debug('## enter insertSampleSections: data inserted OK');
                     // Sections inserted in same order as initial list

@@ -17,7 +17,8 @@ export default class GgwContentBlockModal extends LightningElement {
 
     @wire(getContentBlocks, { sectionId: '$section' })
     wireIntro({error,data}){
-        if (data) {
+        if (data && data.length > 0) { // Bug #75 JS error thown for empty section
+            console.log('### getContentBlocks: '+JSON.stringify(data))
             this.contentblocks = data; // Copy or clone [...data] Array.new(data) no effect on read only error
             this.titleAvailableBlocks = data[0].sectionname + ' (' + data[0].totalblocks + ' available)';
             this.error = undefined;
