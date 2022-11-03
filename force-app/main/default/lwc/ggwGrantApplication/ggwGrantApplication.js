@@ -205,6 +205,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                         for(var i=0; i<data.selectedContentBlock.length; i++)  {
                             var item = data.selectedContentBlock[i];
                             var tmpText = item.displaytext ? item.displaytext : 'Text placeholder'; // Set text value condition for null
+                            var tmpTextFormated = item.displaytextformat ? item.displaytextformat : 'Text placeholder';
                             this.sections = [...this.sections ,{label: item.sectionname, 
                                                                 displaytitle: '['+item.sortorder+'] ' + item.sectionname,
                                                                 value: item.sectionid, // sfid for Section record
@@ -214,7 +215,9 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                                                                 sortorder: item.sortorder,
                                                                 selecteditem: item.selecteditemid,
                                                                 blockid: item.recordid, // sfid for Content Block record
-                                                                textblock: tmpText} ];  
+                                                                textblock: tmpText,
+                                                                textblockformat: tmpTextFormated
+                                                            } ];  
                             
                                                                 console.log('Text: '+item.displaytext);
                         }     

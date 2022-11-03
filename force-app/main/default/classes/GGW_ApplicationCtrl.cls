@@ -50,7 +50,8 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String sectionid;
         @AuraEnabled public String sectionname;
         @AuraEnabled public String title; // Display title map to Name
-        @AuraEnabled public String displaytext; // map to Description__c
+        @AuraEnabled public String displaytext; // map to Description__c raw daat text
+        @AuraEnabled public String displaytextformat; // map data preprocess merge text
         @AuraEnabled public Integer wordcount; // Derived from Rich tect field in APEX count words
         @AuraEnabled public String displaybadge; // DEPRECATE Tag to display on the badge (Winner etc)
         @AuraEnabled public List<String> badgeList; // Tags to display on the badge (Winner etc) from Topics
@@ -60,9 +61,8 @@ public without sharing class GGW_ApplicationCtrl {
         @AuraEnabled public String selecteditemid; // Id of selecetd item on application
         @AuraEnabled public Integer sortorder;
         public GGW_ContentBlockWrapper(){
-
         }
-        //. Construct and map Block fields
+        // Construct and map Block fields
         public GGW_ContentBlockWrapper(GGW_Content_Block__c block, Integer cnt){
             this.isselected = false;
             this.recordid = block.Id;
@@ -70,6 +70,7 @@ public without sharing class GGW_ApplicationCtrl {
             this.sectionname = block.Section__r.Name;
             this.title = block.Name;
             this.displaytext = block.Description__c; // Rich text
+            this.displaytextformat = ''; //this.getMergeFieldsText(block, block.Description__c);
             // Count words in rich text with APEX methods
             integer words = block.Description__c.normalizeSpace().stripHtmlTags().replaceAll('\\S','').length() ;
             this.wordcount = words;
@@ -79,6 +80,20 @@ public without sharing class GGW_ApplicationCtrl {
             this.totalblocks = cnt;
             this.badgeList = new List<String>(); // init empty list fill in later
         }
+        /** 
+        public String getMergeFieldsText(GGW_Content_Block__c block, String txt){
+            String str = txt;
+            String result = txt;
+            if(txt != null && block != null){
+                String mrgFld = txt.substringBetween('{!','}');
+                if(mrgFld != null && mrgFld.length() > 0){
+                    String fldData = (String)block.get(mrgFld);
+                    // Set new text with replaced text data field
+                    result = str.replace('{!'+mrgFld+'}', fldData);
+                }
+            }
+            return result;
+        }*/
     }
 
     // Return Grant Aplication Wrapper object
@@ -94,7 +109,7 @@ public without sharing class GGW_ApplicationCtrl {
 
         List<GGW_Selected_Item__c> appItems = querySelectedItemsByGrant(tempId);
         GGW_Grant_Application__c grant = GGW_Util.queryGrantApp(tempId);
-        // Save state
+        // Save state user selected application record
         GGW_Util.saveGrantState(tempId);
         //List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
@@ -115,6 +130,7 @@ public without sharing class GGW_ApplicationCtrl {
                 cbw.sectionname = item.Section_Name__c;
                 cbw.totalblocks = 1; // Alway only 1 per section in Grant
                 cbw.displaytext = item.Text_Block__c; //Selected_Block__r.Description__c;
+                cbw.displaytextformat = getItemMergeFieldsText(item, item.Text_Block__c);
                 cbw.isselected = true;
                 cbw.sortorder = item.Sort_Order__c.intValue(); // APEX SOQL return NUmber decimal need convert to Int Illegal assignment from Decimal to Integer
                 contentList.add(cbw);
@@ -123,14 +139,28 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return app;
     }
+    private static String getItemMergeFieldsText(GGW_Selected_Item__c item, String txt){
+        String str = txt;
+        String result = txt;
+        if(txt != null && item != null){
+            String mrgFld = txt.substringBetween('{!','}');
+            if(mrgFld != null && mrgFld.length() > 0){
+                String fldData = (String)item.get(mrgFld);
+                // Set new text with replaced text data field
+                result = str.replace('{!'+mrgFld+'}', fldData);
+            }
+        }
+        return result;
+    }
+
     /**
      * Creating ContentDistribution record 
      * parameter: contentVersionId
-     * response return URL image
+     * response return URL to image distribution
      * 
      * SELECT Id, LinkedEntityId, ContentDocumentId, ShareType, Visibility FROM ContentDocumentLink WHERE LinkedEntityId = 'a010R00000FYjbAQAT'
 
-SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId = '0690R000001qBEgQAM'
+        SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId = '0690R000001qBEgQAM'
      */
     @AuraEnabled
     public static String createConetentDistribution(String grantId, String cvid){

@@ -18,6 +18,7 @@ import deleteSection from '@salesforce/apex/GGW_ApplicationCtrl.deleteSection';
 export default class GgwSection extends LightningElement {
     @api sectionTitle = 'Default Section';
     @api textBlock = 'Text placeholder';
+    @api textBlockFormated = 'Text placeholder';
     @api sectionId;
     @api sectionHasBlocks; // Boolean value if section has block allow to save
     @api applicationId;
@@ -47,7 +48,7 @@ export default class GgwSection extends LightningElement {
         this.textBlock = this.saveSelectedText; // Restore initial text
     }
     handleEnableEdit(){
-        this.enableEdit = true;
+        this.enableEdit = !this.enableEdit;
     }
     // Save set selected section text and close modal
     saveCloseModal() {

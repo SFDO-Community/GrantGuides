@@ -18,7 +18,8 @@
         <div class="slds-box slds-box_xx-small slds-m-left_x-small slds-m-right_x-small slds-m-bottom_xx-small">            
           <template if:false={enableEdit}>
             <lightning-formatted-rich-text
-                value={textBlock}
+                
+                value={textBlockFormated}
             ></lightning-formatted-rich-text>
           </template>
           <template if:true={enableEdit}>
