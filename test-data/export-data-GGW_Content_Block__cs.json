@@ -1,0 +1,44 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef1"
+            },
+            "Name": "[SAMPLE CONTENT] - Grow Austin",
+            "Description__c": "<p>SAMPLE CONTENT - Grow Austin aims at improving the overall quality of life of Texas residents by providing education and resources to engage citizens in building more beautiful communities. What started out as a neighborhood project 10 years ago has developed into a 10 person team of dedicated staff serving the greater Austin area and surrounding counties.</p><p>Through organized volunteer events and annual programs, GA provides communities with the tools they need to improve their overall community and build a better future for themselves and their neighbors. We provide communities with resources that teach them about necessary information to their environments such as sustainable gardening, native plants and composting. GA also helps coordinate and host large volunteer events to quickly transform spaces in Austin such as vacant lots or overrun trail passes. All with the &#39;better together&#39; focus in mind, encouraging community involvement and engagement.</p><p>With inclusivity at its core, GA offers a wide variety of programs that cater to various groups of individuals. We want individuals to find a home at Beautify Austin and to do that we offer many different programs that we feel can check off one or more volunteer interests.</p><p>Grow Austin believes that communities hold the power to keep their neighborhoods clean and thriving. In 2021, over 1000 volunteers participated in the Grow Austin programs, filling over 2000 recycling bags. Grow Austin also did its part of educating and supporting Austin citizens by supplying families with over 350 seed packets for sustainable gardening and tallying over 500 hours with educational seminars and videos.</p>",
+            "Section__c": "@GGW_Section__cRef1",
+            "Short_Description__c": "Grow Austin aims at improving the overall quality of life of Texas residents"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef2"
+            },
+            "Name": "[SAMPLE CONTENT] - Goal 1",
+            "Description__c": "<p>SAMPLE CONTENT - Goal 1: Officially launch Clean Water Pilot Program</p><p><br></p><p>Key Activities: We will hire a Managing Director by November 2022 who will be responsible for partnership development and local program implementation. We have identified several potential locations to pilot the Clean Water Program at, all within 1 mile of our home office and have secured a team of volunteers to see the pilot from start to finish. The pilot program will select 1 stream as the focus of the pilot and during a 4 month period will host 2 cleanup efforts, 1 community outreach event and 1 online campaign. After the 4 months have completed, the committee consisting of 2 volunteers from the pilot committee and 3 Beautify Austin board members, will meet and assess the future of the program. </p><p><br></p><p>Desired Outcomes:</p><p>Two cleanup efforts with a minimum of 10 community volunteers</p><p>Petition of more than 50 signatures of interest from local (within 1 mile) citizens of interest in use of the stream</p><p>90% positive feedback from local citizens</p>",
+            "Section__c": "@GGW_Section__cRef2",
+            "Short_Description__c": "Goal 1: Officially launch Clean Water Pilot Program"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef3"
+            },
+            "Name": "[SAMPLE CONTENT] - Grow Austin 2",
+            "Description__c": "<p>SAMPLE CONTENT - Grow Austin has primarily focused on trash clean up and the beautification of parks. GA would like to expand into water as well and plans to do that gradually by starting with education and gradually moving into volunteering and volunteer programs. The average temperature in Austin during the summer months (June - September) is 95 degrees and many communities lack public pools or swimming holes for community members to cool off. The goal of this program would be to improve natural water sources to make them safe for people to use in the warmer months for swimming and cooling off.</p><p><br></p><p>Similar to our Seedling program, GA plans to start small to determine community interest and gradually expand once key success metrics have been established and achieved. The water program will strive to clean local streams and lakes to make them more friendly for communities.</p>",
+            "Section__c": "@GGW_Section__cRef2",
+            "Short_Description__c": "Grow Austin 2"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef4"
+            },
+            "Name": "[SAMPLE CONTENT] - Grow Austin 1",
+            "Description__c": "<p>SAMPLE CONTENT - Grow Austin is grateful for our ongoing and multifaceted partnership with <a href=\"https://salesforce.org/\" target=\"_blank\">Salesforce.org</a>. Thanks to the previous $15,000 <a href=\"https://salesforce.org/\" target=\"_blank\">Salesforce.org</a> investment, we were able to expand our highly successful Seedling program, piloted in Travis county, to our neighboring counties. This will enable 50 additional families in underserved communities to receive the supplies and training needed to build and grow their own sustainable garden in their backyard. Crops and seeds from these gardens can be shared with neighbors, providing nourishment and the ability to provide for many years.</p><p><br></p><p>Salesforce employees also actively volunteered at our annual Grow Austin event, collectively contributing over 250 hours at our Zilker Park cleanup. There are also 10 individuals who contribute 50+ volunteer hours per year as regular volunteers in our programs, sit on our board and support our staff. </p><p><br></p><p>Grow Austin is a customer of Salesforce technology, which is critical to tracking our organizational outcomes and overall success. This system enables us to record, analyze and report on data about counties, volunteers and other key audiences and help all program staff assess day-to-day progress and challenges, at both micro and macro levels.</p><p><br></p>",
+            "Section__c": "@GGW_Section__cRef2",
+            "Short_Description__c": "Grow Austin 1"
+        }
+    ]
+}

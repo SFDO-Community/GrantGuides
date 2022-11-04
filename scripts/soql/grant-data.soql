@@ -4,4 +4,4 @@ sfdx force:data:tree:export --query \
     "SELECT Id, Name, Recommended__c, Section_Details__c, Sort_Order__c, Suggested__c, \
         (SELECT Id, Name, Description__c, Section__c, Short_Description__c FROM Content_Blocks__r )
     FROM GGW_Section__c WHERE Sort_Order__c < 10" \
---prefix export-section --outputdir test-data --plan -u ggw
+--prefix export-data --outputdir test-data --plan -u ggw
