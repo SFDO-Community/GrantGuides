@@ -3,14 +3,14 @@ name: beta release
 on:
   workflow_dispatch:
     branches:
-      - 'main'
+      - "main"
     paths-ignore:
-      - 'docs/**'
-      - 'README.md'
+      - "docs/**"
+      - "README.md"
 
 jobs:
   unit_tests:
-    name: 'Run Beta release'
+    name: "Run Beta release"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,3 +23,18 @@ jobs:
         run: |
           echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
           sfdx force:auth:sfdxurl:store -f sfdx_auth -d
+        # Create package version and extract its id
+      - name: "Create package version"
+        id: createPackageVersion
+        run: |
+          set +e
+          json=$(sfdx force:package:version:create -p LWCRecipes -x -w 20 -f config/project-scratch-def.json --json)
+          echo $json
+          status=$(echo $json | jq '.status')
+          if [ $status == "0" ]; then
+          packageVersionId=$(echo $json | jq -r '.result.SubscriberPackageVersionId')
+          echo "::set-output name=packageVersionId::$packageVersionId"
+          else
+          echo "sfdx force:package:version:create failed"
+          fi
+          exit $status
