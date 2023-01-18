@@ -27,7 +27,7 @@ The HTML/CSS styles for this page `GGW_GrantPreview` are managed as static resou
 
 The GrantsGuides is a Salesforce DX project that can deploy to a target org in 2 methods.
 
-1. Install as unlocked package: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t8a000001aJYWAA2
+1. Install as unlocked package: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t8a000001B8qrAAC
 
 
 2. Deploy as metadata using scratch or developer org.
