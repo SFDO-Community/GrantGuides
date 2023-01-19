@@ -1,0 +1,26 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef1"
+            },
+            "Name": "Exec Summary",
+            "Recommended__c": false,
+            "Section_Details__c": "Exec Summary",
+            "Sort_Order__c": 2,
+            "Suggested__c": false
+        },
+        {
+            "attributes": {
+                "type": "GGW_Section__c",
+                "referenceId": "GGW_Section__cRef2"
+            },
+            "Name": "Program Narrative",
+            "Recommended__c": false,
+            "Section_Details__c": "Program Narrative",
+            "Sort_Order__c": 1,
+            "Suggested__c": false
+        }
+    ]
+}

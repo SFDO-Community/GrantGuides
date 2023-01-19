@@ -40,7 +40,7 @@ export default class GgwIntro extends NavigationMixin(LightningElement) {
         insertSampleSections()
             .then((result) => {
                 //this.contacts = result;
-                console.log('SAMPL DATA: '+JSON.stringify(result));
+                console.log('SAMPL DATA: '+result); //JSON.stringify(result));
                 this.error = undefined;
                 this.header = INTRO_HEADER_TXT;
                 this.introtext = INTRO_TXT;
@@ -50,7 +50,7 @@ export default class GgwIntro extends NavigationMixin(LightningElement) {
                 // Display toaster message
                 const evt = new ShowToastEvent({
                     title: this._title,
-                    message: 'Sample data sections imported.',
+                    message: result, //'Sample data sections imported.',
                     variant: 'success',
                 });
                 this.dispatchEvent(evt);
