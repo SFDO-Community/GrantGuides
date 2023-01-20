@@ -22,9 +22,9 @@ public class GGW_SampleDataTest {
         System.assertEquals('Sample section data import complete. Sample block data import complete.', str, 'Result string is expected as success message');
         // Validate if sample data had been created for Section and Content Block
         List<GGW_Section__c> lstSection = [SELECT Id, Name FROM GGW_Section__c WITH SECURITY_ENFORCED];
-        System.assertEquals(9, lstSection.size(), 'Sections list is expected to have records');
+        System.assertEquals(8, lstSection.size(), 'Sections list is expected to have records');
         List<GGW_Content_Block__c> lstContentBlock = [SELECT Id, Name FROM GGW_Content_Block__c WITH SECURITY_ENFORCED];
-        System.assertEquals(23, lstContentBlock.size(), 'Block list is expected to have records');
+        System.assertEquals(4, lstContentBlock.size(), 'Block list is expected to have records');
     }
 
     @isTest

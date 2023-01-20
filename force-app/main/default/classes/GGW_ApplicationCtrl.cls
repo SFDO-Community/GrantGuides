@@ -286,7 +286,7 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
                                 Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
                                 Selected_Block__r.Description__c, Text_Block__c  
                                 FROM GGW_Selected_Item__c 
-                                WHERE Grant_Application__c =: appId WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
+                                WHERE Grant_Application__c =: appId ORDER BY Sort_Order__c];
         return appItems;
     }
     /**
@@ -368,7 +368,7 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         Set<String> s1 = new Set<String>();
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                 Section__c, Section__r.Name, CreatedDate 
-                                              FROM GGW_Content_Block__c WITH SECURITY_ENFORCED ORDER BY Section__c];
+                                              FROM GGW_Content_Block__c ORDER BY Section__c];
         for(GGW_Content_Block__c c : cbList){
             s1.add(c.Id);
         }   
@@ -394,7 +394,7 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                 Section__c, Section__r.Name, CreatedDate 
                                                 FROM GGW_Content_Block__c 
-                                                WHERE Section__c =: sectionId WITH SECURITY_ENFORCED];
+                                                WHERE Section__c =: sectionId];
         // Get map of block tags to display as badges
         Map<String,List<String>> blockTags = getBlockTopics();
         for(GGW_Content_Block__c c : cbList){

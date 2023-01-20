@@ -45,7 +45,7 @@ public without sharing class GGW_Util {
     public static GGW_Grant_State__c getGrantState(){
         List<GGW_Grant_State__c> lst = [SELECT Id, Current_User__c, Grant_Application__c 
                                         FROM GGW_Grant_State__c 
-                                        WHERE Current_User__c =:UserInfo.getUserId() WITH SECURITY_ENFORCED];
+                                        WHERE Current_User__c =:UserInfo.getUserId() ];
         GGW_Grant_State__c grant = new GGW_Grant_State__c();                
         if(lst != null && lst.size()>0){
             grant = lst[0];
