@@ -30,6 +30,9 @@ jobs:
       - name: Deploy Code
         run:
           sfdx force:source:push -u dev1
+      - name: Assign Permission Set
+        run:
+          sfdx force:user:permset:assign -n GGW_User_Permissions  -u dev1
       - name: Run Apex Test
         run:
           sfdx force:apex:test:run -u dev1 --wait 600 -c -r human
