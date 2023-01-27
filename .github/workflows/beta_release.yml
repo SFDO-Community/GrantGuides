@@ -28,7 +28,7 @@ jobs:
         id: createPackageVersion
         run: |
           set +e
-          json=$(--package "Grants Content Kit" --installationkeybypass --definitionfile config/project-scratch-def.json --wait 10 --targetdevhubusername ldodevhub --branch main -c --json)
+          json=$(sfdx force:package:version:create -p "Grants Content Kit" --installationkeybypass --definitionfile config/project-scratch-def.json --wait 10 --targetdevhubusername ldodevhub --branch main -c --json)
           echo $json
           status=$(echo $json | jq '.status')
           if [ $status == "0" ]; then
