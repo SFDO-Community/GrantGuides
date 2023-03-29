@@ -1,10 +1,15 @@
 <template>
     
     <lightning-card title="New Grant Application" icon-name="utility:builder">
-        <lightning-button label="Create" slot="actions" onclick={handleApplicationRecordCreate}></lightning-button>
-
+        <lightning-button-group slot="actions">
+            <c-ggw-language-selector></c-ggw-language-selector>
+            <lightning-button label="Create" onclick={handleApplicationRecordCreate}></lightning-button>
+        </lightning-button-group>
+      <!---  <lightning-button label="Create" slot="actions" onclick={handleApplicationRecordCreate}></lightning-button>
+      -->
         <div class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
             <lightning-input type="text" label="Grant Name" onchange={handleGrantNameChange}></lightning-input>
+            
         </div>        
 
         <div class="slds-grid slds-gutters">
