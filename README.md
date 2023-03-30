@@ -41,3 +41,5 @@ Grants Content Kit Resources:
 
 #### Recommendations for Future Sprints
 - Add demo video to the Readme file.
+- Edit and refine the help documentation in the Wiki.
+- Move the help content in the Wiki into separate pages. [Outbound funds Wiki](https://github.com/SalesforceFoundation/OutboundFundsModule/wiki) is a good example
