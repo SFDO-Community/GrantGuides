@@ -22,14 +22,38 @@ public without sharing class GGW_Util {
     }
     public static GGW_Grant_Application__c queryGrantApp(String appId){
         return [SELECT Id, Name, Application_Name__c, Logo_Download_Url__c, 
-                        DistributionPublicUrl__c, Status__c, Description__c 
+                        DistributionPublicUrl__c, Status__c, Description__c, Language__c 
                 FROM GGW_Grant_Application__c 
                 WHERE Id =: appId WITH SECURITY_ENFORCED LIMIT 1];
     }
-
+    // Method save Langugae selection to user state
+    public static String saveGrantLanguage(String lang){
+        String msg = 'Save language select failed.';
+        GGW_Grant_State__c st = getGrantState();
+        if(st != null && st.Language__c != null){
+            if(lang != null && lang.length()>0){
+                st.Language__c = lang;
+            }
+            update st;
+            msg = 'Language state is updated';
+        }else{
+            st = new GGW_Grant_State__c();
+            st.Current_User__c = UserInfo.getUserId(); // save state for current user
+            if(lang != null && lang.length()>0){
+                st.Language__c = lang;
+            }else{
+                st.Language__c = UserInfo.getLanguage();
+            }
+            insert st;
+            msg = 'NEW Language state is inserted';
+        }
+        return msg;
+    }
     // Save Grant state for User
     public static void saveGrantState(String grantId){
         GGW_Grant_State__c st = getGrantState();
+        String lang = UserInfo.getLanguage();
+        System.debug('## '+lang);
         if(st != null && st.Id != null){
             // Update existing single state
             st.Grant_Application__c = grantId;
@@ -38,12 +62,13 @@ public without sharing class GGW_Util {
             st = new GGW_Grant_State__c();
             st.Current_User__c = UserInfo.getUserId(); // save state for current user
             st.Grant_Application__c = grantId;
+            //UserInfo.getLanguage();
             insert st;
         }
     }
     // Get state
     public static GGW_Grant_State__c getGrantState(){
-        List<GGW_Grant_State__c> lst = [SELECT Id, Current_User__c, Grant_Application__c 
+        List<GGW_Grant_State__c> lst = [SELECT Id, Current_User__c, Grant_Application__c, Language__c  
                                         FROM GGW_Grant_State__c 
                                         WHERE Current_User__c =:UserInfo.getUserId() ];
         GGW_Grant_State__c grant = new GGW_Grant_State__c();                

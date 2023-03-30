@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>English</fullName>
+        <fullName>en_US</fullName>
         <default>false</default>
         <label>English</label>
     </customValue>
     <customValue>
-        <fullName>German</fullName>
+        <fullName>de_DE</fullName>
         <default>false</default>
         <label>German</label>
     </customValue>
     <customValue>
-        <fullName>Japanese</fullName>
+        <fullName>ja_JP</fullName>
         <default>false</default>
         <label>Japanese</label>
     </customValue>

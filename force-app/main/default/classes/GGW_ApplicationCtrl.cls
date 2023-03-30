@@ -464,4 +464,15 @@ SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId 
         }
         return gapp;
     }
+    /**
+     Save user selected langauge for Grant in a Grant/User state
+     State record is used to store small setting selection data to drive 
+     logic. In this case Language filtering for content.
+     This method is called from LWC language selector 
+     */
+    @AuraEnabled
+    public static String saveLanguageSelection(String lang){
+        // If lang = null then User langauge SFDC setting will be used by default
+        return GGW_Util.saveGrantLanguage(lang);
+    }
 }

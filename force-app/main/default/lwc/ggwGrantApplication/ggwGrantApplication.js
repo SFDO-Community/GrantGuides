@@ -25,6 +25,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 	@api objectApiName;
     @api grantName;
     @api contentDownloadUrl;// = 'https://data-drive-2030-dev-ed.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&versionId=0680R000001qFvW&operationContext=DELIVERY&contentId=05T0R0000069df5&page=0&d=/a/0R0000008lyn/kf5IDPjQuijS940z47u73Rnb2zSvfmkdSXUpc5S2oSU&oid=00D0R000000nmUQ&dpt=null&viewId=';
+    @api language = 'en_US';
     noLogoDisplay = true; // Display empty avatar instead of logo
     displayTitle;
     status;

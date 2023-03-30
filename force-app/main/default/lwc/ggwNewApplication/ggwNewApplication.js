@@ -21,6 +21,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     message = 'New grant was created';
     variant = 'success';
     @api availableActions = [];
+    @api language = 'en_US';
     // -- List of checkobxes gested section
     value = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommended selected Section IDs or items
     options = []; // List of Suggested sections display as checkboxes list the values show what is suggested from data
