@@ -1,0 +1,43 @@
+minimum_cumulusci_version: '3.74.0'
+project:
+    name: GrantGuides
+    package:
+        name: ggw
+        api_version: '55.0'
+    git:
+        default_branch: 'main'
+    source_format: sfdx
+
+tasks:
+    robot:
+        options:
+            suites: robot/GrantGuides/tests
+            options:
+                outputdir: robot/GrantGuides/results
+
+    robot_testdoc:
+        options:
+            path: robot/GrantGuides/tests
+            output: robot/GrantGuides/doc/GrantGuides_tests.html
+
+    run_tests:
+        options:
+            required_org_code_coverage_percent: 75
+
+flows:
+    config_dev:
+        steps:
+            2:
+                task: dx_push
+            3:
+                task: assign_permission_sets
+                options:
+                    api_names: GGW_User_Permissions
+            4:
+                task: command
+                options:
+                    command: sfdx force data tree import -u GrantGuides__dev --plan test-data/export-section-GGW_Section__c-plan.json
+            5:
+                task: command
+                options:
+                    command: cci org default --org dev
