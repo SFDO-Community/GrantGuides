@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - '**'
-      - '!master'
+      - '!main'
     paths-ignore:
       - 'docs/**'
       - 'README.md'
@@ -13,7 +13,7 @@ env:
   CUMULUSCI_SERVICE_github: ${{ secrets.CUMULUSCI_SERVICE_github }}
 jobs:
   unit_tests:
-    name: 'Deploy Code'
+    name: 'Deploy Code and Run Apex Tests'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
