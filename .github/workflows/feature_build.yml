@@ -1,4 +1,4 @@
-name: Feature Test
+name: Feature Build
 
 on:
   push:
@@ -8,10 +8,12 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'README.md'
-
+env:
+  CUMULUSCI_KEYCHAIN_CLASS: cumulusci.core.keychain.EnvironmentProjectKeychain
+  CUMULUSCI_SERVICE_github: ${{ secrets.CUMULUSCI_SERVICE_github }}
 jobs:
   unit_tests:
-    name: 'Run Feature Build'
+    name: 'Deploy Code and Run Apex Tests'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,18 +26,14 @@ jobs:
         run: |
           echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
           sfdx force:auth:sfdxurl:store -f sfdx_auth -d
-      - name: Create Scratch Org
-        run:  
-          sfdx force:org:create --setdefaultusername --setalias dev1 -f config/project-scratch-def.json
-      - name: Deploy Code
-        run:
-          sfdx force:source:push -u dev1
-      - name: Assign Permission Set
-        run:
-          sfdx force:user:permset:assign -n GGW_User_Permissions  -u dev1
-      - name: Run Apex Test
-        run:
-          sfdx force:apex:test:run -u dev1 --wait 600 -c -r human
-      - name: Delete Scratch org
-        run:
-          sfdx force:org:delete  -u dev1 -p
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+      - name: Install CumulusCI
+        run: |
+          python -m pip install -U pip
+          pip install cumulusci
+      - name: Deploy and Run Tests
+        run: |
+          cci flow run ci_feature --org dev --delete-org

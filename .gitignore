@@ -42,3 +42,4 @@ $RECYCLE.BIN/
 # ignore temp data files
 tempdata
 tempdata-out
+*.cci/*
