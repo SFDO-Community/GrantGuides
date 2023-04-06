@@ -6,7 +6,7 @@
           <lightning-card title={displayTitle} icon-name="utility:builder">
               <lightning-button-group slot="actions" >
                 <!-- Display Langauge selector component -->
-                <c-ggw-language-selector language={language} class="slds-p-right_x-small" ></c-ggw-language-selector>
+                <c-ggw-language-selector applicationid={recordId} class="slds-p-right_x-small" ></c-ggw-language-selector>
 
                 <lightning-button-group >
                   <lightning-button label="Reorder" class="circle" onclick={reorderSections}></lightning-button>

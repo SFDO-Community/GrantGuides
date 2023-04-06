@@ -194,6 +194,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>GGW_Selected_Item__c.Langauge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>GGW_Selected_Item__c.Section_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
