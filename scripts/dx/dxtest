@@ -17,6 +17,8 @@ ORG_ALIAS="$1"
 echo "--- START UNIT TESTS FOR: $ORG_ALIAS"
 
 # Run Tests - optional step
-sfdx force:apex:test:run  -c -v -r human -u $ORG_ALIAS
+# --- DEPRECTAED CLI OPTIONS change to new version of sfdx
+# sfdx force:apex:test:run  -c -v -r human -u $ORG_ALIAS
+sfdx apex:run:test -c -v -r human --target-org $ORG_ALIAS
 
 echo "--- END UNIT TESTS FOR: $ORG_ALIAS"
