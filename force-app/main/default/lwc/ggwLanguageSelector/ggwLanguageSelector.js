@@ -1,10 +1,12 @@
 import { LightningElement, wire, api, track } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getSupportedLanguages from '@salesforce/apex/GGW_ApplicationCtrl.getSupportedLanguages';
 import saveLanguageSelection from '@salesforce/apex/GGW_ApplicationCtrl.saveLanguageSelection'; 
 import getLanguageSelection from '@salesforce/apex/GGW_ApplicationCtrl.getLanguageSelection'; 
 export default class GgwLanguageSelector extends LightningElement {
     @api applicationid;
     // Language setting uses ISO language country code (language_COUNTRY) 
+    // https://www.ibm.com/docs/en/radfws/9.6.1?topic=overview-locales-code-pages-supported
     @api language;
     @track langOptions = [];// = [{ label: 'English', value: 'en_US' },{ label: 'German', value: 'de_DE' },{ label: 'Japanese', value: 'ja_JP' }];
     error;
@@ -66,6 +68,12 @@ export default class GgwLanguageSelector extends LightningElement {
                     this.error = undefined;
                     this.message = 'Selected language for Grant Application: '+this.language;
                     this.variant = 'success';
+                    
+                    // Creates the event with the selected language data.
+                    const selectedEvent = new CustomEvent('languagechange', { detail: this.language });
+                    // Dispatches the event.
+                    this.dispatchEvent(selectedEvent);    
+
                     // Display toaster message
                     const evt = new ShowToastEvent({
                         title: this._title,
@@ -87,11 +95,6 @@ export default class GgwLanguageSelector extends LightningElement {
                     });
                     this.dispatchEvent(evt);
                 });
-
         }
-        // Creates the event with the selected language data.
-        const selectedEvent = new CustomEvent('languageselected', { detail: this.language });
-        // Dispatches the event.
-        this.dispatchEvent(selectedEvent);    
     }
 }

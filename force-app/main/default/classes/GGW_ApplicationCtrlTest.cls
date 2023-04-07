@@ -287,7 +287,54 @@ public class GGW_ApplicationCtrlTest {
                                                 FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
 
         // Check that item was deleted
-        System.assertEquals(sectionCount-1, newItemList.size());
+        System.assertEquals(sectionCount-1, newItemList.size(),'Assert failed DeleteSectionItem');
     }
+    @isTest
+    static void  testGetSupportedLanguages(){
+        Test.startTest();
+        List<GGW_Util.PickList> pl = GGW_ApplicationCtrl.getSupportedLanguages();
+        Test.stopTest();
+        System.assertEquals(pl.size()>0, true, 'Supported langauges found');   
+    }
+    @isTest
+    static void testGetLanguageSelection(){
+         // Query all suggested sections
+         List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+         List<String> sections = new List<String>();
+         for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+             if(gww.selected){
+                 sections.add(gww.recordid);
+             }
+         }
+         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant Delete section', sections);
+        
+        Test.startTest();
+        String str = GGW_ApplicationCtrl.getLanguageSelection(app.Id);
+        // Test when there is NO application ID
+        String strNoApp = GGW_ApplicationCtrl.getLanguageSelection(null);
+        Test.stopTest();
+        System.assertEquals(str, 'en_US', 'Failed to get application language');
+        // NO application ID
+        System.assertEquals(strNoApp, 'en_US', 'Negative test failed to get language selectino');
+    }
+    @isTest
+    static void testSaveLanguageSelection(){
+        // Query all suggested sections
+        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant Delete section', sections);
+        
+        Test.startTest();
+        String str = GGW_ApplicationCtrl.saveLanguageSelection('en_US', app.Id);
+        Test.stopTest();
 
+        System.assertEquals(str, 'NEW Language state is inserted', 'Language select was not saved');
+        String lang = GGW_ApplicationCtrl.getLanguageSelection(app.Id);
+        System.assertEquals(lang, 'en_US', 'Failed to get saved language');
+    }
 }

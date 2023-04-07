@@ -4,6 +4,7 @@
     <columns>NAME</columns>
     <columns>Suggested__c</columns>
     <columns>Recommended__c</columns>
+    <columns>Language__c</columns>
     <columns>Sort_Order__c</columns>
     <columns>CREATED_DATE</columns>
     <filterScope>Everything</filterScope>

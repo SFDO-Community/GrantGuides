@@ -336,14 +336,15 @@ public without sharing class GGW_ApplicationCtrl {
     }
 
     // Return all Suggested section for shorter list
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled //(cacheable=true)
     public static List<GGW_SectionWrapper> getSections(){
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
+        String lang = GGW_Util.getGrantLanguage();
         Set<String> setOfSectionsWithBlock = getBlocksForSection();
         List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
                                                     Sort_Order__c, Language__c 
                                             FROM GGW_Section__c 
-                                            WHERE Suggested__c = true WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
+                                            WHERE Suggested__c = true AND Language__c =: lang WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
         for(GGW_Section__c s : sectionList){
             GGW_SectionWrapper sw = new GGW_SectionWrapper(s,setOfSectionsWithBlock);
             swList.add(sw);

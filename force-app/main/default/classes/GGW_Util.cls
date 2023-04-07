@@ -37,7 +37,7 @@ public without sharing class GGW_Util {
     public static String saveGrantLanguage(String lang, String grantId){
         String msg = 'Save language select failed.';
         GGW_Grant_State__c st = getGrantState();
-        if(st != null){
+        if(st != null && st.Id != null){
             if(isValidString(lang)){
                 st.Language__c = lang;
             }

@@ -40,7 +40,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Langauge__c</field>
+                <field>Language__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>

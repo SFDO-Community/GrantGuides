@@ -15,6 +15,56 @@
         <default>false</default>
         <label>Japanese</label>
     </customValue>
+    <customValue>
+        <fullName>es_ES</fullName>
+        <default>false</default>
+        <label>Spanish</label>
+    </customValue>
+    <customValue>
+        <fullName>fr_FR</fullName>
+        <default>false</default>
+        <label>French</label>
+    </customValue>
+    <customValue>
+        <fullName>it_IT</fullName>
+        <default>false</default>
+        <label>Italian</label>
+    </customValue>
+    <customValue>
+        <fullName>ko_KR</fullName>
+        <default>false</default>
+        <label>Korean</label>
+    </customValue>
+    <customValue>
+        <fullName>nl_NL</fullName>
+        <default>false</default>
+        <label>Dutch</label>
+    </customValue>
+    <customValue>
+        <fullName>pt_PT</fullName>
+        <default>false</default>
+        <label>Portuguese</label>
+    </customValue>
+    <customValue>
+        <fullName>zh_CN</fullName>
+        <default>false</default>
+        <label>Chinese (simplified)</label>
+    </customValue>
+    <customValue>
+        <fullName>zh_TW</fullName>
+        <default>false</default>
+        <label>Chinese (traditional)</label>
+    </customValue>
+    <customValue>
+        <fullName>uk_UA</fullName>
+        <default>false</default>
+        <label>Ukrainian</label>
+    </customValue>
+    <customValue>
+        <fullName>ru_RU</fullName>
+        <default>false</default>
+        <label>Russian</label>
+    </customValue>
     <description>Supported languages to switch</description>
     <masterLabel>Language Support</masterLabel>
     <sorted>false</sorted>
