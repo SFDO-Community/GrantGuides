@@ -18,9 +18,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testNewGrant(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -43,7 +43,7 @@ public class GGW_ApplicationCtrlTest {
     static void testFindSections(){
         String searchKey = 'Test';
         Test.startTest();
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> sw = GGW_ApplicationCtrl.findSections(searchKey);
+        List<GGW_SectionWrapper> sw = GGW_ApplicationCtrl.findSections(searchKey);
         Test.stopTest();
         System.assertNotEquals(0, sw.size(), 'No sections found in test data');
         System.assertEquals('Test search', sw[0].label, 'First Section label did not match value - Test search');
@@ -51,13 +51,13 @@ public class GGW_ApplicationCtrlTest {
 
         // Negative test asserts not found section by key
         searchKey = 'fail';
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> swfail = GGW_ApplicationCtrl.findSections(searchKey);
+        List<GGW_SectionWrapper> swfail = GGW_ApplicationCtrl.findSections(searchKey);
         System.assertEquals(0, swfail.size(), 'Section search for hidden section did not return valid data');
     }
     @isTest
     static void testGetSections(){
         Test.startTest();
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> sw = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> sw = GGW_ApplicationCtrl.getSections();
         Test.stopTest();
         System.assertEquals(3, sw.size(), 'No sample section data found');
     }
@@ -66,7 +66,7 @@ public class GGW_ApplicationCtrlTest {
         List<GGW_Section__c> sectionList = [SELECT Id, Name FROM GGW_Section__c WHERE Name = 'Statement of need'];
         String sectionid = sectionList[0].Id;
         Test.startTest();
-        List<GGW_ApplicationCtrl.GGW_ContentBlockWrapper> blockList = GGW_ApplicationCtrl.getContentBlocks(sectionId);
+        List<GGW_ContentBlockWrapper> blockList = GGW_ApplicationCtrl.getContentBlocks(sectionId);
         Test.stopTest();
         // TODO add detailed assertions
         System.assertNotEquals(0, blockList.size(), 'No sample data content blocks are found');
@@ -89,7 +89,7 @@ public class GGW_ApplicationCtrlTest {
     static void testCreateNewSection(){
         String name = 'Test section';
         Test.startTest();
-        GGW_ApplicationCtrl.GGW_SectionWrapper sw = GGW_ApplicationCtrl.createNewSection(name);
+        GGW_SectionWrapper sw = GGW_ApplicationCtrl.createNewSection(name);
         Test.stopTest();
         // assertion checks and set up
         GGW_Section__c maxOrder = [SELECT Sort_Order__c FROM GGW_Section__c WHERE Suggested__c = true  ORDER BY Sort_Order__c desc LIMIT 1];
@@ -106,9 +106,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testGetApplication(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -116,7 +116,7 @@ public class GGW_ApplicationCtrlTest {
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App', sections);
 
         Test.startTest();
-        GGW_ApplicationCtrl.GGW_GrantApplicationWrapper appWrapper = GGW_ApplicationCtrl.getApplication(app.Id);
+        GGW_GrantApplicationWrapper appWrapper = GGW_ApplicationCtrl.getApplication(app.Id);
         Test.stopTest();
         // assertion checks happy path and set up
         System.assertEquals(app.Id, appWrapper.recordid, 'No new grant was created');
@@ -128,9 +128,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testSaveSelectedSectionText(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -142,7 +142,7 @@ public class GGW_ApplicationCtrlTest {
         String itemid = selItemList[0].Id; 
         String sectionId = selItemList[0].GGW_Section__c;
         Test.startTest();
-        List<GGW_ApplicationCtrl.GGW_ContentBlockWrapper> bwList = GGW_ApplicationCtrl.getContentBlocks(sectionId);
+        List<GGW_ContentBlockWrapper> bwList = GGW_ApplicationCtrl.getContentBlocks(sectionId);
         String blocktext = bwList[0].displaytext; // Save rich text from Block Wrappert to assert later
         GGW_ApplicationCtrl.saveSelectedSectionText(itemid, bwList[0].recordid);
         Test.stopTest();
@@ -153,9 +153,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testReorderSections(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -183,9 +183,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testUpdateSelectedItemText(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -210,9 +210,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testDeleteSectionItem(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -242,9 +242,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testGetLanguageSelection(){
          // Query all suggested sections
-         List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
          List<String> sections = new List<String>();
-         for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+         for (GGW_SectionWrapper gww : lst){
              if(gww.selected){
                  sections.add(gww.recordid);
              }
@@ -263,9 +263,9 @@ public class GGW_ApplicationCtrlTest {
     @isTest
     static void testSaveLanguageSelection(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }

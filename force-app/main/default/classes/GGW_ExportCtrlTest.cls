@@ -21,9 +21,9 @@ public class GGW_ExportCtrlTest {
     static void testExportCtrl(){
         // Unit test for conroller extention when used as part of record page context
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -47,9 +47,9 @@ public class GGW_ExportCtrlTest {
     static void testExportWithPage(){
         // Unit test for conroller extention when NOT Record page but pass parameter recordId
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }

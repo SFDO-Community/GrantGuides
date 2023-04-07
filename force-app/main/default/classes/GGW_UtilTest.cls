@@ -29,9 +29,9 @@ public class GGW_UtilTest {
     @isTest
     static void testNewsaveGrantState(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -68,9 +68,9 @@ public class GGW_UtilTest {
     @isTest
     static void testExistingGrantState(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -100,9 +100,9 @@ public class GGW_UtilTest {
     @isTest
     static void testGetSelectedItems(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -118,9 +118,9 @@ public class GGW_UtilTest {
     @isTest
     static void testQueryGrantApp(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
@@ -173,9 +173,9 @@ public class GGW_UtilTest {
     @isTest
     static void saveGrantLanguage(){
         // Query all suggested sections
-        List<GGW_ApplicationCtrl.GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
-        for (GGW_ApplicationCtrl.GGW_SectionWrapper gww : lst){
+        for (GGW_SectionWrapper gww : lst){
             if(gww.selected){
                 sections.add(gww.recordid);
             }
