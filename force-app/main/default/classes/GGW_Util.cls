@@ -93,10 +93,8 @@ public without sharing class GGW_Util {
     public static String getGrantLanguage(){
         String lang = 'en_US';
         GGW_Grant_State__c st = getGrantState();
-        if(st != null){
-            if(isValidString(st.Language__c)){
-                lang = st.Language__c;
-            }
+        if(st != null && isValidString(st.Language__c)){
+            lang = st.Language__c;
         }
         return lang;
     }

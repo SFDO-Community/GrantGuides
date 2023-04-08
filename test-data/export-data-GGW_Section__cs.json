@@ -9,7 +9,8 @@
             "Recommended__c": false,
             "Section_Details__c": "Exec Summary",
             "Sort_Order__c": 2,
-            "Suggested__c": false
+            "Suggested__c": false,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -20,7 +21,8 @@
             "Recommended__c": false,
             "Section_Details__c": "Program Narrative",
             "Sort_Order__c": 1,
-            "Suggested__c": false
+            "Suggested__c": false,
+            "Language__c": "en_US"
         }
     ]
 }

@@ -12,44 +12,66 @@ public without sharing class GGW_ApplicationCtrl {
     // Return Grant Aplication Wrapper object
     @AuraEnabled
     public static GGW_GrantApplicationWrapper getApplication(String recordId){
-        String tempId = recordId;
-        if(recordId == null){
-            GGW_Grant_State__c st = GGW_Util.getGrantState();
-            if (st != null && st.Grant_Application__c != null ){
-                tempId = st.Grant_Application__c;
-            }
-        }
+        String tempId = validateAppId(recordId);
 
         List<GGW_Selected_Item__c> appItems = querySelectedItemsByGrant(tempId);
         GGW_Grant_Application__c grant = GGW_Util.queryGrantApp(tempId);
-        // Save state
+        // Save current app state
         GGW_Util.saveGrantState(tempId);
-        //List<GGW_SectionWrapper> unselectedSections = getLeftoverSections(appItems);
+
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
-        if(appItems != null && appItems.size()>0){
-            app.recordid = tempId;
-            if(grant != null && grant.Logo_Download_Url__c != null){
-                app.logodisplayurl = grant.Logo_Download_Url__c;
-            }
+        if(!appItems.isEmpty()){
+            app.recordid = grant.Id;
+            app.logodisplayurl = getValidLogoURL(grant);
             app.name = appItems[0].Application_Name__c;
             app.status = appItems[0].Grant_Application__r.Status__c;
             app.unselectSectionList = getLeftoverSections(appItems);
-            List<GGW_ContentBlockWrapper> contentList = new List<GGW_ContentBlockWrapper>();
-            for(GGW_Selected_Item__c item : appItems){
-                GGW_ContentBlockWrapper cbw = new GGW_ContentBlockWrapper();
-                cbw.selecteditemid = item.Id;
-                cbw.recordid = item.Selected_Block__c;
-                cbw.sectionid = item.GGW_Section__c;
-                cbw.sectionname = item.Section_Name__c;
-                cbw.totalblocks = 1; // Alway only 1 per section in Grant
-                cbw.displaytext = item.Text_Block__c; //Selected_Block__r.Description__c;
-                cbw.isselected = true;
-                cbw.sortorder = item.Sort_Order__c.intValue(); // APEX SOQL return NUmber decimal need convert to Int Illegal assignment from Decimal to Integer
-                contentList.add(cbw);
-            }
-            app.selectedContentBlock = contentList;
+            app.selectedContentBlock = createContentBlockWrapperList(appItems);
         }
         return app;
+    }
+
+    private static String getValidLogoURL(GGW_Grant_Application__c grant){
+        String logourl = null;
+        if(grant != null && grant.Logo_Download_Url__c != null){
+            logourl = grant.Logo_Download_Url__c;
+        }
+        return logourl;
+    }
+    // Map content block wrapper object fromrecords
+    private static List<GGW_ContentBlockWrapper> createContentBlockWrapperList(List<GGW_Selected_Item__c> appItems){
+        List<GGW_ContentBlockWrapper> contentList = new List<GGW_ContentBlockWrapper>();
+        for(GGW_Selected_Item__c item : appItems){
+            GGW_ContentBlockWrapper cbw = mapContentBlockWrapper(item);
+            contentList.add(cbw);
+        }
+        return contentList;
+    }
+    private static GGW_ContentBlockWrapper mapContentBlockWrapper(GGW_Selected_Item__c item){
+        GGW_ContentBlockWrapper cbw = new GGW_ContentBlockWrapper();
+        cbw.selecteditemid = item.Id;
+        cbw.recordid = item.Selected_Block__c;
+        cbw.sectionid = item.GGW_Section__c;
+        cbw.sectionname = item.Section_Name__c;
+        cbw.totalblocks = 1; // Always only 1 per section in Grant
+        cbw.displaytext = item.Text_Block__c; //Selected_Block__r.Description__c;
+        cbw.isselected = true;
+        cbw.sortorder = item.Sort_Order__c.intValue(); // APEX SOQL return NUmber decimal need convert to Int Illegal assignment from Decimal to Integer
+        return cbw;
+    }
+    private static String validateAppId(String recordId){
+        String tempId = recordId;
+        if(recordId == null){
+            tempId = getAppIdFromSavedState();
+        }
+        return tempId;
+    }
+    private static String getAppIdFromSavedState(){
+        GGW_Grant_State__c st = GGW_Util.getGrantState();
+        if (st != null && st.Grant_Application__c != null ){
+            return st.Grant_Application__c;
+        }
+        return null;
     }
     /**
      * Creating ContentDistribution record 
@@ -60,28 +82,24 @@ public without sharing class GGW_ApplicationCtrl {
         SELECT Id, ContentDocumentId, Title FROM ContentVersion WHERE ContentDocumentId = '0690R000001qBEgQAM'
      */
     @AuraEnabled
-    public static String createConetentDistribution(String grantId, String cvid){
-        ContentVersion file = [SELECT Id, Title 
-                                FROM ContentVersion 
-                                WHERE Id =: cvid WITH SECURITY_ENFORCED];
+    public static String createContentDistribution(String grantId, String cvid){
+        ContentVersion file = getContentFile(cvid);
         // Creating ContentDistribution record 
-        ContentDistribution cdr = new ContentDistribution(
-                                            Name = file.Title,
-                                            ContentVersionId = file.Id,
-                                            PreferencesAllowViewInBrowser = true );
-        // Check object CRUD
-        if(Schema.sObjectType.ContentDistribution.isCreateable()){
-            insert cdr;
-            return null; // could not insert no CRUD
+        ContentDistribution cdr = insertContentDistribution(file);
+        if(cdr.Id == null){
+            return null; // could not insert ContentDistribution no CRUD
         }
         // After Distribution record need to get DistributionPublicUrl, ContentDownloadUrl 
         // and update Grant record to use these for display
-        ContentDistribution cdURL = [SELECT Id, Name, ContentVersionId, 
-                                            ContentDownloadUrl, DistributionPublicUrl 
-                                    FROM ContentDistribution 
-                                    WHERE Id =: cdr.Id WITH SECURITY_ENFORCED LIMIT 1];
+        ContentDistribution cdURL = getContentDistributionById(cdr.Id);
         System.debug('## ContentDownloadUrl:'+cdURL.ContentDownloadUrl);
         System.debug('## DistributionPublicUrl: '+cdURL.DistributionPublicUrl);
+        // Update Grant with new logo
+        updateGrantAppLogoURL(grantId, cdURL);
+
+        return cdURL.ContentDownloadUrl;
+    }
+    private static void updateGrantAppLogoURL(String grantId, ContentDistribution cdURL){
         // Update Grant with new logo
         if(cdURL.ContentDownloadUrl != null){
             GGW_Grant_Application__c app = new GGW_Grant_Application__c();
@@ -93,7 +111,31 @@ public without sharing class GGW_ApplicationCtrl {
                 update app;
             }
         }
-        return cdURL.ContentDownloadUrl;
+    }
+    private static ContentDistribution getContentDistributionById(Id cdid){
+        ContentDistribution cdr = [SELECT Id, Name, ContentVersionId, 
+                                            ContentDownloadUrl, DistributionPublicUrl 
+                                    FROM ContentDistribution 
+                                    WHERE Id =: cdid WITH SECURITY_ENFORCED LIMIT 1];
+        return cdr;
+    }
+    // Query ContentVersion by id
+    private static ContentVersion getContentFile(String cvid){
+        ContentVersion file = [SELECT Id, Title 
+                                FROM ContentVersion 
+                                WHERE Id =: cvid WITH SECURITY_ENFORCED];
+        return file;
+    }
+    private static ContentDistribution insertContentDistribution(ContentVersion file){
+        ContentDistribution cdr = new ContentDistribution(
+                                            Name = file.Title,
+                                            ContentVersionId = file.Id,
+                                            PreferencesAllowViewInBrowser = true );
+        // Check object CRUD
+        if(Schema.sObjectType.ContentDistribution.isCreateable()){
+            insert cdr;
+        }
+        return cdr;
     }
     /**
      * Update text block selection, wire block to item and copy block text data for display and edits
@@ -101,9 +143,7 @@ public without sharing class GGW_ApplicationCtrl {
      */
     @AuraEnabled
     public static void saveSelectedSectionText(String itemid, String blockid){
-        GGW_Content_Block__c cBlock = [SELECT Id, Name, Description__c 
-                                        FROM GGW_Content_Block__c 
-                                        WHERE Id =: blockid WITH SECURITY_ENFORCED LIMIT 1];
+        GGW_Content_Block__c cBlock = queryContentBlockById(blockid);
         // Construct selected Item to update
         GGW_Selected_Item__c item = new GGW_Selected_Item__c();
         item.Id = itemid;
@@ -121,31 +161,40 @@ public without sharing class GGW_ApplicationCtrl {
      */
     @AuraEnabled
     public static GGW_SectionWrapper createNewSection(String name){
-        List<GGW_Section__c> maxOrderList = [SELECT Sort_Order__c 
-                                                FROM GGW_Section__c 
-                                                WHERE Suggested__c = true WITH SECURITY_ENFORCED ORDER BY Sort_Order__c desc];
-        GGW_Section__c maxOrder = null;
-        /// Hnadle situation when Sort order is null - TODO MAY be goosd to require it
-        for(GGW_Section__c section : maxOrderList ){
-            if(section.Sort_Order__c != null && section.Sort_Order__c > 0){
-                maxOrder = section; // assigned MAX order object first found END LOOP here
-                break; // EXIST Loop
-            }
-        }
+        GGW_Section__c maxOrder = findMaxOrderSection();
         GGW_Section__c s = new GGW_Section__c();
         s.Name = name;
         s.Recommended__c = true;
         s.Suggested__c = true;
-        // Fix for issue #67 WHne pkg installed omn fresh org NO sample section data defult sort to 1
-        if(maxOrder != null){
-            s.Sort_Order__c = maxOrder.Sort_Order__c + 1;
-        }else{
-            s.Sort_Order__c = 1; // 1st value section
-        }
+        s.Sort_Order__c = getSectionSortOrder(maxOrder);
         if(Schema.sObjectType.GGW_Section__c.isCreateable()){
             insert s;
         }
         return new GGW_SectionWrapper(s);
+    }
+    // Return section with max order to add next section
+    private static GGW_Section__c findMaxOrderSection(){
+        List<GGW_Section__c> maxOrderList = [SELECT Sort_Order__c 
+                                                FROM GGW_Section__c 
+                                                WHERE Suggested__c = true WITH SECURITY_ENFORCED ORDER BY Sort_Order__c desc];
+        GGW_Section__c maxOrder = null;
+        // Handle situation when Sort order is null - TODO MAY be good to require it
+        for(GGW_Section__c section : maxOrderList ){
+            if(section.Sort_Order__c != null && section.Sort_Order__c > 0){
+                maxOrder = section; // assigned MAX order object first found END LOOP here
+                break; // EXIT Loop
+            }
+        }
+        return maxOrder;
+    }
+    // Fix for issue #67 WHne pkg installed omn fresh org NO sample section data defult sort to 1
+    // Use decimal  insted on Integer a s fieds number ais decimal
+    private static Decimal getSectionSortOrder(GGW_Section__c maxOrder){
+        Decimal order = 1; // Initial 1st value section
+        if(maxOrder != null && maxOrder.Sort_Order__c != null){
+            order = maxOrder.Sort_Order__c + 1;
+        }
+        return order;
     }
     // Edit rich text inside item method called from Section component when edit rich text
     @AuraEnabled
@@ -174,30 +223,38 @@ public without sharing class GGW_ApplicationCtrl {
         cleanSelectedSections(sectionList, appId);
         Integer cnt = 1;
         for (String s : sectionList){
+
             Id sectionId = s; 
-            String objName = sectionId.getsobjecttype()+'';
             GGW_Selected_Item__c ggws = new GGW_Selected_Item__c();
-            System.debug('### Obj: '+objName+' ID: '+s +' APP ID: '+appId);
-            if(objName.equals('GGW_Section__c')){ // Create new selected item junction fro section
+            System.debug('### reorderSections APP ID: '+appId);
+            if(isSectionId(s)){ // Create new selected item junction for section
                 ggws.GGW_Section__c = sectionId;
-                ggws.Grant_Application__c = appId;
-                ggws.Sort_Order__c = cnt;
                 System.debug('## Add new section: '+s);
             }else{ // Update selected existing item junction
                 ggws.Id = s;
-                ggws.Grant_Application__c = appId;
-                ggws.Sort_Order__c = cnt;
                 System.debug('## Update existing section: '+s);
             }
+
+            ggws.Grant_Application__c = appId;
+            ggws.Sort_Order__c = cnt;
             updateOrderList.add(ggws);
             cnt++;
         }
-        if(updateOrderList.size()>0){
-            if(Schema.sObjectType.GGW_Selected_Item__c.isUpdateable() || 
-                Schema.sObjectType.GGW_Selected_Item__c.isCreateable()){
+        if(Schema.sObjectType.GGW_Selected_Item__c.isUpdateable() || 
+            Schema.sObjectType.GGW_Selected_Item__c.isCreateable()){
                 upsert updateOrderList; // Some records here exist some may be new added sections
-            }
         }
+    }
+    // Check if giveb string ID is Id of Section record
+    private static Boolean isSectionId(String s){
+        Boolean res = false;
+        Id sectionId = s; 
+        String objName = sectionId.getsobjecttype()+'';
+        System.debug('### Obj: '+objName+' ID: '+s);
+        if(objName.equals('GGW_Section__c')){ // Create new selected item junction for section
+            res = true;
+        }
+        return res;
     }
     // Delete Grant selected section items that are not on the list to reorder function
     private static void cleanSelectedSections(List<String> sectionList, String appId){
@@ -209,7 +266,7 @@ public without sharing class GGW_ApplicationCtrl {
                 removeItems.add(item);
             }
         }
-        if(removeItems.size() > 0){
+        if(!removeItems.isEmpty()){
             if(Schema.sObjectType.GGW_Selected_Item__c.isDeletable()){
                 delete removeItems;
             }
@@ -244,10 +301,7 @@ public without sharing class GGW_ApplicationCtrl {
     @AuraEnabled
     public static String addTextBlockToLibrary(String sectionid, String richtext, String name){
         GGW_Content_Block__c cb = new GGW_Content_Block__c();
-        cb.name = '[CHANGE] New Text Block'; // strange error Layout  Field:Name must not be Readonly
-        if(name != null){
-            cb.name = name; // replace given name
-        }
+        cb.name = getValidBlockName(name); // strange error Layout  Field:Name must not be Readonly
         cb.Section__c = sectionid;
         cb.Description__c = richtext;
         if(Schema.sObjectType.GGW_Content_Block__c.isCreateable()){
@@ -255,17 +309,21 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return cb.Id+'';
     }
-
+    // Always return valid string, default block name if given name is null
+    private static String getValidBlockName(String name){
+        String blockName = '[CHANGE] New Text Block';
+        if(GGW_Util.isValidString(name)){
+            blockName = name;
+        }
+        return blockName;
+    }
     // Return all Suggested section for shorter list
     @AuraEnabled //(cacheable=true)
     public static List<GGW_SectionWrapper> getSections(){
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
         String lang = GGW_Util.getGrantLanguage();
         Set<String> setOfSectionsWithBlock = getBlocksForSection();
-        List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
-                                                    Sort_Order__c, Language__c 
-                                            FROM GGW_Section__c 
-                                            WHERE Suggested__c = true AND Language__c =: lang WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
+        List<GGW_Section__c> sectionList = querySectionsByLanguage(lang);
         for(GGW_Section__c s : sectionList){
             GGW_SectionWrapper sw = new GGW_SectionWrapper(s,setOfSectionsWithBlock);
             swList.add(sw);
@@ -277,9 +335,8 @@ public without sharing class GGW_ApplicationCtrl {
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
         Set<String> setExcludeSections = getExcludeSectionSet(appItems);
         Set<String> setOfSectionsWithBlock = getBlocksForSection();
-        List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
-                                                    Sort_Order__c, Language__c 
-                                            FROM GGW_Section__c WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
+        List<GGW_Section__c> sectionList = querySections();
+
         for(GGW_Section__c s : sectionList){
             system.debug('## Left Section: '+s.Name+' ID: '+s.Id);
             if(!setExcludeSections.contains(s.Id)){
@@ -302,26 +359,18 @@ public without sharing class GGW_ApplicationCtrl {
     public static  List<GGW_SectionWrapper> findSections(String searchKey) {
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
         if(searchKey != null && searchKey.length() > 0){
-            String key = '%' + searchKey + '%';
-            List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
-                                                        Sort_Order__c, Language__c 
-                                                FROM GGW_Section__c 
-                                                WHERE Name LIKE :key AND Suggested__c = false 
-                                                WITH SECURITY_ENFORCED ORDER BY Sort_Order__c LIMIT 20];
+            List<GGW_Section__c> sectionList = querySectionsByName(searchKey);
                 
-                for(GGW_Section__c s : sectionList){
-                    GGW_SectionWrapper sw = new GGW_SectionWrapper(s);
-                    swList.add(sw);
-                }
+            for(GGW_Section__c s : sectionList){
+                GGW_SectionWrapper sw = new GGW_SectionWrapper(s);
+                swList.add(sw);
+            }
         }
         return swList;
     }
     private static Set<String> getBlocksForSection(){
         Set<String> s1 = new Set<String>();
-        List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
-                                                    Section__c, Section__r.Name, CreatedDate, 
-                                                    Language__c 
-                                            FROM GGW_Content_Block__c WITH SECURITY_ENFORCED ORDER BY Section__c];
+        List<GGW_Content_Block__c> cbList = queryContentBlocks();
         for(GGW_Content_Block__c c : cbList){
             s1.add(c.Id);
         }   
@@ -329,7 +378,7 @@ public without sharing class GGW_ApplicationCtrl {
         return s1;
     }
     /** DEPERCATED
-     * Not used method, leaving commende code for reference
+     * Not used method, leaving commented code for reference
     private static Map<String, List<GGW_Content_Block__c>> getSectionBlocks(){
         Map<String, List<GGW_Content_Block__c>> blockMap = new Map<String, List<GGW_Content_Block__c>>();
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
@@ -344,11 +393,7 @@ public without sharing class GGW_ApplicationCtrl {
     @AuraEnabled(cacheable=true)
     public static List<GGW_ContentBlockWrapper> getContentBlocks(String sectionId){
         List<GGW_ContentBlockWrapper> cbwResultList = new List<GGW_ContentBlockWrapper>();
-        List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
-                                                Section__c, Section__r.Name, CreatedDate, 
-                                                Language__c  
-                                                FROM GGW_Content_Block__c 
-                                                WHERE Section__c =: sectionId WITH SECURITY_ENFORCED];
+        List<GGW_Content_Block__c> cbList = queryContentBlocksBySection(sectionId);
         // Get map of block tags to display as badges
         Map<String,List<String>> blockTags = getBlockTopics();
         for(GGW_Content_Block__c c : cbList){
@@ -368,20 +413,15 @@ public without sharing class GGW_ApplicationCtrl {
     }
     // Query Topics for content blocks, display tags/badge for each block
     private static Map<String,List<String>> getBlockTopics(){
-        List<TopicAssignment> lst = [SELECT EntityType, EntityId, Topic.Name 
-                                        FROM TopicAssignment 
-                                        WHERE EntityType = 'GGW_Content_Block' WITH SECURITY_ENFORCED];
         Map<String,List<String>> mapTags = new Map<String,List<String>>();
+        List<TopicAssignment> lst = queryTopicAssignments();                                        
         for (TopicAssignment t : lst){
+            List<String> badgeList = new List<String>();
             if(mapTags.containsKey(t.EntityId)){
-                List<String> badgeList = mapTags.get(t.EntityId);
-                badgeList.add(t.Topic.Name);
-                mapTags.put(t.EntityId, badgeList);
-            }else{
-                List<String> badgeList = new List<String>();
-                badgeList.add(t.Topic.Name);
-                mapTags.put(t.EntityId, badgeList);
+                badgeList = mapTags.get(t.EntityId);
             }
+            badgeList.add(t.Topic.Name);
+            mapTags.put(t.EntityId, badgeList); 
         }
         return mapTags;
     }
@@ -395,33 +435,38 @@ public without sharing class GGW_ApplicationCtrl {
     @AuraEnabled
     public static GGW_Grant_Application__c newGrant(String name, List<String> sections){
         System.debug('## NEW GRANT Parm: '+name+' SECTIONS:'+sections);
+        GGW_Grant_Application__c gapp = insertGrantRecord(name);
+        insertSelectedItemsForGrant(gapp.Id, sections);
+        System.debug('## NEW GRANT: '+name+' ID:'+gapp.Id+' SECTIONS:'+sections);
+        return gapp;
+    }
+    private static GGW_Grant_Application__c insertGrantRecord(String name){
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
-        if (name != null && name.length() > 0){
+        if (GGW_Util.isValidString(name)){
             gapp.Name = name;
             gapp.Status__c = 'Progress';
             gapp.Language__c = GGW_Util.getGrantLanguage();
             if(Schema.sObjectType.GGW_Grant_Application__c.isCreateable()){
                 insert gapp;            
             }
-            // Add selected sections itterate over selected section IDs param
-            List<GGW_Selected_Item__c> selectedItems = new List<GGW_Selected_Item__c>();
-            Integer itemSortOrder = 1;
-            for(String sect : sections){
-                GGW_Selected_Item__c item = new GGW_Selected_Item__c();
-                item.GGW_Section__c = sect;
-                item.Grant_Application__c = gapp.Id;
-                item.Sort_Order__c = itemSortOrder;
-                selectedItems.add(item);
-                itemSortOrder++; // increment sort order set as default
-            }
-            if(selectedItems.size()>0){
-                if(Schema.sObjectType.GGW_Selected_Item__c.isCreateable()){
-                    insert selectedItems;
-                }
-            }
-            System.debug('## NEW GRANT: '+name+' ID:'+gapp.Id+' SECTIONS:'+sections);
         }
         return gapp;
+    }
+    private static void insertSelectedItemsForGrant(Id appId, List<String> sections){
+        // Add selected sections itterate over selected section IDs param
+        List<GGW_Selected_Item__c> selectedItems = new List<GGW_Selected_Item__c>();
+        Integer itemSortOrder = 1;
+        for(String sect : sections){
+            GGW_Selected_Item__c item = new GGW_Selected_Item__c();
+            item.GGW_Section__c = sect;
+            item.Grant_Application__c = appId;
+            item.Sort_Order__c = itemSortOrder;
+            selectedItems.add(item);
+            itemSortOrder++; // increment sort order set as default
+        }
+        if(Schema.sObjectType.GGW_Selected_Item__c.isCreateable()){
+            insert selectedItems;
+        }
     }
     /**
      Save user selected langauge for Grant in a Grant/User state
@@ -438,19 +483,10 @@ public without sharing class GGW_ApplicationCtrl {
     @AuraEnabled
     public static String getLanguageSelection(String appId){
         String lang = 'en_US'; // Default to US English code
-        System.debug('## APEX getLanguageSelection');
-        if(appId != null && appId.length() > 0){
-            GGW_Grant_Application__c app = [SELECT Id, Name, Language__c FROM GGW_Grant_Application__c WHERE Id =: appId WITH SECURITY_ENFORCED LIMIT 1];
-            if(app.Language__c != null && app.Language__c.length() > 0){
-                lang = app.Language__c;
-            }
+        if(GGW_Util.isValidString(appId)){
+            lang = getApplicationLanguage(appId);
         }else{
-            GGW_Grant_State__c gs = GGW_Util.getGrantState();
-            System.debug('## STATE: '+gs);
-            if(gs.Language__c != null && gs.Language__c.length() > 0){
-                lang = gs.Language__c;
-            }
-            System.debug('## STATE: '+gs.Language__c+' '+lang);
+            lang = GGW_Util.getGrantLanguage();
         }
         return lang;
     }
@@ -458,4 +494,70 @@ public without sharing class GGW_ApplicationCtrl {
     public static List<GGW_Util.PickList> getSupportedLanguages(){
         return GGW_Util.getSelectOptionFromPicklist('GGW_Grant_State__c', 'Language__c', false); 
     }
+    // Get application language from existing Grant record
+    private static String getApplicationLanguage(String appId){
+        String lang = 'en_US'; // Default to US English code
+        GGW_Grant_Application__c app = [SELECT Id, Name, Language__c FROM GGW_Grant_Application__c WHERE Id =: appId WITH SECURITY_ENFORCED LIMIT 1];
+        if(GGW_Util.isValidString(app.Language__c)){
+            lang = app.Language__c;
+        }
+        return lang;
+    }
+
+    ///--- BASIC SELECTOR METHODS
+    private static List<GGW_Section__c> querySectionsByLanguage(String lang){
+        List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
+                                                Sort_Order__c, Language__c 
+                                            FROM GGW_Section__c 
+                                            WHERE Suggested__c = true AND Language__c =: lang 
+                                            WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
+        return sectionList;
+    }
+    private static List<GGW_Section__c> querySections(){
+        List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
+                                                    Sort_Order__c, Language__c 
+                                            FROM GGW_Section__c WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
+        return sectionList;
+    }
+    private static List<GGW_Section__c> querySectionsByName(String searchKey){
+        String key = '%' + searchKey + '%';
+        List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
+                                                    Sort_Order__c, Language__c 
+                                            FROM GGW_Section__c 
+                                            WHERE Name LIKE :key AND Suggested__c = false 
+                                            WITH SECURITY_ENFORCED ORDER BY Sort_Order__c LIMIT 20];
+        return sectionList;
+    }
+
+    // Return list of TopicAssignments for ContentBlocks
+    private static List<TopicAssignment> queryTopicAssignments(){
+        List<TopicAssignment> lst = [SELECT EntityType, EntityId, Topic.Name 
+                                    FROM TopicAssignment 
+                                    WHERE EntityType = 'GGW_Content_Block' WITH SECURITY_ENFORCED];
+        return lst;
+    }
+
+    // BLOCK Query
+    private static GGW_Content_Block__c queryContentBlockById(String blockid){
+        GGW_Content_Block__c cBlock = [SELECT Id, Name, Description__c 
+                                        FROM GGW_Content_Block__c 
+                                        WHERE Id =: blockid WITH SECURITY_ENFORCED LIMIT 1];
+        return cBlock;
+    }
+    private static List<GGW_Content_Block__c> queryContentBlocksBySection(String sectionId){
+        List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
+                                                Section__c, Section__r.Name, CreatedDate, 
+                                                Language__c  
+                                                FROM GGW_Content_Block__c 
+                                                WHERE Section__c =: sectionId WITH SECURITY_ENFORCED];
+        return cbList;
+    }
+    private static List<GGW_Content_Block__c> queryContentBlocks(){
+        List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
+                                                Section__c, Section__r.Name, CreatedDate, 
+                                                Language__c 
+                                            FROM GGW_Content_Block__c WITH SECURITY_ENFORCED ORDER BY Section__c];
+        return cbList;
+    }
+
 }

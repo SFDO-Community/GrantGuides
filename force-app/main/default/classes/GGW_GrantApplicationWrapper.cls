@@ -16,4 +16,7 @@ public class GGW_GrantApplicationWrapper {
     @AuraEnabled public String language;
     @AuraEnabled public List<GGW_SectionWrapper> unselectSectionList; // Used to add new sections to Grant
     @AuraEnabled public List<GGW_ContentBlockWrapper> selectedContentBlock; // Include Section and Text block
+    public GGW_GrantApplicationWrapper(){
+        this.language = 'en_US'; // default
+    }
 }

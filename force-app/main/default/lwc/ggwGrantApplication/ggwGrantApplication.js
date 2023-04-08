@@ -8,7 +8,7 @@ import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
-import createConetentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createConetentDistribution';
+import createContentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createContentDistribution';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import { updateRecord } from 'lightning/uiRecordApi';
 //import { getRecord } from 'lightning/uiRecordApi';
@@ -87,7 +87,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         console.log('## FILE: '+JSON.stringify(uploadedFiles));
         //alert('No. of files uploaded : ' + uploadedFiles.length + ' ID: ' + uploadedFiles[0].documentId);
 
-        createConetentDistribution({grantId: this.recordId, cvid: uploadedFiles[0].contentVersionId})
+        createContentDistribution({grantId: this.recordId, cvid: uploadedFiles[0].contentVersionId})
             .then((data) => {
                 console.log('URL: '+data);
                 alert('IMAGE URL: ' + data);

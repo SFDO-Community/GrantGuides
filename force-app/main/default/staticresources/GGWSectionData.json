@@ -9,7 +9,8 @@
         "Recommended": false,
         "Section_Details": null,
         "Sort_Order": 1,
-        "Suggested": false
+        "Suggested": false,
+        "Language__c": "en_US"
     },
     {
         "attributes": {
@@ -20,7 +21,8 @@
         "Recommended": false,
         "Section_Details": null,
         "Sort_Order": 2,
-        "Suggested": true
+        "Suggested": true,
+        "Language__c": "en_US"
     },
     {
         "attributes": {
@@ -31,7 +33,8 @@
         "Recommended": true,
         "Section_Details": "(maximum 500 words) Provide a brief summary of the project)\r\nExecutive Summary of Project (maximum 500 words) Provide a brief summary of the project that may be used as a project description for our grant adjudication and communication purposes.",
         "Sort_Order": 3,
-        "Suggested": true
+        "Suggested": true,
+        "Language__c": "en_US"
     },
     {
         "attributes": {
@@ -42,7 +45,8 @@
         "Recommended": true,
         "Section_Details": null,
         "Sort_Order": 4,
-        "Suggested": true
+        "Suggested": true,
+        "Language__c": "en_US"
     },
     {
         "attributes": {
@@ -53,7 +57,8 @@
         "Recommended": true,
         "Section_Details": "Briefly describe the community and the issue your project is designed to address. If the project has been offered before, briefly describe the results and any changes that have been made to improve outcomes.",
         "Sort_Order": 5,
-        "Suggested": true
+        "Suggested": true,
+        "Language__c": "en_US"
     },
     {
         "attributes": {
@@ -64,7 +69,8 @@
         "Recommended": true,
         "Section_Details": null,
         "Sort_Order": 6,
-        "Suggested": true
+        "Suggested": true,
+        "Language__c": "en_US"
     },
     {
         "attributes": {
@@ -75,7 +81,8 @@
         "Recommended": false,
         "Section_Details": null,
         "Sort_Order": 7,
-        "Suggested": true
+        "Suggested": true,
+        "Language__c": "en_US"
     },
     {
         "attributes": {
@@ -86,6 +93,7 @@
         "Recommended": true,
         "Section_Details": null,
         "Sort_Order": 8,
-        "Suggested": true
+        "Suggested": true,
+        "Language__c": "en_US"
     }
 ]
