@@ -479,17 +479,28 @@ public without sharing class GGW_ApplicationCtrl {
         // If lang = null then User langauge SFDC setting will be used by default
         return GGW_Util.saveGrantLanguage(lang, appId);
     }
-
-    @AuraEnabled
+    // app ID not used to init new grant pass it for copatible api
+    @AuraEnabled 
     public static String getLanguageSelection(String appId){
-        String lang = 'en_US'; // Default to US English code
-        if(GGW_Util.isValidString(appId)){
-            lang = getApplicationLanguage(appId);
-        }else{
-            lang = GGW_Util.getGrantLanguage();
-        }
-        return lang;
+        // String lang = 'en_US'; // Default to US English code
+        //if(GGW_Util.isValidString(appId)){
+        //    lang = getApplicationLanguage(appId);
+        //}else{
+         //   lang = GGW_Util.getGrantLanguage();
+        //}
+        return GGW_Util.getGrantLanguage();
     }
+    @AuraEnabled (cacheable=true)
+    public static String getLanguageSelectionForWire(String appId){
+        ///String lang = 'en_US'; // Default to US English code
+        //if(GGW_Util.isValidString(appId)){
+            //lang = getApplicationLanguage(appId);
+        //}else{
+        //    lang = GGW_Util.getGrantLanguage();
+        //}
+        return getApplicationLanguage(appId);
+    }
+
     @AuraEnabled (cacheable=true)
     public static List<GGW_Util.PickList> getSupportedLanguages(){
         return GGW_Util.getSelectOptionFromPicklist('GGW_Grant_State__c', 'Language__c', false); 

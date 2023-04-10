@@ -74,7 +74,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                 this.optionsSectionAdd = undefined;
             }else{
                 // eslint-disable-next-line no-console
-                console.log('unknown error')
+                console.log('New Application wireFoundSections: unknown error')
             }
         }
     // Intialize seggested sections list for home page

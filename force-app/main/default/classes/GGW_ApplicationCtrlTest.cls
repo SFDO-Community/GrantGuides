@@ -255,10 +255,12 @@ public class GGW_ApplicationCtrlTest {
         String str = GGW_ApplicationCtrl.getLanguageSelection(app.Id);
         // Test when there is NO application ID
         String strNoApp = GGW_ApplicationCtrl.getLanguageSelection(null);
+        String strLngWire = GGW_ApplicationCtrl.getLanguageSelectionForWire(app.Id);
         Test.stopTest();
         System.assertEquals(str, 'en_US', 'Failed to get application language');
         // NO application ID
         System.assertEquals(strNoApp, 'en_US', 'Negative test failed to get language selectino');
+        System.assertEquals(strLngWire, 'en_US', 'Failed to get application language in wired method');
     }
     @isTest
     static void testSaveLanguageSelection(){

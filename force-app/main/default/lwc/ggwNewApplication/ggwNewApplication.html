@@ -3,8 +3,10 @@
     <lightning-card title="New Grant Application" icon-name="utility:builder">
         <lightning-button-group slot="actions">
             <c-ggw-language-selector class="slds-var-p-right_x-small"
-                onlanguagechange={handleLanguageChange}>
-            ></c-ggw-language-selector>
+                onlanguagechange={handleLanguageChange}
+                editable=true
+            >
+            </c-ggw-language-selector>
             <lightning-button-group>
                 <lightning-button label="Create" onclick={handleApplicationRecordCreate}></lightning-button>
             </lightning-button-group>

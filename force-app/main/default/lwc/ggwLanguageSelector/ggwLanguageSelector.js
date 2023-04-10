@@ -7,7 +7,8 @@ export default class GgwLanguageSelector extends LightningElement {
     @api applicationid;
     // Language setting uses ISO language country code (language_COUNTRY) 
     // https://www.ibm.com/docs/en/radfws/9.6.1?topic=overview-locales-code-pages-supported
-    @api language;
+    @api language;// = 'en_US';
+    @api editable = false;
     @track langOptions = [];// = [{ label: 'English', value: 'en_US' },{ label: 'German', value: 'de_DE' },{ label: 'Japanese', value: 'ja_JP' }];
     error;
     _title = 'Language selector';
@@ -26,20 +27,46 @@ export default class GgwLanguageSelector extends LightningElement {
                 this.error = error;
             }else{
 		        // eslint-disable-next-line no-console
-		        console.log('unknown error')
+		        console.log(`wireSupportedLanguages: unknown error - ${error} data: ${data}`);
             }
         }
+/*
+        @wire(getLanguageSelection, { appId: '$applicationid' })
+        wiregetLanguageSelection({error,data}){
+            if (data) {
+                console.log('CALL wiredLanguageSelection');
+                console.log('LANG data: '+data);
+                console.log('APP ID: ' + this.applicationid);
 
+                this.language = data;
+                this.error = undefined;
+            }else if(error){
+                console.log(error);
+                this.error = error;
+            }else{
+		        // eslint-disable-next-line no-console
+		        console.log(`wiregetLanguageSelection: unknown error ${error} data: ${data}`);
+            }
+        }
+*/
     connectedCallback() {
-        this.initLanguageSelection();
+        //if(this.editable === true){
+            this.initLanguageSelection();
+        //}
     }
     initLanguageSelection(){
         getLanguageSelection({ appId: this.applicationid }) 
             .then((result) => {
-                console.log('CALL wiredLanguageSelection');
+                console.log('CALL getLanguageSelection');
                 console.log('LANG data: '+result);
+                console.log('APP ID: ' + this.applicationid);
                 this.language = result;
                 this.error = undefined;
+                                    // Creates the event with the selected language data.
+                                    //const selectedEvent = new CustomEvent('languagechange', { detail: this.language });
+                                    // Dispatches the event.
+                                    //this.dispatchEvent(selectedEvent);    
+                
             }) 
             .catch((error) => {
                 this.error = error;
@@ -47,6 +74,7 @@ export default class GgwLanguageSelector extends LightningElement {
                 console.log('LANG ERROR: '+JSON.stringify(error));
             });
     }
+    
     //gettter to return items which is mapped with options attribute
     get languageOptions() {
         return this.langOptions;
