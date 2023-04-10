@@ -8,7 +8,7 @@ import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
-import createConetentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createConetentDistribution';
+import createContentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createContentDistribution';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import { updateRecord } from 'lightning/uiRecordApi';
 //import { getRecord } from 'lightning/uiRecordApi';
@@ -25,6 +25,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 	@api objectApiName;
     @api grantName;
     @api contentDownloadUrl;// = 'https://data-drive-2030-dev-ed.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&versionId=0680R000001qFvW&operationContext=DELIVERY&contentId=05T0R0000069df5&page=0&d=/a/0R0000008lyn/kf5IDPjQuijS940z47u73Rnb2zSvfmkdSXUpc5S2oSU&oid=00D0R000000nmUQ&dpt=null&viewId=';
+    @api language = 'en_US';
     noLogoDisplay = true; // Display empty avatar instead of logo
     displayTitle;
     status;
@@ -86,7 +87,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         console.log('## FILE: '+JSON.stringify(uploadedFiles));
         //alert('No. of files uploaded : ' + uploadedFiles.length + ' ID: ' + uploadedFiles[0].documentId);
 
-        createConetentDistribution({grantId: this.recordId, cvid: uploadedFiles[0].contentVersionId})
+        createContentDistribution({grantId: this.recordId, cvid: uploadedFiles[0].contentVersionId})
             .then((data) => {
                 console.log('URL: '+data);
                 alert('IMAGE URL: ' + data);

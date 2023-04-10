@@ -4,6 +4,7 @@
     <columns>NAME</columns>
     <columns>Short_Description__c</columns>
     <columns>Section__c</columns>
+    <columns>Language__c</columns>
     <columns>CREATED_DATE</columns>
     <columns>CREATEDBY_USER</columns>
     <columns>Description__c</columns>

@@ -9,7 +9,8 @@
             "Recommended__c": false,
             "Section_Details__c": null,
             "Sort_Order__c": 9,
-            "Suggested__c": false
+            "Suggested__c": false,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -20,7 +21,8 @@
             "Recommended__c": true,
             "Section_Details__c": null,
             "Sort_Order__c": 3,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -31,7 +33,8 @@
             "Recommended__c": false,
             "Section_Details__c": null,
             "Sort_Order__c": 3,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -42,7 +45,8 @@
             "Recommended__c": true,
             "Section_Details__c": null,
             "Sort_Order__c": 4,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -53,7 +57,8 @@
             "Recommended__c": false,
             "Section_Details__c": null,
             "Sort_Order__c": 1,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -64,7 +69,8 @@
             "Recommended__c": true,
             "Section_Details__c": null,
             "Sort_Order__c": 5,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -75,7 +81,8 @@
             "Recommended__c": true,
             "Section_Details__c": null,
             "Sort_Order__c": 2,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -86,7 +93,8 @@
             "Recommended__c": true,
             "Section_Details__c": "(maximum 500 words) Provide a brief summary of the project)\r\nExecutive Summary of Project (maximum 500 words) Provide a brief summary of the project that may be used as a project description for our grant adjudication and communication purposes.",
             "Sort_Order__c": 1,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         },
         {
             "attributes": {
@@ -97,7 +105,8 @@
             "Recommended__c": true,
             "Section_Details__c": "Briefly describe the community and the issue your project is designed to address. If the project has been offered before, briefly describe the results and any changes that have been made to improve outcomes.",
             "Sort_Order__c": 2,
-            "Suggested__c": true
+            "Suggested__c": true,
+            "Language__c": "en_US"
         }
     ]
 }

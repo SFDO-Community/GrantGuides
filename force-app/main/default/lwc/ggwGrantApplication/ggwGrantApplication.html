@@ -4,23 +4,28 @@
     <lightning-quick-action-panel header={displayTitle}>
       <div>
           <lightning-card title={displayTitle} icon-name="utility:builder">
-              <lightning-button-group slot="actions">
-                <lightning-button label="Reorder" onclick={reorderSections}></lightning-button>
-                <lightning-button icon-name="utility:refresh"  alternative-text="Refresh" title="Refresh" onclick={reloadSections}></lightning-button>
+              <lightning-button-group slot="actions" >
+                <!-- Display Langauge selector component -->
+                <c-ggw-language-display applicationid={recordId} class="slds-p-right_x-small" ></c-ggw-language-display>
 
-                <lightning-button-menu onselect={handleExportMenuSelect} alternative-text="Export menu" 
-                                        variant="border" title="Export"
-                                        label="Export"
-                                        tooltip="Choose format to export" icon-name="utility:down">
-                  <lightning-menu-item value="exportHTML" label="HTML"></lightning-menu-item>  
-                  <lightning-menu-item value="exportPDF" label="PDF"></lightning-menu-item>
-                  <lightning-menu-item value="exportWORD" label="Word"></lightning-menu-item>
-                </lightning-button-menu>
+                <lightning-button-group >
+                  <lightning-button label="Reorder" class="circle" onclick={reorderSections}></lightning-button>
+                  <lightning-button icon-name="utility:refresh"  alternative-text="Refresh" title="Refresh" onclick={reloadSections}></lightning-button>
+  
+                  <lightning-button-menu onselect={handleExportMenuSelect} alternative-text="Export menu" 
+                                          variant="border" title="Export"
+                                          label="Export"
+                                          tooltip="Choose format to export" icon-name="utility:down">
+                    <lightning-menu-item value="exportHTML" label="HTML"></lightning-menu-item>  
+                    <lightning-menu-item value="exportPDF" label="PDF"></lightning-menu-item>
+                    <lightning-menu-item value="exportWORD" label="Word"></lightning-menu-item>
+                  </lightning-button-menu>
+                </lightning-button-group>
               </lightning-button-group>
-
+  
               <template if:true={showCard}>
                 <div class="slds-box slds-box_xx-small slds-m-left_x-small slds-m-right_x-small slds-m-bottom_xx-small">            
-
+                  
                     <lightning-layout>
                         <lightning-layout-item padding="around-small">
                             <div class="header-column">

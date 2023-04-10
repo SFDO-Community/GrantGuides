@@ -99,6 +99,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>GGW_Content_Block__c.Language__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>GGW_Content_Block__c.Section__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -124,6 +129,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>GGW_Grant_Application__c.Language__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>GGW_Grant_Application__c.Logo_Download_Url__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -140,6 +150,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>GGW_Grant_State__c.Grant_Application__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>GGW_Grant_State__c.Language__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>GGW_Section__c.Language__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -170,6 +190,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>GGW_Selected_Item__c.GGW_Section__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>GGW_Selected_Item__c.Language__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

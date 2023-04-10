@@ -21,6 +21,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     message = 'New grant was created';
     variant = 'success';
     @api availableActions = [];
+    @api language = 'en_US';
     // -- List of checkobxes gested section
     value = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommended selected Section IDs or items
     options = []; // List of Suggested sections display as checkboxes list the values show what is suggested from data
@@ -39,23 +40,19 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     grantNameValue;
     statusValue;
     // ---
-    /** App status si deafulted not setting by user coment for now
-    get statusOptions() {
-        return [
-            { label: 'New', value: 'New' },
-            { label: 'Progress', value: 'Progress' },
-            { label: 'Submited', value: 'Submited' },
-            { label: 'Complete', value: 'Complete' },
-            { label: 'Declined', value: 'Declined' },
-        ];
+    connectedCallback() {
+        this.getSectionsList();
     }
-    */
     // Status changes combo box handler
     handleStatusChange(event){
         this.statusValue = event.detail.value;
     }
     handleGrantNameChange(event) {
         this.grantNameValue = event.detail.value;
+    }
+    handleLanguageChange(event){
+        //console.log('#### LANG - '+event.detail);
+        this.getSectionsList();
     }
     // Search for existing sections that are NOT part of suggested list
     // There can be many sections that are not suggested but can be re-used
@@ -77,11 +74,12 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                 this.optionsSectionAdd = undefined;
             }else{
                 // eslint-disable-next-line no-console
-                console.log('unknown error')
+                console.log('New Application wireFoundSections: unknown error')
             }
         }
     // Intialize seggested sections list for home page
     // Used in checkbox group to select sections to use by Grant application
+    /* 
     @wire(getSections)
         wireSugestedSection({error,data}){
             if (data) {
@@ -104,6 +102,32 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
 		        console.log('unknown error')
             }
         }
+    */
+
+    getSectionsList() {
+        // Call SFDC method query sections
+        getSections()
+            .then((data) => {
+                this.options = [];
+                this.baseoptions = [];
+                this.value = [];
+                for(var i = 0; i < data.length; i++)  {
+                    this.options = [...this.options ,{label: data[i].label, value: data[i].recordid} ];  
+                    this.baseoptions = [...this.baseoptions ,{label: data[i].label, value: data[i].recordid} ];  
+
+                    if(data[i].selected == true){
+                        this.value.push(data[i].recordid);
+                        this.basevalue.push(data[i].recordid);
+                    }
+                }                
+                this.error = undefined;
+            })
+            .catch((error) => {
+                this.error = error;
+                console.log(error);
+            });
+    }
+    
 
     get selectedValues() {
         return this.value.join(',');

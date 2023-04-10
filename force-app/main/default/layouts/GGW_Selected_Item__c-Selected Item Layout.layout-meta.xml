@@ -38,6 +38,10 @@
                 <behavior>Edit</behavior>
                 <field>Text_Block__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Language__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>

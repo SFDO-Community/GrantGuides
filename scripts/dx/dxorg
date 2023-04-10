@@ -27,15 +27,15 @@ sfdx force:org:create --setdefaultusername --setalias $ORG_ALIAS --definitionfil
 
 # Push source
 echo "--- PUSH SOURCE FOR: $ORG_ALIAS"
-sfdx force:source:push -u $ORG_ALIAS || { echo 'Source push failed' ; exit 1; }
+sfdx force:source:push --target-org $ORG_ALIAS || { echo 'Source push failed' ; exit 1; }
 
 # Assign Permission Set to users
 echo "--- ASSIGN PERMISSIONS FOR: $ORG_ALIAS"
-sfdx force:user:permset:assign -n GGW_User_Permissions -u $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
+sfdx force:user:permset:assign -n GGW_User_Permissions --target-org $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
 
 # Push sample data
 echo "--- INSERT SAMPLE DATA FOR: $ORG_ALIAS"
-sfdx force:data:tree:import -u $ORG_ALIAS --plan test-data/export-section-GGW_Section__c-plan.json
+sfdx force:data:tree:import --target-org $ORG_ALIAS --plan test-data/export-section-GGW_Section__c-plan.json
 #sfdx force:data:tree:import -u ggw --plan test-data/export-section-GGW_Section__c-plan.json
 # Run Tests - optional step
 

@@ -1,27 +1,39 @@
 <template>
     
     <lightning-card title="New Grant Application" icon-name="utility:builder">
-        <lightning-button label="Create" slot="actions" onclick={handleApplicationRecordCreate}></lightning-button>
-
-        <div class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
+        <lightning-button-group slot="actions">
+            <c-ggw-language-selector class="slds-var-p-right_x-small"
+                onlanguagechange={handleLanguageChange}
+                editable=true
+            >
+            </c-ggw-language-selector>
+            <lightning-button-group>
+                <lightning-button label="Create" onclick={handleApplicationRecordCreate}></lightning-button>
+            </lightning-button-group>
+        </lightning-button-group>
+      <!---  <lightning-button label="Create" slot="actions" onclick={handleApplicationRecordCreate}></lightning-button>
+      -->
+        <div class="slds-box slds-box_xx-small slds-var-m-left_xx-small slds-var-m-right_xxx-small slds-var-m-bottom_xx-small">
             <lightning-input type="text" label="Grant Name" onchange={handleGrantNameChange}></lightning-input>
+            
         </div>        
 
         <div class="slds-grid slds-gutters">
             <div class="slds-col">
-                <div class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
-                    <lightning-checkbox-group name="Suggested sections to include"
-                    label="Suggested sections to include"
-                    options={options}
-                    value={value}
-                    onchange={handleIncludeSectionChange}>
+                <div class="slds-box slds-box_xx-small slds-var-m-left_xx-small slds-var-m-right_xxx-small slds-var-m-bottom_xx-small">
+                    <lightning-checkbox-group 
+                        name="Suggested sections to include"
+                        label="Suggested sections to include"
+                        options={options}
+                        value={value}
+                        onchange={handleIncludeSectionChange}>
                     </lightning-checkbox-group>
 
                 </div>        
             </div>
 
             <div class="slds-col">
-                <div class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
+                <div class="slds-box slds-box_xx-small slds-var-m-left_xx-small slds-var-m-right_xxx-small slds-var-m-bottom_xx-small">
  
                     <div class="slds-var-m-around_medium">
                         <lightning-layout vertical-align="end" class="slds-var-m-bottom_small">
@@ -37,7 +49,8 @@
                                         value={searchKey}
                                     ></lightning-input>
 
-                                    <lightning-checkbox-group name="Sections found"
+                                    <lightning-checkbox-group 
+                                        name="Sections found"
                                         options={optionsSectionAdd}
                                         value={valueSectionAdd}
                                         onchange={handleNewSectionAdd}>
