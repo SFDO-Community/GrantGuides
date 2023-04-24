@@ -17,8 +17,9 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import {refreshApex} from '@salesforce/apex';
 
 const GRANT_TITLE = 'Grant Application';
-const GRANT_TITLE_HEADER = 'Grant Application: ';
+const GRANT_TITLE_HEADER = 'Grant Application:';
 const GRANT_TITLE_ERROR = 'Grant Application do not exist, please create new or select existing grant.';
+const GRANT_RECORD_PAGE_URL = '/lightning/r/GGW_Grant_Application__c/'; // Add record ID
 
 export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
 	@api recordId;
@@ -43,7 +44,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     container = 'modal';
     showModalFooter = false;
     showCard = true; // Display Editor card if data grant exists ELSE show illustration
-
+    @track grantRecordPage = GRANT_RECORD_PAGE_URL;
     @track currentPageReference;
     @wire(CurrentPageReference)
         setCurrentPageReference(currentPageReference) {
@@ -175,17 +176,20 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         // --- Need this timeout delay to allow record ID from Quick Action on record page to be set
         // For some crazy reason LEX/LWC does not init record ID fast enough to init this call
         setTimeout(() => {
-            console.log('queryGrantApplication: Init App with ID:'+this.recordId);
+            console.log(`queryGrantApplication: Init App with ID: ${this.recordId}`);
             //this.displayTitle = 'Grant Application: ' + this.grant.data ? this.grant.data.fields.Name.value : null;
 
             // Change to call imperative insted of wire for data refreshes
             getApplication({recordId: this.recordId})
                 .then((data) => {
-                    console.log('queryGrantApplication: Grant Name: '+data.name);
+                    console.log(`queryGrantApplication: Grant Name: ${data.name}`);
                     this.sections = []; // Clear to reload
                     this.currentSections = [];
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
                     this.grantName = data.name;
+                    // Init recrd page URL
+                    this.grantRecordPage = `${GRANT_RECORD_PAGE_URL}${this.recordId}/view`;
+
                     // Conditianal display of logo if it is available or show empty placeholder image
                     if (data.logodisplayurl != null){
                         this.contentDownloadUrl = data.logodisplayurl; // load display URL logo
@@ -195,7 +199,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     }
                     this.displayGrantCard(); // nadle UX display fo main card or illustration NO Data
                     if(data.name){
-                        this.displayTitle = GRANT_TITLE_HEADER + data.name;
+                        this.displayTitle = ` ${GRANT_TITLE_HEADER} ${data.name}`;
                     }else{
                         this.displayTitle = GRANT_TITLE_ERROR;
                     }
