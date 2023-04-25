@@ -3,7 +3,17 @@
   <template if:true={showCard}>
     <lightning-quick-action-panel header={displayTitle}>
       <div>
-          <lightning-card title={displayTitle} icon-name="utility:builder">
+         <!-- <lightning-card title={displayTitle} icon-name="utility:builder"> -->
+
+        <lightning-card > 
+  
+          <h3 slot="title" >
+            <a href={grantRecordPage}>
+              <lightning-icon icon-name="utility:builder" size="small"></lightning-icon>
+              {displayTitle}
+            </a>
+          </h3> 
+
               <lightning-button-group slot="actions" >
                 <!-- Display Langauge selector component -->
                 <c-ggw-language-display applicationid={recordId} class="slds-p-right_x-small" ></c-ggw-language-display>
