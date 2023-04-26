@@ -34,9 +34,9 @@ flows:
                 options:
                     api_names: GGW_User_Permissions
             4:
-                task: command
-                options:
-                    command: sfdx force data tree import -u GrantGuides__dev --plan test-data/export-section-GGW_Section__c-plan.json
+               task: command
+               options:
+                   command: sfdx data import tree -p test-data/export-section-GGW_Section__c-plan.json
             5:
                 task: command
                 options:
