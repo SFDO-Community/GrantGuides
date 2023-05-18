@@ -37,6 +37,7 @@ public class GGW_SampleDataTest {
         gs.Section_Details__c = 'Some details text here';
         gs.Sort_Order__c = 1;
         gs.Suggested__c = true;
+        gs.Language__c = 'en_US';
         insert gs;
 
         // Call this method to insert Sections & Content Block sample data when data already exists

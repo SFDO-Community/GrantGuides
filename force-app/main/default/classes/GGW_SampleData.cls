@@ -22,6 +22,7 @@ public with sharing class GGW_SampleData {
         public String Section_Details;
         public Integer Sort_Order {get; set;}
         public Boolean Suggested {get; set;}
+        public String Language {get; set;}
     }
 
     public class GGW_Content_Block {
@@ -30,6 +31,7 @@ public with sharing class GGW_SampleData {
         public String Description;
         public String Section;
         public String Short_Description;
+        public String Language {get; set;}
     }
     /**
      List<GGW_Section__c> lst = [SELECT Id, Name from GGW_Section__c];
@@ -49,6 +51,7 @@ public with sharing class GGW_SampleData {
                 gs.Section_Details__c = s.Section_Details;
                 gs.Sort_Order__c = s.Sort_Order;
                 gs.Suggested__c = s.Suggested;
+                gs.Language__c = s.Language;
                 sectionNewList.add(gs);
             }
             if(sectionNewList.size() > 0){
@@ -69,11 +72,41 @@ public with sharing class GGW_SampleData {
                     }
                     // Assemble response message text for Sections and Content Blocks
                 str += insertContentBlocks(sectionMap);
+                // Insert sample Grant
+                createSampleGrant();
             }
         }else{
             str = IMPORT_DATA_CANCELLED;
         }
         return str;
+    }
+    // Insert sample Grant app
+    private static void createSampleGrant(){
+        List<GGW_Content_Block__c> lstBlock = [SELECT Id, Name, Section__c, Description__c, Short_Description__c FROM GGW_Content_Block__c WITH SECURITY_ENFORCED LIMIT 20];
+        GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
+        gapp.Name = 'Cloudy Grant Sample';
+        gapp.Status__c = 'Progress';
+        gapp.Language__c = 'en_US';
+        if(Schema.sObjectType.GGW_Grant_Application__c.isCreateable()){
+            insert gapp;            
+        } 
+        List<GGW_Selected_Item__c> items = new List<GGW_Selected_Item__c>();
+        Integer itemSortOrder = 1;
+        for(GGW_Content_Block__c cb : lstBlock){
+            GGW_Selected_Item__c item = new GGW_Selected_Item__c();
+            item.GGW_Section__c = cb.Section__c;
+            item.Grant_Application__c = gapp.Id;
+            item.Selected_Block__c = cb.Id;
+            item.Text_Block__c = cb.Description__c;
+            item.Sort_Order__c = itemSortOrder;
+            if(itemSortOrder < 3){
+                items.add(item);
+            }
+            itemSortOrder++; // increment sort order set as default
+        }
+        if(Schema.sObjectType.GGW_Selected_Item__c.isCreateable()){
+            insert items;            
+        } 
     }
     // Insert all related Content Blocks as records for parent sections
     /**
@@ -90,6 +123,7 @@ public with sharing class GGW_SampleData {
             newBlock.Name = b.Name;
             newBlock.Description__c = b.Description;
             newBlock.Short_Description__c = b.Short_Description;
+            newBlock.Language__c = b.Language;
             
             if(sectionMap.containsKey(b.Section)){
                 String v1 = (String)sectionMap.get(b.Section);
