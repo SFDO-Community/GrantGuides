@@ -34,10 +34,10 @@ flows:
                 options:
                     api_names: GGW_User_Permissions
             4:
-               task: command
-               options:
-                   command: sfdx data import tree -p test-data/export-section-GGW_Section__c-plan.json
-            5:
                 task: command
                 options:
                     command: cci org default --org dev
+            5:
+               task: command
+               options:
+                   command: sfdx data import tree -p test-data/export-section-GGW_Section__c-plan.json
