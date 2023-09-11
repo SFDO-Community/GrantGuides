@@ -43,3 +43,4 @@ $RECYCLE.BIN/
 tempdata
 tempdata-out
 *.cci/*
+.pmdCache
