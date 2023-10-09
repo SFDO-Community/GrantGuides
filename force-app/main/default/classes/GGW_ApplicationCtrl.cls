@@ -8,7 +8,9 @@
  * 
  */
 public without sharing class GGW_ApplicationCtrl {
-
+    public static String ggGtSteObj = GGW_Grant_State__c.sobjecttype.getDescribe().getName();
+    public static String ggGtStLanField = GGW_Grant_State__c.Language__c.getDescribe().getName();
+    
     // Return Grant Aplication Wrapper object
     @AuraEnabled
     public static GGW_GrantApplicationWrapper getApplication(String recordId){
@@ -503,7 +505,7 @@ public without sharing class GGW_ApplicationCtrl {
 
     @AuraEnabled (cacheable=true)
     public static List<GGW_Util.PickList> getSupportedLanguages(){
-        return GGW_Util.getSelectOptionFromPicklist('GGW_Grant_State__c', 'Language__c', false); 
+        return GGW_Util.getSelectOptionFromPicklist(ggGtSteObj, ggGtStLanField, false); 
     }
     // Get application language from existing Grant record
     private static String getApplicationLanguage(String appId){
