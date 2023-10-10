@@ -8,6 +8,9 @@
  */
 @IsTest
 public class GGW_UtilTest {
+    public static String ggGtSteObj = GGW_Grant_State__c.sobjecttype.getDescribe().getName();
+    public static String ggGtStLanField = GGW_Grant_State__c.Language__c.getDescribe().getName();
+    
     @TestSetup
     static void makeData(){
         // Samlple content data for testing methods
@@ -136,7 +139,7 @@ public class GGW_UtilTest {
     @isTest
     static void testSelectOptionFromPicklist(){
         Test.startTest();
-        List<GGW_Util.PickList> picList = GGW_Util.getSelectOptionFromPicklist('GGW_Grant_State__c', 'Language__c', true);
+        List<GGW_Util.PickList> picList = GGW_Util.getSelectOptionFromPicklist(ggGtSteObj, ggGtStLanField, true);
         Test.stopTest();
         System.assertNotEquals(picList, null, 'No supported language found in mentadata'); 
         // Find English Code selector
@@ -162,7 +165,7 @@ public class GGW_UtilTest {
     @isTest
     static void testGetValueMapFromPicklist(){
         Test.startTest();
-        Map<String, String> valMap = GGW_Util.getValueMapFromPicklist('GGW_Grant_State__c', 'Language__c');
+        Map<String, String> valMap = GGW_Util.getValueMapFromPicklist(ggGtSteObj, ggGtStLanField);
         Test.stopTest();
         System.assertEquals(valMap.size()>0,true,'State has some supported Languages');
         if(valMap.containsKey('en_US')){

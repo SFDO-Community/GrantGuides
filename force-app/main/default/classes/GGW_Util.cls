@@ -9,6 +9,9 @@
  * Used by standard and Custom controller
  */
 public without sharing class GGW_Util {
+    public static String ggGtSteObj = GGW_Grant_State__c.sobjecttype.getDescribe().getName();
+    public static String ggGtStLanField = GGW_Grant_State__c.Language__c.getDescribe().getName();
+   
     // Pass Grant application ID record
     // return a list of selected Items (sections+blocks)
     public static List<GGW_Selected_Item__c> getSelectedItems(String appId) {
@@ -148,7 +151,7 @@ public without sharing class GGW_Util {
     }
     public static String toLanguageLabel(String langcode){
         String langlbl = 'English';
-        Map<String, String> valMap = getValueMapFromPicklist('GGW_Grant_State__c', 'Language__c');
+        Map<String, String> valMap = getValueMapFromPicklist(ggGtSteObj, ggGtStLanField);
         if(valMap.containsKey(langcode)){
             langlbl = valMap.get(langcode);
         }
