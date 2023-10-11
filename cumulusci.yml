@@ -1,11 +1,33 @@
-minimum_cumulusci_version: '3.74.0'
+minimum_cumulusci_version: '3.80.0'
 project:
     name: GrantGuides
     package:
-        name: ggw
+        name: Grants Content Kit
+        namespace: GCKit
         api_version: '55.0'
     git:
         default_branch: 'main'
+        prefix_feature: feature/
+        prefix_beta: beta/
+        prefix_release: release/
+        release_notes:
+            parsers:
+                1:
+                    class_path: cumulusci.tasks.release_notes.parser.GithubLinesParser
+                    title: Critical Changes
+                2:
+                    class_path: cumulusci.tasks.release_notes.parser.GithubLinesParser
+                    title: Changes
+                3:
+                    class_path: cumulusci.tasks.release_notes.parser.GithubIssuesParser
+                    title: Issues Closed
+                4:
+                    class_path: cumulusci.tasks.release_notes.parser.GithubLinesParser
+                    title: New Metadata
+                5:
+                    class_path: cumulusci.tasks.release_notes.parser.GithubLinesParser
+                    title: Deleted Metadata
+        repo_url: https://github.com/Salesforce-org-Impact-Labs/GrantGuides
     source_format: sfdx
 
 tasks:
