@@ -47,7 +47,7 @@ jobs:
               id: createPackageVersion
               run: |
                   set +e
-                  json=$(sf package version create -p "Grants Content Kit" -a "GCKit Manage Package" -v ldodevhub -f sfdx-project.json -w 60 -t rel1.0 -c -x --post-install-url=https://github.com/Salesforce-org-Impact-Labs/GrantGuides/wiki --json)
+                  json=$(sf package version create -p "Grants Content Kit" -a "GCKit Manage Package" -f sfdx-project.json -w 60 -t rel1.0 -c -x --post-install-url=https://github.com/Salesforce-org-Impact-Labs/GrantGuides/wiki --json)
                   echo $json
                   status=$(echo $json | jq '.status')
                   if [ $status == "0" ]; then
