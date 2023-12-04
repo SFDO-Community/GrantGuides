@@ -1,9 +1,18 @@
 name: Create Beta Version and Test release
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
+    branches:
+      - '**'
+      - '!main'
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+            #Workflow environment variables
+env:
+  CUMULUSCI_KEYCHAIN_CLASS: cumulusci.core.keychain.EnvironmentProjectKeychain
+  CUMULUSCI_SERVICE_github: ${{ secrets.CUMULUSCI_SERVICE_github }}
 
-# Jobs to be executed
 jobs:
     packaging:
         runs-on: Ubuntu-latest
@@ -71,6 +80,7 @@ jobs:
             - name: 'Delete scratch org'
               if: always()
               run: sf org delete scratch -p -o scratch-org
+
             # Generage Release notes
             - name: Set up Python
             uses: actions/setup-python@v1
