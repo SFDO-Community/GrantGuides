@@ -2,12 +2,7 @@ name: Create Beta Version and Test release
 
 on:
   workflow_dispatch:
-    branches:
-      - '**'
-      - '!main'
-    paths-ignore:
-      - 'docs/**'
-      - 'README.md'
+
             #Workflow environment variables
 env:
   CUMULUSCI_KEYCHAIN_CLASS: cumulusci.core.keychain.EnvironmentProjectKeychain
@@ -83,13 +78,13 @@ jobs:
 
             # Generage Release notes
             - name: Set up Python
-            uses: actions/setup-python@v1
-            with:
-              python-version: '3.8'
+              uses: actions/setup-python@v1
+              with:
+                python-version: '3.8'
             - name: Install CumulusCI
               run: |
-              python -m pip install -U pip
-              pip install cumulusci
+                python -m pip install -U pip
+                pip install cumulusci
             - name: Deploy and Run Tests
-              run: |
-              cci flow run gck_release 
+              run: 
+                cci flow run gck_release 
