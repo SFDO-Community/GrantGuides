@@ -41,3 +41,10 @@ flows:
                task: command
                options:
                    command: sfdx data import tree -p test-data/export-section-GGW_Section__c-plan.json
+    
+    gck_release:
+        steps:
+            1:
+                task: github_release
+            2:
+                task: github_release_notes

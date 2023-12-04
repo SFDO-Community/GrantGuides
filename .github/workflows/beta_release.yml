@@ -1,40 +1,85 @@
-name: beta release
+name: Create Beta Version and Test release
 
 on:
-  workflow_dispatch:
-    branches:
-      - "main"
-    paths-ignore:
-      - "docs/**"
-      - "README.md"
+    workflow_dispatch:
 
+# Jobs to be executed
 jobs:
-  unit_tests:
-    name: "Run Beta release"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install sfdx
-        run: |
-          mkdir sfdx
-          wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz | tar xJ -C sfdx --strip-components 1
-          echo $(realpath sfdx/bin) >> $GITHUB_PATH
-      - name: Authenticate Dev Hub
-        run: |
-          echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
-          sfdx force:auth:sfdxurl:store -f sfdx_auth -d
-        # Create package version and extract its id
-      - name: "Create package version"
-        id: createPackageVersion
-        run: |
-          set +e
-          json=$(sfdx force:package:version:create -p "Grants Content Kit" --installationkeybypass --definitionfile config/project-scratch-def.json --wait 10 --targetdevhubusername ldodevhub --branch main -c --json)
-          echo $json
-          status=$(echo $json | jq '.status')
-          if [ $status == "0" ]; then
-          packageVersionId=$(echo $json | jq -r '.result.SubscriberPackageVersionId')
-          echo "::set-output name=packageVersionId::$packageVersionId"
-          else
-          echo "sfdx force:package:version:create failed"
-          fi
-          exit $status
+    packaging:
+        runs-on: Ubuntu-latest
+        steps:
+            # Install Salesforce CLI
+            - name: 'Install Salesforce CLI'
+              run: |
+                  npm install @salesforce/cli --location=global
+                  nodeInstallPath=$(npm config get prefix)
+                  echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+                  sf --version
+
+            # Checkout the source code
+            - name: 'Checkout source code'
+              uses: actions/checkout@v3
+
+            # Store secret for dev hub
+            - name: 'Populate auth file with SFDX_AUTH_URL secret'
+              shell: bash
+              run: |
+                  echo ${{ secrets.SFDX_AUTH_URL}} > ./SFDX_AUTH_URL.txt
+                  secretFileSize=$(wc -c "./SFDX_AUTH_URL.txt" | awk '{print $1}')
+                  if [ $secretFileSize == 1 ]; then
+                      echo "Missing SFDX_AUTH_URL secret. Is this workflow running on a fork?";
+                      exit 1;
+                  fi
+
+            # Authenticate dev hub
+            - name: 'Authenticate Dev Hub'
+              run: sf org login sfdx-url -f ./SFDX_AUTH_URL.txt -a devhub -d
+
+            # Remove auth file
+            - name: 'Remove auth file'
+              run: rm -f ./SFDX_AUTH_URL.txt
+
+            # Create package version and extract its id
+            - name: 'Create package version'
+              id: createPackageVersion
+              run: |
+                  set +e
+                  json=$(sf package version create -p "Grants Content Kit" -a "GCKit Unlocked Package" -f sfdx-project.json -w 60 -c -x --post-install-url=https://github.com/Salesforce-org-Impact-Labs/GrantGuides/wiki --json)
+                  echo $json
+                  status=$(echo $json | jq '.status')
+                  if [ $status == "0" ]; then
+                      packageVersionId=$(echo $json | jq -r '.result.SubscriberPackageVersionId')
+                      echo "packageVersionId=$packageVersionId" >> $GITHUB_OUTPUT
+                  else
+                      echo "Failed to create package version"
+                  fi
+                  exit $status
+
+            # Wait for package replication
+            - name: 'Wait for package replication'
+              run: sleep 360s
+
+            # Create scratch org
+            - name: 'Create scratch org'
+              run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d -y 1
+
+            # Install new package in scratch org
+            - name: 'Install new package version in scratch org'
+              run: sf package install -p ${{ steps.createPackageVersion.outputs.packageVersionId }} -w 10 -o scratch-org -r
+
+            # Housekeeping
+            - name: 'Delete scratch org'
+              if: always()
+              run: sf org delete scratch -p -o scratch-org
+            # Generage Release notes
+            - name: Set up Python
+            uses: actions/setup-python@v1
+            with:
+              python-version: '3.8'
+            - name: Install CumulusCI
+              run: |
+              python -m pip install -U pip
+              pip install cumulusci
+            - name: Deploy and Run Tests
+              run: |
+              cci flow run gck_release 
