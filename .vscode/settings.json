@@ -3,5 +3,21 @@
     "**/node_modules": true,
     "**/bower_components": true,
     "**/.sfdx": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.apivcs": true,
+    "**/.gitignore": true,
+    "**/.designer.json": true,
+    "**/.exchange.xml": true,
+    "**/.vscode": true,
+    "**/.mvn": true,
+    "**/.exchange_modules_tmp": true,
+    ".mule": true
   }
 }
