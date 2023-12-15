@@ -32,6 +32,32 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return app;
     }
+    // Delete logo file from grant
+    @AuraEnabled
+    public static String deleteLogo(String recordId){
+        GGW_Grant_Application__c app = new GGW_Grant_Application__c();
+        app.Id = recordId;
+        app.DistributionPublicUrl__c = null; // Logo public URL
+        app.Logo_Download_Url__c = null; // Logo display URL
+        // Check object CRUD
+        if(Schema.sObjectType.GGW_Grant_Application__c.isUpdateable()){
+            update app;
+        }
+        // TODO Find and delete cintent file and related records
+
+        return 'Logo image deleted';
+    }
+    // Include or exclude logo image into grant application
+    @AuraEnabled
+    public static String includeLogo(String recordId, Boolean state){
+        GGW_Grant_Application__c app = new GGW_Grant_Application__c();
+        app.Id = recordId;
+        app.Include_Logo__c = state;
+        if(Schema.sObjectType.GGW_Grant_Application__c.isUpdateable()){
+            update app;
+        }
+        return 'Application logo updated';
+    }
 
     private static String getValidLogoURL(GGW_Grant_Application__c grant){
         String logourl = null;

@@ -8,6 +8,8 @@ import { LightningElement ,wire , api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
+import includeLogo from '@salesforce/apex/GGW_ApplicationCtrl.includeLogo';
+import deleteLogo from '@salesforce/apex/GGW_ApplicationCtrl.deleteLogo';
 import createContentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createContentDistribution';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 //import { updateRecord } from 'lightning/uiRecordApi';
@@ -27,6 +29,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     @api grantName;
     @api contentDownloadUrl;// = 'https://data-drive-2030-dev-ed.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&versionId=0680R000001qFvW&operationContext=DELIVERY&contentId=05T0R0000069df5&page=0&d=/a/0R0000008lyn/kf5IDPjQuijS940z47u73Rnb2zSvfmkdSXUpc5S2oSU&oid=00D0R000000nmUQ&dpt=null&viewId=';
     @api language = 'en_US';
+    @track logoState = false; // Exclude or include logo
     noLogoDisplay = true; // Display empty avatar instead of logo
     displayTitle;
     status;
@@ -46,6 +49,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     showCard = true; // Display Editor card if data grant exists ELSE show illustration
     @track grantRecordPage = GRANT_RECORD_PAGE_URL;
     @track currentPageReference;
+
     @wire(CurrentPageReference)
         setCurrentPageReference(currentPageReference) {
             this.currentPageReference = currentPageReference;
@@ -59,7 +63,57 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             this.displayGrantCard();
             this.queryGrantApplication();
         }
+
+    handleLogoSelectorClick() {
+        this.logoState = !this.logoState;
+        includeLogo({recordId: this.recordId, state: this.logoState})
+            .then((data) => {
+                console.log(`Logo state was updated ${this.logoState}`);
+                this.error = undefined;
+                const evt = new ShowToastEvent({
+                    title: this._title,
+                    message: `${data} ${this.logoState ? 'included' : 'excluded'}`,
+                    variant: 'success',
+                });
+                this.dispatchEvent(evt);    
+        
+            })
+            .catch((error) => {
+                console.log(error);
+                this.error = error;
+                const evt = new ShowToastEvent({
+                    title: this._title,
+                    message: 'Logo selection error.',
+                    variant: 'error',
+                });
+                this.dispatchEvent(evt);    
+            });
+    }
+    handleLogoDelete(event){
+        deleteLogo({recordId: this.recordId})
+        .then((data) => {
+            console.log(`Logo file was deleted`);
+            this.error = undefined;
+            const evt = new ShowToastEvent({
+                title: this._title,
+                message: data,
+                variant: 'success',
+            });
+            this.dispatchEvent(evt);    
     
+        })
+        .catch((error) => {
+            console.log(error);
+            this.error = error;
+            const evt = new ShowToastEvent({
+                title: this._title,
+                message: 'Logo file delete error.',
+                variant: 'error',
+            });
+            this.dispatchEvent(evt);    
+        });
+
+    }
     reloadSections(){
         this.queryGrantApplication();
     }
@@ -91,7 +145,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         createContentDistribution({grantId: this.recordId, cvid: uploadedFiles[0].contentVersionId})
             .then((data) => {
                 console.log('URL: '+data);
-                alert('IMAGE URL: ' + data);
+                //alert('IMAGE URL: ' + data);
                 this.contentDownloadUrl = data;
                 this.noLogoDisplay = false;
                 this.error = undefined;

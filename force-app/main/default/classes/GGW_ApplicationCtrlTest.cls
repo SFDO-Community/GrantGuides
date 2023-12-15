@@ -16,6 +16,25 @@ public class GGW_ApplicationCtrlTest {
     }
 
     @isTest
+    static void includeLogoTest(){
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant', sections);
+
+        Test.startTest();
+        
+        Test.stopTest();
+
+    }
+    @isTest
+    static void deleteLogoTest(){
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant', sections);
+
+        Test.startTest();
+        
+
+        Test.stopTest();
+        
+    }
+    @isTest
     static void testNewGrant(){
         // Query all suggested sections
         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
