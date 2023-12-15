@@ -2,7 +2,7 @@
 
 ##########################################################################################
 #
-#   Author: Igor Androsov 2022
+#   Author: Igor Androsov 2023
 #
 #   Script to run APEX Unit Tests for project
 #   For more details on sfdx testing refer to: 
@@ -14,12 +14,10 @@
 
 ORG_ALIAS="$1"
 
-echo "--- THIS IS SFDX SCRIPT DEPRECATED START USING SF CLI ---"
 echo "--- START UNIT TESTS FOR: $ORG_ALIAS"
 
 # Run Tests - optional step
 # --- DEPRECTAED CLI OPTIONS change to new version of sfdx
-# sfdx force:apex:test:run  -c -v -r human -u $ORG_ALIAS
-sfdx apex:run:test -c -v -r human --target-org $ORG_ALIAS
+sf apex run test --code-coverage --detailed-coverage --result-format human --target-org $ORG_ALIAS
 
 echo "--- END UNIT TESTS FOR: $ORG_ALIAS"

@@ -2,9 +2,9 @@
 
 ##########################################################################################
 #
-#   Author: Igor Androsov 2022
+#   Author: Igor Androsov 2023
 #
-# IMPORTANT! Before exec this script update the QA uesr email address to allow password 
+# IMPORTANT! Before exec this script update the QA user email address to allow password 
 # resets. Replace placeholder value <PLACE USER EMAIL HERE> in config/user-def.json file with
 # correct user email.
 ##########################################################################################
@@ -17,20 +17,17 @@ ORG_ALIAS="$1"
 # Get input for ORG active days with default to 30 days
 ACTIVEDAYS="${2:-30}"
 
-echo "--- THIS IS SFDX SCRIPT DEPRECATED START USING SF CLI ---"
 echo "--- START DEPLOYMENT FOR: $ORG_ALIAS"
 echo "--- New ORG will be active for: $ACTIVEDAYS"
 # Set user alias from org name
 TESTUSER="${ORG_ALIAS}-user"
 
 # Create test user
-sfdx force:user:create --setalias $TESTUSER --definitionfile config/user-def.json || { echo 'Scratch org User create failed' ; exit 1; }
+sf org create user --set-alias $TESTUSER --definition-file config/user-def.json --target-org $ORG_ALIAS || { echo 'Scratch org User create failed' ; exit 1; }
 sfdx force:user:display -u $TESTUSER
 
 # Assign Permission Set to users
-sfdx force:user:permset:assign --permsetname GGW_User_Permissions --onbehalfof $TESTUSER --target-org $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
-
-# Run Tests - optional step
+sf org assign permset --name GGW_User_Permissions  --onbehalfof $TESTUSER --target-org $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
 
 # Open new org
-#sfdx force:org:open -u $ORG_ALIAS
+#sf org open -u $ORG_ALIAS
