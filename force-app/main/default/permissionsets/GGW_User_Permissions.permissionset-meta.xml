@@ -129,6 +129,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>GGW_Grant_Application__c.Include_Logo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>GGW_Grant_Application__c.Language__c</field>
         <readable>true</readable>
     </fieldPermissions>

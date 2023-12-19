@@ -10,8 +10,11 @@
     </head>
     <body>
 
-        <img id="logoImage" src="{!logoURL}" width="100" height="100" alt="Grant Logo"/>
-        <br/>
+        <apex:outputPanel rendered="{!isDisplayLogo}" >
+            <img id="logoImage" src="{!logoURL}" width="100" height="100" alt="Grant Logo"/>
+            <br/>
+        </apex:outputPanel>
+
         <h1 id='temp:C:CQJeb278781ebae4fa1a2a1ac42b'>
             <b><span style="color:#181818" textcolor="#181818">{!appName}</span></b>
         </h1>

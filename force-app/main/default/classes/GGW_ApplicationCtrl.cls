@@ -24,6 +24,7 @@ public without sharing class GGW_ApplicationCtrl {
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         if(!appItems.isEmpty()){
             app.recordid = grant.Id;
+            app.logostate = grant.Include_Logo__c;
             app.logodisplayurl = getValidLogoURL(grant);
             app.name = appItems[0].Application_Name__c;
             app.status = appItems[0].Grant_Application__r.Status__c;
@@ -32,7 +33,52 @@ public without sharing class GGW_ApplicationCtrl {
         }
         return app;
     }
+    // Delete logo file from grant
+    @AuraEnabled
+    public static String deleteLogo(String recordId){
+        GGW_Grant_Application__c app = new GGW_Grant_Application__c();
+        app.Id = recordId;
+        app.DistributionPublicUrl__c = null; // Logo public URL
+        app.Logo_Download_Url__c = null; // Logo display URL
+        app.Include_Logo__c = false;
+        // Check object CRUD
+        if(Schema.sObjectType.GGW_Grant_Application__c.isUpdateable()){
+            update app;
+        }
+        // Find and delete content file and related records
+        deleteImageLogo(recordId);
+        return 'Logo image deleted';
+    }
+    // Include or exclude logo image into grant application
+    @AuraEnabled
+    public static String includeLogo(String recordId, Boolean state){
+        GGW_Grant_Application__c app = new GGW_Grant_Application__c();
+        app.Id = recordId;
+        app.Include_Logo__c = state;
+        if(Schema.sObjectType.GGW_Grant_Application__c.isUpdateable()){
+            update app;
+        }
+        return 'Application logo updated';
+    }
 
+    private static void deleteImageLogo(String recordId){
+        ContentDocumentLink cdl = [SELECT Id, LinkedEntityId, ContentDocumentId, IsDeleted, Visibility, ShareType 
+                                    FROM ContentDocumentLink 
+                                    WHERE LinkedEntityId =: recordId WITH SECURITY_ENFORCED];
+        
+        ContentDistribution cntdistr = [SELECT Id, Name, ContentVersionId, ContentDocumentId, RelatedRecordId, ContentDownloadUrl 
+                                            FROM ContentDistribution 
+                                            WHERE ContentDocumentId =: cdl.ContentDocumentId WITH SECURITY_ENFORCED];
+        
+        ContentDocument cd = new ContentDocument();
+        cd.Id = cdl.ContentDocumentId;
+        if(Schema.sObjectType.ContentDistribution.isDeletable()){
+            delete cntdistr;
+        }
+        if(Schema.sObjectType.ContentDocument.isDeletable()){
+            delete cd;
+        }
+    }
     private static String getValidLogoURL(GGW_Grant_Application__c grant){
         String logourl = null;
         if(grant != null && grant.Logo_Download_Url__c != null){
@@ -286,15 +332,6 @@ public without sharing class GGW_ApplicationCtrl {
     }
     */
 
-    // Utility selector method
-    public static List<GGW_Selected_Item__c> querySelectedItemsByGrant(String appId){
-        List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
-                                Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
-                                Selected_Block__r.Description__c, Text_Block__c, Language__c 
-                                FROM GGW_Selected_Item__c 
-                                WHERE Grant_Application__c =: appId WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
-        return appItems;
-    }
     /**
      * Method to create a new ContentBlock add to section as part a library to later reuse
      * on other Grant applications.
@@ -518,6 +555,15 @@ public without sharing class GGW_ApplicationCtrl {
     }
 
     ///--- BASIC SELECTOR METHODS
+    public static List<GGW_Selected_Item__c> querySelectedItemsByGrant(String appId){
+        List<GGW_Selected_Item__c> appItems = [SELECT Id, Application_Name__c, Grant_Application__c, GGW_Section__c, 
+                                    Section_Name__c,Selected_Block__c, Sort_Order__c, Grant_Application__r.Status__c,
+                                    Selected_Block__r.Description__c, Text_Block__c, Language__c 
+                                    FROM GGW_Selected_Item__c 
+                                    WHERE Grant_Application__c =: appId WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
+        return appItems;
+    }
+    
     private static List<GGW_Section__c> querySectionsByLanguage(String lang){
         List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
                                                 Sort_Order__c, Language__c 

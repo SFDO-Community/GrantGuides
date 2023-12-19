@@ -25,7 +25,7 @@ public without sharing class GGW_Util {
     }
     public static GGW_Grant_Application__c queryGrantApp(String appId){
         return [SELECT Id, Name, Application_Name__c, Logo_Download_Url__c, 
-                        DistributionPublicUrl__c, Status__c, Description__c, Language__c 
+                        DistributionPublicUrl__c, Status__c, Description__c, Language__c, Include_Logo__c  
                 FROM GGW_Grant_Application__c 
                 WHERE Id =: appId WITH SECURITY_ENFORCED LIMIT 1];
     }
