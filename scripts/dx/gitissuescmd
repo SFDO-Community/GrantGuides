@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# This script is geenrated from exported issues to import to new repository
+# THIS SCRIPT IS HERE ONLY FOR REFERENCE How To export/oimport GitHub issues DO NOT RUN
+# This script is generated from exported issues to import to new repository
 # GitHub does not provide automated methods to export/import or transfer issue on different organizations.
 # using GitHub gh CLI gh - commands to do this
 # Example CLI command to export all Open issues as JSON to a file, then use create to add issues from file

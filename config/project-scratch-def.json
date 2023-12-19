@@ -1,7 +1,7 @@
 {
   "orgName": "Salesforce Impact Labs",
   "edition": "Developer",
-  "features": ["EnableSetPasswordInApi","AuthorApex"],
+  "features": ["EnableSetPasswordInApi","AuthorApex", "EinsteinHawkingC2CEnabled", "EinsteinGPT"],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
