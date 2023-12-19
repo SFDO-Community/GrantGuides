@@ -13,6 +13,7 @@ public class GGW_GrantApplicationWrapper {
     @AuraEnabled public String name;
     @AuraEnabled public String status;
     @AuraEnabled public String logodisplayurl;
+    @AuraEnabled public Boolean logostate;
     @AuraEnabled public String language;
     @AuraEnabled public List<GGW_SectionWrapper> unselectSectionList; // Used to add new sections to Grant
     @AuraEnabled public List<GGW_ContentBlockWrapper> selectedContentBlock; // Include Section and Text block
