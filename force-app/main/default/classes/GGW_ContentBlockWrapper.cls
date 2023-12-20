@@ -40,7 +40,7 @@ public class GGW_ContentBlockWrapper {
         // Count words in rich text with APEX methods
         integer words = block.Description__c.normalizeSpace().stripHtmlTags().replaceAll('\\S','').length() ;
         this.wordcount = words;
-        this.displaydate = block.CreatedDate.format('YYYY-MM'); // Format this to short
+        this.displaydate = block.CreatedDate.format('YYYY-MM-dd'); // Format this to short
         // Temporary value for tag default
         //this.displaybadge = ''; // TODO find how to fill this what make a tag?
         this.totalblocks = cnt;
