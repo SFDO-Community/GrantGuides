@@ -63,10 +63,10 @@
     {
         "attributes": {
             "type": "GGW_Section__c",
-            "referenceId": "GGW_Section__cRef6"
+            "referenceId": "GGW_Section__cRef7"
         },
-        "Name": "Plan of action",
-        "Recommended": true,
+        "Name": "Goals and objectives",
+        "Recommended": false,
         "Section_Details": null,
         "Sort_Order": 6,
         "Suggested": true,
@@ -75,10 +75,10 @@
     {
         "attributes": {
             "type": "GGW_Section__c",
-            "referenceId": "GGW_Section__cRef7"
+            "referenceId": "GGW_Section__cRef6"
         },
-        "Name": "Goals and objectives",
-        "Recommended": false,
+        "Name": "Plan of action",
+        "Recommended": true,
         "Section_Details": null,
         "Sort_Order": 7,
         "Suggested": true,
