@@ -55,6 +55,20 @@ export default class GgwSection extends LightningElement {
         });
         this.dispatchEvent(evt);
     }
+
+    copyText(){
+        let tempText = this.textBlock.replace( /(<([^>]+)>)/ig, '');
+        
+        navigator.clipboard.writeText(tempText).then(
+            () => {
+                this.showToastSuccess(`Data copied to clipboard`);
+            },
+            () => {
+                this.showToastError(`Copy FAILED ERROR`);
+            },
+          );
+    }
+
     showModal() {
         console.log('# Section ID: '+this.key);
         this.openModal = true;
