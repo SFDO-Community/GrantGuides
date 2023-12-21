@@ -1,21 +1,14 @@
 <template>
     <lightning-card title={displayTitle} >
       <lightning-button-group slot="actions">
-        <lightning-button-icon icon-name="utility:add"  alternative-text="Add block" title="Add block"  onclick={showModal}></lightning-button-icon>
-        <lightning-button-icon icon-name="utility:edit"  alternative-text="Edit" title="Edit block"  onclick={handleEnableEdit}></lightning-button-icon>
-        <lightning-button-icon icon-name="utility:save"  alternative-text="Save" title="save" onclick={saveRichText}></lightning-button-icon>
-        <lightning-button-icon icon-name="utility:insert_template"  alternative-text="Add to library" title="Add to library"  onclick={addBlockToLibrary}></lightning-button-icon>
-        <lightning-button-icon icon-name="utility:delete"  alternative-text="Delete section" title="Delete section"  onclick={handleDeleteSection}></lightning-button-icon>
+        <lightning-button-icon icon-name="utility:add"  alternative-text="Add block" title="Add block" aria-label="Add block" data-button-number="01" onclick={showModal}><label>Add block</label></lightning-button-icon>
+        <lightning-button-icon-stateful icon-name="utility:edit" selected={enableEdit} alternative-text="Edit" title="Edit block" data-button-number="02" onclick={handleEnableEdit}><label>Edit block</label></lightning-button-icon-stateful>
+        <lightning-button-icon icon-name="utility:save"  alternative-text="Save" title="save" data-button-number="03" onclick={saveRichText}><label>Save</label></lightning-button-icon>
+        <lightning-button-icon icon-name="utility:insert_template"  alternative-text="Add to library" title="Add to library" data-button-number="04" onclick={addBlockToLibrary}><label>Add to Library</label></lightning-button-icon>
+        <lightning-button-icon icon-name="utility:delete"  alternative-text="Delete section" title="Delete section" data-button-number="05" onclick={handleDeleteSection}><label>Delete</label></lightning-button-icon>
 
-  <!--
-        <lightning-button-menu alternative-text="Order menu" variant="border-filled" icon-name="utility:settings" onselect={handleReorderOnselect}>
-          <template for:each={sectionorder} for:item="ord">
-            <lightning-menu-item value={ord} label={ord} key={ord}></lightning-menu-item>
-            </template>
-        </lightning-button-menu>
-  -->
       </lightning-button-group>
-        <div class="slds-box slds-box_xx-small slds-m-left_x-small slds-m-right_x-small slds-m-bottom_xx-small">            
+        <div class="slds-box slds-box_xx-small slds-var-m-left_x-small slds-var-m-right_x-small slds-var-m-bottom_xx-small">            
           <template if:false={enableEdit}>
             <lightning-formatted-rich-text
                 value={textBlock}
@@ -34,37 +27,19 @@
     <template if:true={openModal}>  
         <div class="slds-modal slds-fade-in-open slds-backdrop">  
           <div class="slds-modal__container">  
-            <!------HEADER Section 
-            <div class="slds-modal__header">  
-              <lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
-                variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
-              </lightning-button-icon>  
-              <h2>Welcome To SalesforcePoint.com</h2>  
-            </div>  
-        -->
-            <!------Body Section-->  
+            <!-- Body Section -->  
             <div class="slds-modal__content slds-p-around_medium">  
-                <center>  
-
-                    <c-ggw-content-block-modal
+                <c-ggw-content-block-modal
                       section={sectionId}
                       application={applicationId}
-                      onselectedblockchange={hanldeSelectedBlockChange}
-                    ></c-ggw-content-block-modal>
-
-                </center>  
+                      onselectedblockchange={handleSelectedBlockChange}
+                ></c-ggw-content-block-modal>                 
             </div>  
-            <!------Footer Section-->  
+            <!--Footer Section-->  
             <div class="slds-modal__footer">  
-              <!-- TODO ONLY Show Save button is there are available Blocks for section 
-                 
-              <template if:true={sectionHasBlocks}>
-                <lightning-button label="Save" onclick={saveCloseModal}></lightning-button>  
-              </template>
-            -->
-            <lightning-button icon-name="utility:close" label="Cancel" onclick={closeModal} class="slds-var-m-right_xx-small"></lightning-button>  
-            <lightning-button icon-name="utility:save" label="Save" variant="brand" onclick={saveCloseModal} class="slds-var-m-left_xx-small"></lightning-button>
-          </div>  
+              <lightning-button icon-name="utility:close" label="Cancel" onclick={closeModal} class="slds-var-m-right_xx-small"></lightning-button>  
+              <lightning-button icon-name="utility:save" label="Save" variant="brand" onclick={saveCloseModal} class="slds-var-m-left_xx-small"></lightning-button>
+            </div>  
           </div>  
         </div>  
     </template>   
