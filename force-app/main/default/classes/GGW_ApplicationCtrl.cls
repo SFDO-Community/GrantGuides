@@ -210,10 +210,12 @@ public without sharing class GGW_ApplicationCtrl {
     @AuraEnabled
     public static GGW_SectionWrapper createNewSection(String name){
         GGW_Section__c maxOrder = findMaxOrderSection();
+        String lang = GGW_Util.getGrantLanguage();
         GGW_Section__c s = new GGW_Section__c();
         s.Name = name;
         s.Recommended__c = true;
         s.Suggested__c = true;
+        s.Language__c = lang;
         s.Sort_Order__c = getSectionSortOrder(maxOrder);
         if(Schema.sObjectType.GGW_Section__c.isCreateable()){
             insert s;

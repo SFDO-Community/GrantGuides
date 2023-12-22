@@ -33,7 +33,7 @@ export default class GgwContentBlockModal extends LightningElement {
     // Select a block method
     handleSelectClick(evt){
         //console.log('### Button event: '+evt.target.name);
-        //--- MUST do tehse JSON tricks to clone arraye to update data
+        //--- MUST do these JSON tricks to clone array to update data
         // if not get error Cannot assign to read only property
         let tmpBlocks = JSON.parse(JSON.stringify(this.contentblocks));
         // When selecting block with statefull button ensure all otehrs are DESELECTED Only one allowed selected

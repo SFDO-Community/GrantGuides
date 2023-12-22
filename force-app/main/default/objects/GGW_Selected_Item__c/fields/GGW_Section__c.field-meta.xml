@@ -5,7 +5,7 @@
     <description>Link to section</description>
     <externalId>false</externalId>
     <inlineHelpText>Link to section</inlineHelpText>
-    <label>GGW Section</label>
+    <label>Section</label>
     <referenceTo>GGW_Section__c</referenceTo>
     <relationshipLabel>Selected Items</relationshipLabel>
     <relationshipName>Selected_Items</relationshipName>
