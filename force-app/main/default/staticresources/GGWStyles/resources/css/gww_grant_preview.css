@@ -490,3 +490,7 @@ div[data-section-style="6"] ul ul ul ul ul li:before {
 div[data-section-style="6"] ul ul ul ul ul ul li:before {
     content: counter(indent5, lower-roman) ". ";
 }
+
+ggw-span-text {
+    color:#181818;
+}
