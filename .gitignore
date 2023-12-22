@@ -44,3 +44,4 @@ tempdata
 tempdata-out
 *.cci/*
 .pmdCache
+.vscode/*
