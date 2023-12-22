@@ -1,40 +1,89 @@
 name: beta release
 
 on:
-  workflow_dispatch:
+  push:
     branches:
-      - "main"
+      - 'main'
     paths-ignore:
-      - "docs/**"
-      - "README.md"
-
+      - 'docs/**'
+      - 'README.md'
+env:
+      CUMULUSCI_KEYCHAIN_CLASS: cumulusci.core.keychain.EnvironmentProjectKeychain
+      CUMULUSCI_SERVICE_github: ${{ secrets.CUMULUSCI_SERVICE_GITHUB }}
 jobs:
   unit_tests:
     name: "Run Beta release"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install sfdx
+      # Install Salesforce CLI
+      - name: 'Install Salesforce CLI'
         run: |
-          mkdir sfdx
-          wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz | tar xJ -C sfdx --strip-components 1
-          echo $(realpath sfdx/bin) >> $GITHUB_PATH
-      - name: Authenticate Dev Hub
+            npm install @salesforce/cli --location=global
+            nodeInstallPath=$(npm config get prefix)
+            echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+            sf --version
+
+      # Checkout the source code
+      - name: 'Checkout source code'
+        uses: actions/checkout@v4
+
+      # Store secret for dev hub
+      - name: 'Populate auth file with DEV_HUB_AUTH secret'
+        shell: bash
         run: |
-          echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
-          sfdx force:auth:sfdxurl:store -f sfdx_auth -d
-        # Create package version and extract its id
+            echo ${{ secrets.DEV_HUB_AUTH}} > ./DEV_HUB_AUTH.txt
+            secretFileSize=$(wc -c "./DEV_HUB_AUTH.txt" | awk '{print $1}')
+            if [ $secretFileSize == 1 ]; then
+                echo "Missing DEV_HUB_AUTH secret. Is this workflow running on a fork?";
+                exit 1;
+            fi
+
+      # Authenticate dev hub
+      - name: 'Authenticate Dev Hub'
+        run: sf org login sfdx-url -f ./DEV_HUB_AUTH.txt -a devhub -d
+
+      # Remove auth file
+      - name: 'Remove auth file'
+        run: rm -f ./DEV_HUB_AUTH.txt
+      
+      #Create Package Version
       - name: "Create package version"
         id: createPackageVersion
         run: |
           set +e
-          json=$(sfdx force:package:version:create -p "Grants Content Kit" --installationkeybypass --definitionfile config/project-scratch-def.json --wait 10 --targetdevhubusername ldodevhub --branch main -c --json)
+          json=$(sf package version create -p "Grants Content Kit" -x -f config/project-scratch-def.json -w 10 -b main -c --json)
           echo $json
           status=$(echo $json | jq '.status')
           if [ $status == "0" ]; then
           packageVersionId=$(echo $json | jq -r '.result.SubscriberPackageVersionId')
           echo "::set-output name=packageVersionId::$packageVersionId"
           else
-          echo "sfdx force:package:version:create failed"
+          echo "sf package creation failed"
           fi
           exit $status
+        
+      # Wait for package replication
+      - name: 'Wait for package replication'
+        run: sleep 360s
+ 
+      # Create scratch org
+      - name: 'Create scratch org'
+        run: sf org create scratch -f config/project-scratch-def.json -a scratch-org -d -y 1
+      # Install new package in scratch org
+      - name: 'Install new package version in scratch org'
+        run: sf package install -p ${{ steps.createPackageVersion.outputs.packageVersionId }} -w 10 -o scratch-org -r
+
+      # Install Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+            python-version: '3.10'
+      #Install CumulusCI
+      - name: Install CumulusCI
+        run: |
+            python -m pip install -U pip
+            pip install cumulusci
+      #Use CCI to deploy and test feature
+      - name: Generate Release Notes and 
+        run: |
+            cci flow run gk_release_beta --org feature --delete-org

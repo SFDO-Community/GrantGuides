@@ -29,36 +29,44 @@ export default class GgwOrderSections extends LightningElement {
 	closeQuickAction() {
 		this.dispatchEvent(new CloseActionScreenEvent());
          // Fire event to UI
-         var cancelreorder = {action: 'close'};
-         const sectionOrderEvent = new CustomEvent("sectionorderchange", {
+         const cancelreorder = {action: 'close'};
+         const reOrderEvent = new CustomEvent("sectionorderchange", {
              detail: cancelreorder,
              bubbles: true
          });
- 
          // Dispatches the event.
-         this.dispatchEvent(sectionOrderEvent);
-        
+         this.dispatchEvent(reOrderEvent);
 	}
-
+    
+    confirmSectionReorder(){
+        // Fire event to UI to notify parent app to close modal reorder and update view
+        const neworder = {items: this.selected};
+        const sectionOrderEvent = new CustomEvent("sectionorderchange", {
+                detail: neworder,
+                bubbles: true
+        });
+        // Dispatches the event.
+        this.dispatchEvent(sectionOrderEvent);
+    }    
     // when the component is first initialized assign an initial value to sections and other Grant App variables    
     connectedCallback() {
         // --- Need this timeout delay to allow record ID from Quick Action on record page to be set
         // For some crazy reason LEX/LWC does not init record ID fast enough to init this call
         setTimeout(() => {
-            console.log('Init App with ID:'+this.recordId);
+            console.log(`Init App with ID: ${this.recordId}`);
             //this.displayTitle = 'Grant Application: ' + this.grant.data ? this.grant.data.fields.Name.value : null;
-            // Change to call imperative insted of wire for data refreshes
+            // Change to call imperative instead of wire for data refreshes
             getApplication({recordId: this.recordId})
                 .then((data) => {
-                    console.log('Grant Name: '+data.name);
+                    console.log(`Grant Name: ${data.name}`);
                     this.grantName = data.name;
-                    this.displayTitle = 'Grant Application: ' + data.name;
+                    this.displayTitle = `Grant Application: ${data.name}`;
                     this.status = data.status;
                     
                     if (data.selectedContentBlock){
                         this.sectioncount = data.selectedContentBlock.length;
-                        for(var i=0; i<data.selectedContentBlock.length; i++)  {
-                            var item = data.selectedContentBlock[i];
+                        for(let i=0; i<data.selectedContentBlock.length; i++)  {
+                            let item = data.selectedContentBlock[i];
                             // Use Selectors
                             this.sections = [...this.sections ,{label: item.sectionname, 
                                                                 value: item.selecteditemid, // sfid for Section record
@@ -68,19 +76,14 @@ export default class GgwOrderSections extends LightningElement {
                                 console.log('Selected: '+item.selecteditemid);
                             }
                                             
-                            // USE Data table
-                            //this.sections = [...this.sections ,{label: item.sectionname, 
-                            //                                    order: item.sortorder,
-                            //                                    id: item.sectionid, // sfid for Section record
-                            //                                    } ];                              
                         }                
                     }  
                     // New sections
                     if (data.unselectSectionList){
-                        console.log('UN-Selected: '+data.unselectSectionList);
-                        for(var i=0; i<data.unselectSectionList.length; i++)  {
-                            var sect = data.unselectSectionList[i];
-                            console.log(i + ' section: '+sect.label);
+                        console.log(`UN-Selected: ${data.unselectSectionList}`);
+                        for(let i=0; i<data.unselectSectionList.length; i++)  {
+                            let sect = data.unselectSectionList[i];
+                            console.log(`${i}  section: ${sect.label}`);
                             // Use Selectors
                             this.sections = [...this.sections ,{label: sect.label, 
                                                                 value: sect.recordid, // sfid for Section record
@@ -97,29 +100,27 @@ export default class GgwOrderSections extends LightningElement {
         }, 5);
     }
 
-    //get selected() {
-    //    return this._selected.length ? this._selected : 'none';
-    //}
-    // Methdod called by list order LWC standard component when order changes
-    // List items rearenged by user
+    // Method called by list order LWC standard component when order changes
+    // List items rearranged by user
     handleSectionOrderChange(e){
         this.selected = e.detail.value;
-        console.log('Order: '+this.selected);
-        //console.log('EVENT: '+JSON.stringify(e.detail));
+        console.log(`Order: ${this.selected}`);
     }
     // Save reorder sections for Grant in Salesforce call APEX to save data
     // Update Selected Items with new sort order
-    handleReorder(){
-        console.log('Call APEX to reOrder: '+this.selected);
+    handleReorder(e){
+        console.log(`Call APEX to reOrder: ${this.selected}`);
         reorderSections({sectionList: this.selected, appId: this.recordId})
             .then((data) => {
-                console.log('REORDER RETURENED OK ');
+                console.log(`REORDER RETURNED OK `);
                 this.error = undefined;
+                this.confirmSectionReorder();
             })
             .catch((error) => {
                 console.log(error);
                 this.error = error;
                 this.sections = undefined;  
+                console.log(`REORDER ERROR: ${this.error}`);
                 
                 const evt = new ShowToastEvent({
                     title: 'Reorder Error',
@@ -129,17 +130,5 @@ export default class GgwOrderSections extends LightningElement {
                 this.dispatchEvent(evt);    
         
             });
-        // Fire event to UI
-        var neworder = {items: this.selected};
-        const sectionOrderEvent = new CustomEvent("sectionorderchange", {
-            detail: neworder,
-            bubbles: true
-        });
-
-        // Dispatches the event.
-        this.dispatchEvent(sectionOrderEvent);
-
-        // Close
-        this.closeQuickAction();
     }
 }
