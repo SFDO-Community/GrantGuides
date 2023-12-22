@@ -1,17 +1,11 @@
 <template>
     <lightning-card title={titleAvailableBlocks} icon-name="utility:description">
-        <!--
-        <lightning-button label="Save" slot="actions"></lightning-button>
--->
         <template if:true={contentblocks}>
 
             <template for:each={contentblocks} for:item="block">
             
                 <div key={block.recordid} class="slds-box slds-box_xx-small slds-m-left_xx-small slds-m-right_xxx-small slds-m-bottom_xx-small">
                     <lightning-card  title={block.title}>
-                        <!--
-                        <lightning-input type="checkbox-button" label={block.title} name={block.recordid} slot="actions"></lightning-input>
-                    -->
                         <lightning-button-stateful
                             label-when-off="Select"
                             label-when-on="Selected"
@@ -26,7 +20,8 @@
                             >
                         </lightning-button-stateful>
 
-                        <lightning-formatted-rich-text
+                        <lightning-formatted-rich-text 
+                            class="slds-text-align_left"
                             value={block.displaytext}
                         ></lightning-formatted-rich-text>
                         
