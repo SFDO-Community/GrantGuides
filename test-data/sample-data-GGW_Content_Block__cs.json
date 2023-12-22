@@ -1,4 +1,5 @@
-    [
+{
+    "records": [
         {
             "attributes": {
                 "type": "GGW_Content_Block__c",
@@ -130,3 +131,4 @@
             "Short_Description__c": null
         }
     ]
+}

@@ -2,8 +2,8 @@
 
 ##########################################################################################
 #
-#   Author: Igor Androsov 2022
-#   SFDX is DEPRECTAED 
+#   Author: Igor Androsov 2023
+#
 ##########################################################################################
 
 # Create new Scratch org environment for development testing and load test data
@@ -13,14 +13,13 @@ ORG_ALIAS="$1"
 # Get input for ORG active days with default to 30 days
 ACTIVEDAYS="${2:-30}"
 
-echo "--- THIS IS SFDX SCRIPT DEPRECATED START USING SF CLI ---"
 echo "--- START DEPLOYMENT FOR: $ORG_ALIAS"
 echo "--- New ORG will be active for: $ACTIVEDAYS"
 # Set user alias from org name
 TESTUSER="${ORG_ALIAS}-user"
 
 # Create new scratch org 30 days max
-sfdx force:org:create --setdefaultusername --setalias $ORG_ALIAS --definitionfile config/project-scratch-def.json -d $ACTIVEDAYS || { echo 'Scratch org create failed' ; exit 1; }
+sf org create scratch --target-dev-hub labsDevHub --alias $ORG_ALIAS --definition-file config/project-scratch-def.json --set-default --duration-days $ACTIVEDAYS || { echo 'Scratch org create failed' ; exit 1; }
 
 # Create test user
 # sfdx force:user:create --setalias $TESTUSER --definitionfile config/user-def.json || { echo 'Scratch org User create failed' ; exit 1; }
@@ -28,20 +27,20 @@ sfdx force:org:create --setdefaultusername --setalias $ORG_ALIAS --definitionfil
 
 # Push source
 echo "--- PUSH SOURCE FOR: $ORG_ALIAS"
-sfdx force:source:push -u $ORG_ALIAS || { echo 'Source push failed' ; exit 1; }
+sf project deploy start --target-org $ORG_ALIAS || { echo 'Source push failed' ; exit 1; }
 
 # Assign Permission Set to users
 echo "--- ASSIGN PERMISSIONS FOR: $ORG_ALIAS"
-sfdx force:user:permset:assign -n GGW_User_Permissions --target-org $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
+sf org assign permset --name GGW_User_Permissions --target-org $ORG_ALIAS || { echo 'User permission failed' ; exit 1; }
 
 # Push sample data
 echo "--- INSERT SAMPLE DATA FOR: $ORG_ALIAS"
-sfdx data:import:tree --target-org $ORG_ALIAS --plan test-data/sample-data-GGW_Section__c-plan.json
+sf data import tree --plan test-data/export-section-GGW_Section__c-plan.json --target-org $ORG_ALIAS
 
 # sfdx force:data:tree:import --target-org $ORG_ALIAS --plan test-data/export-section-GGW_Section__c-plan.json
 #sfdx force:data:tree:import -u ggw --plan test-data/export-section-GGW_Section__c-plan.json
 # Run Tests - optional step
 
 # Open new org
-#sfdx force:org:open -u $ORG_ALIAS
+#sf org open --target-org $ORG_ALIAS
 echo "--- END DEPLOYMENT FOR: $ORG_ALIAS"

@@ -8,57 +8,64 @@
         "Name": "Contact Information",
         "Recommended": false,
         "Section_Details": null,
-        "Sort_Order": 1,
+        "Sort_Order": 0,
         "Suggested": false,
         "Language": "en_US"
     },
     {
         "attributes": {
             "type": "GGW_Section__c",
-            "referenceId": "GGW_Section__cRef2"
+            "referenceId": "GGW_Section__cRef1"
         },
         "Name": "Program narrative",
-        "Recommended": false,
-        "Section_Details": null,
-        "Sort_Order": 2,
-        "Suggested": true,
-        "Language": "en_US"
+        "Recommended__c": false,
+        "Section_Details__c": null,
+        "Sort_Order__c": 1,
+        "Suggested__c": true
+    },
+    {
+        "attributes": {
+            "type": "GGW_Section__c",
+            "referenceId": "GGW_Section__cRef2"
+        },
+        "Name": "Executive Summary",
+        "Recommended__c": true,
+        "Section_Details__c": "(maximum 500 words) Provide a brief summary of the project)\r\nExecutive Summary of Project (maximum 500 words) Provide a brief summary of the project that may be used as a project description for our grant adjudication and communication purposes.",
+        "Sort_Order__c": 2,
+        "Suggested__c": true
     },
     {
         "attributes": {
             "type": "GGW_Section__c",
             "referenceId": "GGW_Section__cRef3"
         },
-        "Name": "Executive Summary",
-        "Recommended": true,
-        "Section_Details": "(maximum 500 words) Provide a brief summary of the project)\r\nExecutive Summary of Project (maximum 500 words) Provide a brief summary of the project that may be used as a project description for our grant adjudication and communication purposes.",
-        "Sort_Order": 3,
-        "Suggested": true,
-        "Language": "en_US"
+        "Name": "Statement of need",
+        "Recommended__c": true,
+        "Section_Details__c": null,
+        "Sort_Order__c": 3,
+        "Suggested__c": true
     },
     {
         "attributes": {
             "type": "GGW_Section__c",
             "referenceId": "GGW_Section__cRef4"
         },
-        "Name": "Statement of need",
-        "Recommended": true,
-        "Section_Details": null,
-        "Sort_Order": 4,
-        "Suggested": true,
-        "Language": "en_US"
+        "Name": "Project Objectives",
+        "Recommended__c": true,
+        "Section_Details__c": "Briefly describe the community and the issue your project is designed to address. If the project has been offered before, briefly describe the results and any changes that have been made to improve outcomes.",
+        "Sort_Order__c": 4,
+        "Suggested__c": true
     },
     {
         "attributes": {
             "type": "GGW_Section__c",
             "referenceId": "GGW_Section__cRef5"
         },
-        "Name": "Project Objectives",
-        "Recommended": true,
-        "Section_Details": "Briefly describe the community and the issue your project is designed to address. If the project has been offered before, briefly describe the results and any changes that have been made to improve outcomes.",
-        "Sort_Order": 5,
-        "Suggested": true,
-        "Language": "en_US"
+        "Name": "Goals and objectives",
+        "Recommended__c": false,
+        "Section_Details__c": null,
+        "Sort_Order__c": 5,
+        "Suggested__c": true
     },
     {
         "attributes": {
@@ -66,34 +73,42 @@
             "referenceId": "GGW_Section__cRef6"
         },
         "Name": "Plan of action",
-        "Recommended": true,
-        "Section_Details": null,
-        "Sort_Order": 6,
-        "Suggested": true,
-        "Language": "en_US"
+        "Recommended__c": true,
+        "Section_Details__c": null,
+        "Sort_Order__c": 6,
+        "Suggested__c": true
     },
     {
         "attributes": {
             "type": "GGW_Section__c",
             "referenceId": "GGW_Section__cRef7"
         },
-        "Name": "Goals and objectives",
-        "Recommended": false,
-        "Section_Details": null,
-        "Sort_Order": 7,
-        "Suggested": true,
-        "Language": "en_US"
+        "Name": "Budget narrative",
+        "Recommended__c": true,
+        "Section_Details__c": null,
+        "Sort_Order__c": 7,
+        "Suggested__c": true
     },
     {
         "attributes": {
             "type": "GGW_Section__c",
             "referenceId": "GGW_Section__cRef8"
         },
-        "Name": "Budget narrative",
-        "Recommended": true,
-        "Section_Details": null,
-        "Sort_Order": 8,
-        "Suggested": true,
-        "Language": "en_US"
+        "Name": "Measurable outcomes",
+        "Recommended__c": true,
+        "Section_Details__c": null,
+        "Sort_Order__c": 8,
+        "Suggested__c": true
+    },
+    {
+        "attributes": {
+            "type": "GGW_Section__c",
+            "referenceId": "GGW_Section__cRef9"
+        },
+        "Name": "Impact narrative",
+        "Recommended__c": false,
+        "Section_Details__c": null,
+        "Sort_Order__c": 9,
+        "Suggested__c": false
     }
 ]

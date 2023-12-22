@@ -60,7 +60,32 @@
                                 </template>
                               </div>
                             </div>
-                        </lightning-layout-item>  
+                        </lightning-layout-item>
+                        <template if:true={showLogoButtons}>
+                          <lightning-layout-item padding="around-small"> 
+                            <div class="header-column slds-p-top_x-large">
+                              <lightning-button-stateful
+                                label-when-off="Include Logo"
+                                label-when-on="Logo Included"
+                                label-when-hover="Exclude Logo"
+                                icon-name-when-off="utility:add"
+                                icon-name-when-on="utility:check"
+                                icon-name-when-hover="utility:close"
+                                selected={logoState}
+                                onclick={handleLogoSelectorClick}>
+                              </lightning-button-stateful>       
+                              
+                              <lightning-button-icon 
+                                icon-name="utility:delete"    
+                                variant="border-filled" 
+                                alternative-text="Delete"   
+                                class="slds-m-left_xx-small" 
+                                title="Delete"
+                                onclick={handleLogoDelete}>
+                              </lightning-button-icon>
+                            </div>
+                          </lightning-layout-item> 
+                        </template> 
                     </lightning-layout>
                 </div>
               </template>
@@ -76,7 +101,7 @@
                       selected-item-id={sec.selecteditem}
                       sectioncount={sec.sectioncount}
                       sortorder={sec.sortorder}
-                      onselectedtext={hanldeSelectedTextChange}
+                      onselectedtext={handleSelectedTextChange}
                       ondeletesection={handleDeleteSection}
                       key={sec.value}
                   ></c-ggw-section>

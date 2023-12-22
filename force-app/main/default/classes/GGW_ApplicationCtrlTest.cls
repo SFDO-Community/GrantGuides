@@ -16,6 +16,123 @@ public class GGW_ApplicationCtrlTest {
     }
 
     @isTest
+    static void includeLogoTest(){
+        // Query all suggested sections
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant', sections);
+
+        Test.startTest();
+        String msg = GGW_ApplicationCtrl.includeLogo(app.Id, true);
+        Test.stopTest();
+
+        System.assertEquals('Application logo updated', msg, 'Invalid message returnd for Logo include into Grant'); 
+        GGW_GrantApplicationWrapper grant = GGW_ApplicationCtrl.getApplication(app.Id);
+        System.assertEquals(app.Id, grant.recordid, 'Invalid grant application Id');
+        System.assertEquals(true, grant.logostate, 'Logo include state is not valid');
+    }
+    static void excludeLogoTest(){
+        // Query all suggested sections
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant', sections);
+
+        Test.startTest();
+        String msg = GGW_ApplicationCtrl.includeLogo(app.Id, false);
+        Test.stopTest();
+
+        System.assertEquals('Application logo updated', msg, 'Invalid message returnd for Logo include into Grant'); 
+        GGW_GrantApplicationWrapper grant = GGW_ApplicationCtrl.getApplication(app.Id);
+        System.assertEquals(app.Id, grant.recordid, 'Invalid grant application Id');
+        System.assertEquals(false, grant.logostate, 'Logo exclude state is not valid');
+    }
+
+    @isTest
+    static void deleteLogoTest(){
+        // Query all suggested sections
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant Logo delete Test', sections);
+
+        //ContentDocument cdoc = new ContentDocument();
+        //cdoc.Title = 'Grant test logo';
+        //insert cdoc;
+
+        ContentVersion cvo = new Contentversion();
+        //cvo.ContentDocumentId = cdoc.Id;
+        cvo.Title = 'Test Content file'; 
+        cvo.PathOnClient = 'test'; 
+        cvo.VersionData = EncodingUtil.base64Decode('Unit Test Attachment Body'); 
+        //List<ContentVersion> cvl = new List<ContentVersion>(); 
+        //cvl.add(cvo); 
+        insert cvo;
+
+        ContentVersion cvtmp = [SELECT Id, Title, ContentDocumentId FROM ContentVersion WHERE Id =: cvo.Id];
+        // Create content document Link
+        ContentDocumentLink cdl = new ContentDocumentLink();
+        cdl.LinkedEntityId = app.Id;
+        cdl.ContentDocumentId = cvtmp.ContentDocumentId;
+        insert cdl;
+        
+        String downloadURL = GGW_ApplicationCtrl.createContentDistribution(app.Id, cvo.Id);
+
+        Test.startTest();
+        String result = GGW_ApplicationCtrl.deleteLogo(app.Id);
+
+        Test.stopTest();
+        System.assertEquals('Logo image deleted', result, 'Logo delete is not valid');
+
+    }
+    @isTest
+    static void createContentDistributionTest(){
+        // Query all suggested sections
+        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+        List<String> sections = new List<String>();
+        for (GGW_SectionWrapper gww : lst){
+            if(gww.selected){
+                sections.add(gww.recordid);
+            }
+        }
+        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Content Distribution Test', sections);
+        ContentVersion cvo = new Contentversion();
+        cvo.Title = 'Test Content file'; 
+        cvo.PathOnClient = 'test'; 
+        cvo.VersionData = EncodingUtil.base64Decode('Unit Test Attachment Body'); 
+        insert cvo;
+        ContentVersion cvtmp = [SELECT Id, Title, ContentDocumentId FROM ContentVersion WHERE Id =: cvo.Id];
+        // Create content document Link
+        ContentDocumentLink cdl = new ContentDocumentLink();
+        cdl.LinkedEntityId = app.Id;
+        cdl.ContentDocumentId = cvtmp.ContentDocumentId;
+        insert cdl;
+
+        Test.startTest();
+        String downloadURL = GGW_ApplicationCtrl.createContentDistribution(app.Id, cvo.Id);
+        Test.stopTest();
+
+        System.assertNotEquals(null, downloadURL, 'Contenet distribution is invalid');
+        GGW_GrantApplicationWrapper grant = GGW_ApplicationCtrl.getApplication(app.Id);
+        System.assertEquals(downloadURL, grant.logodisplayurl, 'Logo download URL is not valid');
+
+    }
+    @isTest
     static void testNewGrant(){
         // Query all suggested sections
         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
