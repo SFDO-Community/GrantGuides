@@ -45,3 +45,4 @@ tempdata-out
 *.cci/*
 .pmdCache
 .vscode/*
+.vscode/settings.json
