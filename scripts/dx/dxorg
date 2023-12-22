@@ -36,7 +36,7 @@ sfdx force:user:permset:assign -n GGW_User_Permissions --target-org $ORG_ALIAS |
 
 # Push sample data
 echo "--- INSERT SAMPLE DATA FOR: $ORG_ALIAS"
-sfdx data:import:tree --target-org $ORG_ALIAS --plan test-data/export-section-GGW_Section__c-plan.json
+sfdx data:import:tree --target-org $ORG_ALIAS --plan test-data/sample-data-GGW_Section__c-plan.json
 
 # sfdx force:data:tree:import --target-org $ORG_ALIAS --plan test-data/export-section-GGW_Section__c-plan.json
 #sfdx force:data:tree:import -u ggw --plan test-data/export-section-GGW_Section__c-plan.json

@@ -1,4 +1,5 @@
-    [
+{
+    "records": [
         {
             "attributes": {
                 "type": "GGW_Content_Block__c",
@@ -14,7 +15,7 @@
                 "type": "GGW_Content_Block__c",
                 "referenceId": "GGW_Content_Block__cRef2"
             },
-            "Name": "Executive Summary text",
+            "Name": "Executive Summary sample",
             "Description__c": "<p><span style=\"font-size: 12px;\">SAMPLE CONTENT - [ORG NAME] aims to improve the overall quality of life of [LOCATION] residents. [ORG NAME] provides education and resources to engage citizens and improve their communities. What started out as a neighborhood project made up of volunteers 10 years ago has developed into a 12-person team of dedicated, full-time staff serving the greater [LOCATION] area and surrounding counties. </span></p><p><br></p><p><span style=\"font-size: 12px;\">Through annual programs and volunteer events, [ORG NAME] equips citizens with the tools that they need to build a better future for themselves and their neighbors. </span></p><p><span style=\"font-size: 12px;\">With a better-together focus in mind, [ORG NAME] encourages community involvement and engagement. [ORG NAME]: </span></p><p><br></p><p><span style=\"font-size: 12px;\">• Provides educational programs on sustainable gardening, native plants, and composting. </span></p><p><span style=\"font-size: 12px;\">• Hosts large volunteer events to quickly transform spaces, such as vacant lots or overrun trail passes, into clean and accessible spaces for everyone. </span></p><p><span style=\"font-size: 12px;\">• Organizes volunteers throughout the year to assess and maintain public spaces. </span></p><p><br></p><p><span style=\"font-size: 12px;\">With inclusivity at its core, [ORG NAME] offers a wide variety of programs for individuals of all ages and abilities. Individuals should feel pride in [LOCATION]. To help with this, [ORG NAME] offers many different programs that offer a wide range of volunteer interests. </span></p><p><span style=\"font-size: 12px;\">[ORG NAME] believes that communities hold the power to keep their neighborhoods clean and thriving. Last year, over 1,000 volunteers participated in the [ORG NAME] programs, filled over 2,000 recycling bags, and improved 36 natural areas throughout [LOCATION]. [ORG NAME] also educated and supported [LOCATION] citizens by supplying families with over 350 seed packets for sustainable gardening and tallied over 500 hours of educational seminars and videos. </span></p>",
             "Section__c": "@GGW_Section__cRef2",
             "Short_Description__c": "SAMPLE CONTENT - [ORG NAME] aims to improve the overall quality"
@@ -130,3 +131,4 @@
             "Short_Description__c": null
         }
     ]
+}

@@ -1,0 +1,18 @@
+[
+    {
+        "sobject": "GGW_Section__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": [
+            "sample-data-GGW_Section__cs.json"
+        ]
+    },
+    {
+        "sobject": "GGW_Content_Block__c",
+        "saveRefs": false,
+        "resolveRefs": true,
+        "files": [
+            "sample-data-GGW_Content_Block__cs.json"
+        ]
+    }
+]
