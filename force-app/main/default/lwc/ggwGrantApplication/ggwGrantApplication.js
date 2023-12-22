@@ -26,6 +26,13 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     @api language = 'en_US';
     @track logoState = false; // Exclude or include logo
     @track showLogoButtons = false;
+    @track openModal = false; // OPen Reorder modal
+    @track openVFPExportModal = false; // Open export modal
+    @track grantPageURL = '';
+    @track sections = [];
+    @track grantRecordPage = GRANT_RECORD_PAGE_URL;
+    @track currentPageReference;
+ 
     noLogoDisplay = true; // Display empty avatar instead of logo
     displayTitle;
     status;
@@ -33,18 +40,12 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     _title = GRANT_TITLE;
     message = 'Test';
     variant = 'success';
-    @track openModal = false; // OPen Reorder modal
-    @track openVFPExportModal = false; // Open export modal
     toggleIconName = 'utility:preview';
     toggleButtonLabel = 'Add Content';
-    @track grantPageURL = '';
-    @track sections = [];
     currentSections = [];
     container = 'modal';
     showModalFooter = false;
     showCard = true; // Display Editor card if data grant exists ELSE show illustration
-    @track grantRecordPage = GRANT_RECORD_PAGE_URL;
-    @track currentPageReference;
 
     showToastSuccess(msg){
         const evt = new ShowToastEvent({
@@ -106,7 +107,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         .catch((error) => {
             console.log(error);
             this.error = error;
-            this.showToastError('Logo file delete error.');
+            this.showToastError(`Logo file delete error.`);
         });
     }
 
@@ -159,14 +160,14 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     handleExportMenuSelect(event){
         const selectedItemValue = event.detail.value;
-        console.log('## handleExportMenuSelect: '+selectedItemValue);
-        if(selectedItemValue == 'exportPDF'){
+        console.log(`## handleExportMenuSelect: ${selectedItemValue}`);
+        if(selectedItemValue === 'exportPDF'){
             this.exportGrantVFPdf();
         }
-        if(selectedItemValue == 'exportWORD'){
+        if(selectedItemValue === 'exportWORD'){
            this.exportGrantVFWord(); 
         }
-        if(selectedItemValue == 'exportHTML'){
+        if(selectedItemValue === 'exportHTML'){
             this.exportGrantVFHTML(); 
          }
     }
@@ -238,11 +239,11 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     setSectionsFromArray(selectedContentBlock){
         if (selectedContentBlock){
             this.sectioncount = selectedContentBlock.length;
-            for(var i = 0; i < selectedContentBlock.length; i++)  {
-                var item = selectedContentBlock[i];
-                var tmpText = item.displaytext ? item.displaytext : 'Text placeholder'; // Set text value condition for null
+            for(let i = 0; i < selectedContentBlock.length; i++)  {
+                let item = selectedContentBlock[i];
+                let tmpText = item.displaytext ? item.displaytext : 'Text placeholder'; // Set text value condition for null
                 this.sections = [...this.sections ,{label: item.sectionname, 
-                                                    displaytitle: '['+item.sortorder+'] ' + item.sectionname,
+                                                    displaytitle: `[${item.sortorder}] ${item.sectionname}`,
                                                     value: item.sectionid, // sfid for Section record
                                                     appid: this.recordId, // Id for Grant Application record 
                                                     hasblocks: true, 
@@ -322,18 +323,13 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     }
     // Order section change
     handleSectionOrderChange(event){
-        
-       // TODO There strange problem refresh of section list is late even data is reloaded
-       // Modal Action box still not refresh, for now workaround close box reopen will show new order.
-       console.log(`handleSectionOrderChange: ORDER Change event: ${this.recordId}`);
-        // Arange new order sections on UI on client side
-        // refreshApex(this.handleLoad());
-        // Close modal
-        //this.openModal = false;
+        // TODO There strange problem refresh of section list is late even data is reloaded
+        // Modal Action box still not refresh, for now workaround close box reopen will show new order.
+        console.log(`handleSectionOrderChange: ORDER Change event: ${this.recordId}`);
         this.closeModal();
         if(event.detail.items){
             // Display toaster message if data was updated
-            showToastSuccess(`Updated grant sections order or add new section`);
+            this.showToastSuccess(`Updated grant sections order or add new section`);
         }
         // Reload data
         this.queryGrantApplication();
