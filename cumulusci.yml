@@ -41,3 +41,13 @@ flows:
                task: command
                options:
                    command: sfdx data import tree -p test-data/export-section-GGW_Section__c-plan.json
+    
+    gk_release_beta:
+        description: 'Generate Release notes and auto merge main branch.'
+        steps:
+            1:
+                task: github_release
+            2: 
+                task: github_release_notes
+            3:
+                task: github_automerge_main

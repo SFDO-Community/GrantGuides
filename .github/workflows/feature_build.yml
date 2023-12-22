@@ -10,30 +10,54 @@ on:
       - 'README.md'
 env:
   CUMULUSCI_KEYCHAIN_CLASS: cumulusci.core.keychain.EnvironmentProjectKeychain
-  CUMULUSCI_SERVICE_github: ${{ secrets.CUMULUSCI_SERVICE_github }}
+  CUMULUSCI_SERVICE_github: ${{ secrets.CUMULUSCI_SERVICE_GITHUB }}
 jobs:
   unit_tests:
     name: 'Deploy Code and Run Apex Tests'
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install sfdx
-        run: |
-          mkdir sfdx
-          wget -qO- https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz | tar xJ -C sfdx --strip-components 1
-          echo $(realpath sfdx/bin) >> $GITHUB_PATH
-      - name: Authenticate Dev Hub
-        run: |
-          echo ${{ secrets.SFDX_AUTH_URL }} > sfdx_auth
-          sfdx force:auth:sfdxurl:store -f sfdx_auth -d
-      - name: Set up Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.8'
-      - name: Install CumulusCI
-        run: |
-          python -m pip install -U pip
-          pip install cumulusci
-      - name: Deploy and Run Tests
-        run: |
-          cci flow run ci_feature --org dev --delete-org
+        # Install Salesforce CLI
+        - name: 'Install Salesforce CLI'
+          run: |
+              npm install @salesforce/cli --location=global
+              nodeInstallPath=$(npm config get prefix)
+              echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+              sf --version
+
+        # Checkout the source code
+        - name: 'Checkout source code'
+          uses: actions/checkout@v4
+
+        # Store secret for dev hub
+        - name: 'Populate auth file with DEV_HUB_AUTH secret'
+          shell: bash
+          run: |
+              echo ${{ secrets.DEV_HUB_AUTH}} > ./DEV_HUB_AUTH.txt
+              secretFileSize=$(wc -c "./DEV_HUB_AUTH.txt" | awk '{print $1}')
+              if [ $secretFileSize == 1 ]; then
+                  echo "Missing DEV_HUB_AUTH secret. Is this workflow running on a fork?";
+                  exit 1;
+              fi
+
+        # Authenticate dev hub
+        - name: 'Authenticate Dev Hub'
+          run: sf org login sfdx-url -f ./DEV_HUB_AUTH.txt -a devhub -d
+
+        # Remove auth file
+        - name: 'Remove auth file'
+          run: rm -f ./DEV_HUB_AUTH.txt
+        
+        # Install Python
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.10'
+        #Install CumulusCI
+        - name: Install CumulusCI
+          run: |
+            python -m pip install -U pip
+            pip install cumulusci
+        #Use CCI to deploy and test feature
+        - name: Deploy and Run Tests
+          run: |
+            cci flow run ci_feature --org dev --delete-org
