@@ -14,18 +14,18 @@
             <br/>
         </apex:outputPanel>
         <h1 id='temp:C:CQJeb278781ebae4fa1a2a1ac42b'>
-            <b><span style="color:#181818" textcolor="#181818">{!appName}</span></b>
+            <b><span class="ggw-span-text">{!appName}</span></b>
         </h1>
 
         <br/>
         <apex:repeat value="{!items}" var="item" id="theItemRepeat">
             <h3 id='temp:C:CQJ7784f8c1101544c3b3dc3f648'>
-                <b><span style="color:#181818" textcolor="#181818">
+                <b><span class="ggw-span-text">
                     <apex:outputText value="{!item.Section_Name__c}" id="sectionName"/>
                 </span></b>
             </h3>
 
-            <span style="color:#181818" textcolor="#181818">
+            <span class="ggw-span-text">
                 <apex:outputText value="{!item.Text_Block__c}" escape="false" id="textBlock"/>
             </span>
             <br/>
