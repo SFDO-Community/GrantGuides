@@ -18,14 +18,12 @@ const DELAY = 300;
 export default class GgwNewApplication extends NavigationMixin(LightningElement) {
     error;
     _title = 'New Grant Application';
-    message = 'New grant was created';
-    variant = 'success';
     @api availableActions = [];
     @api language = 'en_US';
-    // -- List of checkobxes gested section
+    // -- List of checkobxes suggested section
     value = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommended selected Section IDs or items
     options = []; // List of Suggested sections display as checkboxes list the values show what is suggested from data
-    searchKey = ''; // Seach key for find Sections
+    searchKey = ''; // Search key for find Sections
 
     // --- Hold the original list of values temporary
     basevalue = []; //['Statement of need','Plan of action','Budget narrative']; // Sample recommends selected items
@@ -36,10 +34,48 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
     optionsSectionAdd = [];
     // ---
     newSectionName;
+    disableSectionCreateButton = true;
     // --New Grant name & Status combo box
     grantNameValue;
     statusValue;
     // ---
+    showToastSuccess(msg){
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: msg,
+            variant: 'success',
+        });
+        this.dispatchEvent(evt);    
+    }
+    showToastError(msg){
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: msg,
+            variant: 'error',
+        });
+        this.dispatchEvent(evt);    
+    }
+    showToastWarning(msg){
+        const evt = new ShowToastEvent({
+            title: this._title,
+            message: msg,
+            variant: 'warning',
+        });
+        this.dispatchEvent(evt);    
+    }
+    navigateToGrantEditorPage(recordId){
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: {
+                apiName: 'GGW_Grant_Editor'
+            },
+            state: {
+                c__recordId: recordId,
+                c__uictx: 'page'
+            }
+        });
+    }
+
     connectedCallback() {
         this.getSectionsList();
     }
@@ -77,33 +113,6 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                 console.log('New Application wireFoundSections: unknown error')
             }
         }
-    // Intialize seggested sections list for home page
-    // Used in checkbox group to select sections to use by Grant application
-    /* 
-    @wire(getSections)
-        wireSugestedSection({error,data}){
-            if (data) {
-
-                for(var i=0; i<data.length; i++)  {
-                    this.options = [...this.options ,{label: data[i].label, value: data[i].recordid} ];  
-                    this.baseoptions = [...this.baseoptions ,{label: data[i].label, value: data[i].recordid} ];  
-
-                    if(data[i].selected == true){
-                        this.value.push(data[i].recordid);
-                        this.basevalue.push(data[i].recordid);
-                    }
-                }                
-                this.error = undefined;
-            }else if(error){
-                console.log(error);
-                this.error = error;
-            }else{
-		        // eslint-disable-next-line no-console
-		        console.log('unknown error')
-            }
-        }
-    */
-
     getSectionsList() {
         // Call SFDC method query sections
         getSections()
@@ -166,7 +175,7 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                 }
             }
         }
-        // REset
+        // Reset
         this.options = [];
         this.options = tempSectionOptions;
         this.value = [];
@@ -184,24 +193,34 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
             this.searchKey = searchKey;
         }, DELAY);
     }
-
+    isStringEmpty(str) {
+        if (typeof str === "string" && str.length === 0) {
+            //console.log("The string is empty");
+            return true;
+          } else if (str === null) {
+            //console.log("The string is null");
+            return true
+          } else {
+            //console.log("The string is not empty or null");
+            return false;
+          }
+        return false;
+    }
     handleSectionInputChange(event) {
         this.newSectionName = event.detail.value;
+        if(!this.isStringEmpty(this.newSectionName)){
+            this.disableSectionCreateButton = false; // enable create section button
+        }else{
+            this.disableSectionCreateButton = true; // disable if text is erased
+        }
     }
     // CREATE NEW Section - use standard page layout
     // Navigate to New Section record page not baes UX
-    // Will use custom metho call instead
+    // Will use custom method call instead
     handleCreateNewSection(){
-        /* THIS METHOD TO NAVIAGTE STANDARD NEW RECORD
-        this[NavigationMixin.Navigate]({
-            type: 'standard__objectPage',
-            attributes: {
-                objectApiName: 'GGW_Section__c',
-                actionName: 'new'
-            }
-        });  **/
-        // THIS WILL CALL APEX METHOD
-        if(this.newSectionName != null){
+        // CALL APEX METHOD createNewSection
+        //if(this.newSectionName != null){
+        if(!this.isStringEmpty(this.newSectionName)){
             createNewSection({name: this.newSectionName})
                 .then((result) => {
                     console.log('NEW SECTION: '+JSON.stringify(result));
@@ -214,28 +233,19 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
                     this.options = this.baseoptions;
                     this.value = [];
                     this.value = this.basevalue;
+                    // Clear Section input
+                    this.disableSectionCreateButton = true;
+                    this.newSectionName = null;
 
-                    this.message = 'New Section was created with ID: ';
-                    this.variant = 'success';
+                    this.showToastSuccess(`New Section was created with ID: ${result.recordid}`);
                 })
                 .catch((error) => {
                     this.error = error;
-                    //this.contacts = undefined;
-                    this.message = this.error;
-                    this.variant = 'error';
+                    this.showToastError(this.error);
                 });
         }else{
-            this.message = 'Please provide a name to create a new Section.';
-            this.variant = 'warning';
+            this.showToastWarning(`Please provide a name to create a new Section.`);
         }
-        // Display toaster message
-        const evt = new ShowToastEvent({
-                title: this._title,
-                message: this.message,
-                variant: this.variant,
-        });
-        this.dispatchEvent(evt);
-
     }
 
     // Create new Grant application event handler
@@ -245,74 +255,19 @@ export default class GgwNewApplication extends NavigationMixin(LightningElement)
             // Create record/s for new app save and continue to next
             newGrant({name: this.grantNameValue, sections: this.value})
                 .then((result) => {
-                    //this.contacts = result;
                     console.log('NEW GRANT: '+JSON.stringify(result));
                     this.error = undefined;
-
-                    // check if NEXT is allowed on this screen
-                    /*
-                    console.log('NEXT Try Navigate IF FLOW');
-                    if (this.availableActions.find((action) => action === 'NEXT')) {
-                        // navigate to the next screen
-                        console.log('Navigate FLOW NEXT IF Action is OK');
-                        const navigateNextEvent = new FlowNavigationNextEvent();
-                        this.dispatchEvent(navigateNextEvent);
-                    }
-                    */
-                    this.message = 'New Grant Application was created with ID: '+result.Id;
-                    this.variant = 'success';
-                    // Display toaster message
-                    const evt = new ShowToastEvent({
-                        title: this._title,
-                        message: this.message,
-                        variant: this.variant,
-                    });
-                    this.dispatchEvent(evt);
-
+                    
+                    this.showToastSuccess(`New Grant Application was created with ID: ${result.Id}`);
                     // Navigate to New Grant record page
-                    this[NavigationMixin.Navigate]({
-                            type: 'standard__navItemPage',
-                            attributes: {
-                                apiName: 'GGW_Grant_Editor'
-                            },
-                            state: {
-                                c__recordId: result.Id,
-                                c__uictx: 'page'
-                            }
-                        });
-                    /** This navi to standard Grant record page    
-                        type: 'standard__recordPage',
-                        attributes: {
-                            recordId: result.Id,
-                            objectApiName: 'GGW_Grant_Application__c',
-                            actionName: 'view'
-                        }
-                    }); */
+                    this.navigateToGrantEditorPage(result.Id);
                 })
                 .catch((error) => {
                     this.error = error;
-                    //this.contacts = undefined;
-                    this.message = this.error;
-                    this.variant = 'error';
-                    // Display toaster message
-                    const evt = new ShowToastEvent({
-                        title: this._title,
-                        message: this.message,
-                        variant: this.variant,
-                    });
-                    this.dispatchEvent(evt);
+                    this.showToastError(this.error);
                 });
         }else{
-            this.message = 'Please provide a name to create a Grant application.';
-            this.variant = 'warning';
-            // Display toaster message
-            const evt = new ShowToastEvent({
-                title: this._title,
-                message: this.message,
-                variant: this.variant,
-            });
-            this.dispatchEvent(evt);
+            this.showToastWarning(`Please provide a name to create a Grant application.`);
         }
-    
     }
 }

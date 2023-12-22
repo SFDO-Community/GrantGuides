@@ -11,8 +11,7 @@
                 <lightning-button label="Create" onclick={handleApplicationRecordCreate}></lightning-button>
             </lightning-button-group>
         </lightning-button-group>
-      <!---  <lightning-button label="Create" slot="actions" onclick={handleApplicationRecordCreate}></lightning-button>
-      -->
+
         <div class="slds-box slds-box_xx-small slds-var-m-left_xx-small slds-var-m-right_xxx-small slds-var-m-bottom_xx-small">
             <lightning-input type="text" label="Grant Name" onchange={handleGrantNameChange}></lightning-input>
             
@@ -66,12 +65,18 @@
                             class="slds-var-m-bottom_small"
                         >
                             <lightning-layout-item flexibility="grow">
-                                <lightning-input type="text" onchange={handleSectionInputChange} label="Create new section"></lightning-input>
+                                <lightning-input 
+                                    type="text" 
+                                    value={newSectionName} 
+                                    onchange={handleSectionInputChange} 
+                                    label="Create new section">
+                                </lightning-input>
                             </lightning-layout-item>
                             <lightning-layout-item class="slds-var-p-left_xx-small">
                                 <lightning-button
                                     label="New Section"
                                     onclick={handleCreateNewSection}
+                                    disabled={disableSectionCreateButton}
                                 ></lightning-button>
                             </lightning-layout-item>
                         </lightning-layout>
