@@ -28,6 +28,8 @@ sf org create scratch --target-dev-hub labsDevHub --alias $ORG_ALIAS --definitio
 # Push source
 echo "--- PUSH SOURCE FOR: $ORG_ALIAS"
 sf project deploy start --target-org $ORG_ALIAS || { echo 'Source push failed' ; exit 1; }
+# To pull source from scxratch org
+# sf project retrieve start --target-org $ORG_ALIAS
 
 # Assign Permission Set to users
 echo "--- ASSIGN PERMISSIONS FOR: $ORG_ALIAS"
