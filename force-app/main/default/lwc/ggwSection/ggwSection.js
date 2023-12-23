@@ -113,7 +113,7 @@ export default class GgwSection extends LightningElement {
             .then((result) => {
                     console.log('Update App selected item: '+JSON.stringify(result));
                     this.error = undefined;    
-                    showToastSuccess(`Grant Application was updated with text block.`)
+                    this.showToastSuccess(`Grant Application was updated with text block.`)
             })
             .catch((error) => {
                     this.error = error;
