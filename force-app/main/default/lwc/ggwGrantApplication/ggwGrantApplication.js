@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { LightningElement ,wire , api, track } from "lwc";
+import { LightningElement, wire, api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
+import getApplicationList from '@salesforce/apex/GGW_ApplicationCtrl.getApplicationList';
 import includeLogo from '@salesforce/apex/GGW_ApplicationCtrl.includeLogo';
 import deleteLogo from '@salesforce/apex/GGW_ApplicationCtrl.deleteLogo';
 import createContentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createContentDistribution';
@@ -46,6 +47,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     container = 'modal';
     showModalFooter = false;
     showCard = true; // Display Editor card if data grant exists ELSE show illustration
+    grantOptions = []; // List of available Grants for combo box
+    selectedGrant;
 
     showToastSuccess(msg){
         const evt = new ShowToastEvent({
@@ -64,6 +67,23 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         this.dispatchEvent(evt);    
     }
 
+    @wire(getApplicationList) 
+        grantApplications({ error, data }) {
+            if (data) {
+                this.grantOptions = [];
+                for(let i = 0; i < data.length; i++)  {
+                    let grantItem = data[i];
+                    if(grantItem){
+                        this.grantOptions.push({ label: grantItem.Name, value: grantItem.Id });
+                    }
+                }
+                this.error = undefined;
+            } else if (error) {
+              this.error = error;
+              this.grantOptions = undefined;
+            }
+        }
+        
     @wire(CurrentPageReference)
         setCurrentPageReference(currentPageReference) {
             this.currentPageReference = currentPageReference;
@@ -77,6 +97,13 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             this.displayGrantCard();
             this.queryGrantApplication();
         }
+
+    handleGrantChange(event) {
+        this.selectedGrant = event.detail.value;
+        this.recordId = this.selectedGrant;
+        this.displayGrantCard();
+        this.queryGrantApplication();
+    }
 
     handleLogoSelectorClick() {
         this.logoState = !this.logoState;

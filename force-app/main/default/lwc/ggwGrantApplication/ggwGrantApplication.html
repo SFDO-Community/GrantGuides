@@ -2,6 +2,7 @@
 <template>
   <template if:true={showCard}>
     <lightning-quick-action-panel header={displayTitle}>
+      
       <div>
          <!-- <lightning-card title={displayTitle} icon-name="utility:builder"> -->
 
@@ -86,6 +87,17 @@
                             </div>
                           </lightning-layout-item> 
                         </template> 
+                        <!-- Grant Selector positioned to right with alignment-bump -->
+                        <lightning-layout-item alignment-bump="left" class="slds-p-right_xx-large"> 
+                          <lightning-combobox
+                            name="grant"
+                            label="Available Grants"
+                            value={selectedGrant}
+                            placeholder="Select Grant"
+                            options={grantOptions}
+                            onchange={handleGrantChange} ></lightning-combobox>
+                        </lightning-layout-item> 
+                      
                     </lightning-layout>
                 </div>
               </template>
