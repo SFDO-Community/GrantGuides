@@ -85,7 +85,7 @@ public with sharing class GGW_SampleData {
         List<GGW_Content_Block__c> lstBlock = [SELECT Id, Name, Section__c, Description__c, Short_Description__c FROM GGW_Content_Block__c WITH SECURITY_ENFORCED LIMIT 20];
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
         gapp.Name = 'Cloudy Grant Sample';
-        gapp.Status__c = 'Progress';
+        gapp.Status__c = 'In Progress';
         gapp.Language__c = 'en_US';
         if(Schema.sObjectType.GGW_Grant_Application__c.isCreateable()){
             insert gapp;            

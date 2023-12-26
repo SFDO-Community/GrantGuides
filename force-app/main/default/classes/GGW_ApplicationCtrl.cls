@@ -474,7 +474,7 @@ public without sharing class GGW_ApplicationCtrl {
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
         if (GGW_Util.isValidString(name)){
             gapp.Name = name;
-            gapp.Status__c = 'Progress';
+            gapp.Status__c = 'In Progress';
             gapp.Language__c = GGW_Util.getGrantLanguage();
             if(Schema.sObjectType.GGW_Grant_Application__c.isCreateable()){
                 insert gapp;            

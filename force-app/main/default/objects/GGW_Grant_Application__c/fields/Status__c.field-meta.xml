@@ -16,9 +16,9 @@
                 <label>New</label>
             </value>
             <value>
-                <fullName>Progress</fullName>
+                <fullName>In Progress</fullName>
                 <default>false</default>
-                <label>Progress</label>
+                <label>In Progress</label>
             </value>
             <value>
                 <fullName>Submitted</fullName>

@@ -21,7 +21,7 @@ public class GGW_GrantApplicationWrapperTest {
         Test.startTest();
         GGW_GrantApplicationWrapper app = new GGW_GrantApplicationWrapper();
         app.name = 'Test Grant';
-        app.status = 'Progress';
+        app.status = 'In Progress';
         app.language = 'en_US';
         app.logodisplayurl = 'https://grant.logo.org/logo.png';
         app.unselectSectionList = GGW_ApplicationCtrl.getSections();

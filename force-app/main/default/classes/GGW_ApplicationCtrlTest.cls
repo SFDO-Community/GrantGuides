@@ -150,7 +150,7 @@ public class GGW_ApplicationCtrlTest {
         Test.stopTest();
         
         System.assertEquals('MyTest Grant', app.Name, 'Grant name did not match'); 
-        System.assertEquals('Progress', app.Status__c, 'Initial grant status not set correctly to Progress'); 
+        System.assertEquals('In Progress', app.Status__c, 'Initial grant status not set correctly to In Progress'); 
         // Check if all section are created for app
         List<GGW_Selected_Item__c> selectedItems = [SELECT Id, Name, Grant_Application__c, GGW_Section__c, Sort_Order__c 
                                                     FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
@@ -238,7 +238,7 @@ public class GGW_ApplicationCtrlTest {
         // assertion checks happy path and set up
         System.assertEquals(app.Id, appWrapper.recordid, 'No new grant was created');
         System.assertEquals('Grant App',appWrapper.name, 'Default grant name did not match - Grant App');
-        System.assertEquals('Progress', appWrapper.status, 'Default grant status did not match expected - Progress');
+        System.assertEquals('In Progress', appWrapper.status, 'Default grant status did not match expected - In Progress');
         // Check selected Items created as content blocks wraper to number of sections
         System.assertEquals(sections.size(),appWrapper.selectedContentBlock.size(), 'The copy of created blocks from template did not match expected number');
     }
