@@ -55,10 +55,12 @@ export default class GgwSection extends LightningElement {
         });
         this.dispatchEvent(evt);
     }
-
+    convertToPlainText(rtf) {
+        let newLine = rtf.replace(/(?:<br>|<li>|<p>)/g,'\r\n');
+        return newLine.replace( /(<([^>]+)>)/ig, '');
+    }
     copyText(){
-        let tempText = this.textBlock.replace( /(<([^>]+)>)/ig, '');
-        
+        let tempText = this.convertToPlainText(this.textBlock);
         navigator.clipboard.writeText(tempText).then(
             () => {
                 this.showToastSuccess(`Data copied to clipboard`);
