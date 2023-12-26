@@ -253,7 +253,7 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant Sections', sections);
-        List<GGW_Selected_Item__c> selItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> selItemList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         //List<GGW_Selected_Item__c> selItemList = [SELECT Id, Name, GGW_Section__c,Grant_Application__c, Sort_Order__c 
         //                                        FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
         String itemid = selItemList[0].Id; 
@@ -264,7 +264,7 @@ public class GGW_ApplicationCtrlTest {
         GGW_ApplicationCtrl.saveSelectedSectionText(itemid, bwList[0].recordid);
         Test.stopTest();
         // assertion checks that item saved the Block text
-        List<GGW_Selected_Item__c> savedItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> savedItemList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         System.assertEquals(blocktext, savedItemList[0].Text_Block__c, 'Block text did not match template'); 
     }
     @isTest
@@ -278,7 +278,7 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App Order', sections);
-        List<GGW_Selected_Item__c> selItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> selItemList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         // List of selected Iteam IDs - GGW_Selected_Item__c
         List<String> itemList =  new List<String>();
         // FLip order first/last
@@ -293,7 +293,7 @@ public class GGW_ApplicationCtrlTest {
         GGW_ApplicationCtrl.reorderSections(itemList, app.Id);
         Test.stopTest();
         // Check fliped order
-        List<GGW_Selected_Item__c> selOrderedList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> selOrderedList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         System.assertEquals(last, selOrderedList[0].Id, 'Last seleected section item did not match expected');                                             
         System.assertEquals(first, selOrderedList[selOrderedList.size()-1].Id, 'First seleectd section item did not match selected');
     }

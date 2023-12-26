@@ -17,6 +17,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 const GRANT_TITLE = 'Grant Application';
 const GRANT_TITLE_HEADER = 'Grant Application:';
 const GRANT_TITLE_ERROR = 'Grant Application do not exist, please create new or select existing grant.';
+const GRANT_TITLE_LOOKUP_ERROR = 'Grant Application do not contain sections, please add sections to grant using Reorder.';
 const GRANT_RECORD_PAGE_URL = '/lightning/r/GGW_Grant_Application__c/'; // Add record ID
 
 export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
@@ -259,7 +260,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         if(name){
             this.displayTitle = ` ${GRANT_TITLE_HEADER} ${name}`;
         }else{
-            this.displayTitle = GRANT_TITLE_ERROR;
+            this.displayTitle = GRANT_TITLE_LOOKUP_ERROR;
         }
     }
 
@@ -299,7 +300,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     this.sections = []; // Clear to reload
                     this.currentSections = [];
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
-                    this.grantName = data.name;
+                    this.grantName = data.textname;
                     this.logoState = data.logostate;
                     // Init record page URL
                     this.grantRecordPage = `${GRANT_RECORD_PAGE_URL}${this.recordId}/view`;
