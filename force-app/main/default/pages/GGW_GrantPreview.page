@@ -44,12 +44,17 @@
         </apex:repeat>
 
         <script type="text/javascript">
+            function  convertToPlainText(rtf) {
+                let newLine = rtf.replace(/(?:<br>|<li>|<p>)/g,'\r\n');
+                return newLine.replace( /(<([^>]+)>)/ig, '');
+            }
+
             function copyContent(itemId) {
                 let text = document.getElementById(itemId).innerHTML;
                 //console.log(`### ${text}`);
 
               try {
-                let tempText = text.replace( /(<([^>]+)>)/ig, ''); // clear all HTML rich tags
+                let tempText = convertToPlainText(text); // clear all HTML rich tags
                 copyTextToClipboard(tempText);
                 console.log('Content copied to clipboard');
               } catch (err) {
