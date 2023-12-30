@@ -9,7 +9,7 @@ Grants Content Kit Resources:
 
 ## Community Sprints 
 
-### [Upcoming Date] Community Sprint
+### [Upcoming] February Community Sprint - More info soon
 
 #### Team
 #### Agenda
