@@ -4,8 +4,8 @@
       "path": "force-app",
       "default": true,
       "package": "Grants Content Kit",
-      "versionName": "ver 0.1",
-      "versionNumber": "0.1.0.NEXT",
+      "versionName": "Winter 24",
+      "versionNumber": "2.1.0.NEXT",
       "apexTestAccess": {
         "permissionSets": [
           "GGW_User_Permissions"
