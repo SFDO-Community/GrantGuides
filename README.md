@@ -9,30 +9,14 @@ Grants Content Kit Resources:
 
 ## Community Sprints 
 
-### [Upcoming Date] Community Sprint
+### [Upcoming] February Community Sprint - More info soon
 
 #### Team
 #### Agenda
 #### Summary & Accomplishments
 #### Recommendations for Future Sprints
 
-### March 2023 Community Sprint
-
-#### Team
-- Mary Crozier
-- Denise Graber 
-- Kelly Kohrs 
-- Liz McCormick
-- Cid Mendizabal
-- Igor Androsov
-- Jérémie Malengreaux
-- Elizabeth Snow
-- Andrew Beyer
-- Caitlyn Duer
-- Melanie Calhoun
-- Melissa Barber
-- Sheila Powell
-- Nicole Smith
+### 2023 Community Sprints
 
 #### Summary & Accomplishments
 - [Created and committed sample content](https://docs.google.com/document/d/1gkLnFyskKXShowoOBk7ZaHHSDOMwTGbjIjhDpg-smWE/edit#heading=h.u35mx5t1qfmi)

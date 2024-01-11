@@ -8,8 +8,8 @@
             "Name": "[SAMPLE CONTENT] - Goal 1",
             "Description__c": "<p>SAMPLE CONTENT - Goal 1: Officially launch Clean Water Pilot Program</p><p><br></p><p>Key Activities: We will hire a Managing Director by November 2022 who will be responsible for partnership development and local program implementation. We have identified several potential locations to pilot the Clean Water Program at, all within 1 mile of our home office and have secured a team of volunteers to see the pilot from start to finish. The pilot program will select 1 stream as the focus of the pilot and during a 4 month period will host 2 cleanup efforts, 1 community outreach event and 1 online campaign. After the 4 months have completed, the committee consisting of 2 volunteers from the pilot committee and 3 Beautify Austin board members, will meet and assess the future of the program. </p><p><br></p><p>Desired Outcomes:</p><p>Two cleanup efforts with a minimum of 10 community volunteers</p><p>Petition of more than 50 signatures of interest from local (within 1 mile) citizens of interest in use of the stream</p><p>90% positive feedback from local citizens</p>",
             "Section__c": "@GGW_Section__cRef2",
-            "Short_Description__c": "Goal 1: Officially launch Clean Water Pilot Program",
-            "Language__c": "en_US"
+            "Language__c": "en_US",
+            "Short_Description__c": "Goal 1: Officially launch Clean Water Pilot Program"
         },
         {
             "attributes": {
@@ -19,8 +19,8 @@
             "Name": "[SAMPLE CONTENT] - Grow Austin 2",
             "Description__c": "<p>SAMPLE CONTENT - Grow Austin has primarily focused on trash clean up and the beautification of parks. GA would like to expand into water as well and plans to do that gradually by starting with education and gradually moving into volunteering and volunteer programs. The average temperature in Austin during the summer months (June - September) is 95 degrees and many communities lack public pools or swimming holes for community members to cool off. The goal of this program would be to improve natural water sources to make them safe for people to use in the warmer months for swimming and cooling off.</p><p><br></p><p>Similar to our Seedling program, GA plans to start small to determine community interest and gradually expand once key success metrics have been established and achieved. The water program will strive to clean local streams and lakes to make them more friendly for communities.</p>",
             "Section__c": "@GGW_Section__cRef2",
-            "Short_Description__c": "Grow Austin 2",
-            "Language__c": "en_US"
+            "Language__c": "en_US",
+            "Short_Description__c": "Grow Austin 2"
         },
         {
             "attributes": {
@@ -30,19 +30,118 @@
             "Name": "[SAMPLE CONTENT] - Grow Austin 1",
             "Description__c": "<p>SAMPLE CONTENT - Grow Austin is grateful for our ongoing and multifaceted partnership with <a href=\"https://salesforce.org/\" target=\"_blank\">Salesforce.org</a>. Thanks to the previous $15,000 <a href=\"https://salesforce.org/\" target=\"_blank\">Salesforce.org</a> investment, we were able to expand our highly successful Seedling program, piloted in Travis county, to our neighboring counties. This will enable 50 additional families in underserved communities to receive the supplies and training needed to build and grow their own sustainable garden in their backyard. Crops and seeds from these gardens can be shared with neighbors, providing nourishment and the ability to provide for many years.</p><p><br></p><p>Salesforce employees also actively volunteered at our annual Grow Austin event, collectively contributing over 250 hours at our Zilker Park cleanup. There are also 10 individuals who contribute 50+ volunteer hours per year as regular volunteers in our programs, sit on our board and support our staff. </p><p><br></p><p>Grow Austin is a customer of Salesforce technology, which is critical to tracking our organizational outcomes and overall success. This system enables us to record, analyze and report on data about counties, volunteers and other key audiences and help all program staff assess day-to-day progress and challenges, at both micro and macro levels.</p><p><br></p>",
             "Section__c": "@GGW_Section__cRef2",
-            "Short_Description__c": "Grow Austin 1",
-            "Language__c": "en_US"
+            "Language__c": "en_US",
+            "Short_Description__c": "Grow Austin 1"
         },
         {
             "attributes": {
                 "type": "GGW_Content_Block__c",
                 "referenceId": "GGW_Content_Block__cRef4"
             },
+            "Name": "Plan of action - Green spaces",
+            "Description__c": "<p><span style=\"font-size: 12px;\">The core of our Greenspace initiative lies in hands-on work in our local parks, specifically introducing new trees and seating. Our flagship event is an annual Plant Out, held every autumn. At this event, hundreds of volunteers plant trees in local parks. [Org] staff oversee tree planting, including enrolling and briefing volunteers; co-ordinating volunteers with correct planting conditions and supplies; and liaising with local landowners to gain necessary permissions. Your grant will fund these efforts, as well as site reconnaissance by an arboreal expert who will advise on sourcing native trees and advising when planting should take place. </span></p><p><br></p><p><span style=\"font-size: 12px;\">The Plant Out’s sister event is our annual spring Build-a-Bench day. Seating is a critical component of park accessibility, providing space for parents, elders, and people with disabilities. We aim for every park in [city] to have 10 benches per acre. For the upcoming 2024 Build-a-Bench, we will target parks in [neighborhood], aiming to install 700 benches. This effort is made possible through an in kind gift of materials and labor from the Cloud Lumber Company. </span></p><p><span style=\"font-size: 12px;\">None of this would be possible without [org]’s dedicated volunteers. To support our Greenspace initiative we recruit, train and retain 50 volunteers every year. We do this by identifying the skills needed as well as engaging and creating a culture of stewardship. To accomplish this we have a volunteer program that includes inductions, rewards and recognition as well as skill training. </span></p><p><br></p><p><span style=\"font-size: 12px;\">We also recruit volunteers from our local school community. At the [School Name] we have supported a Greenspace garden in order to foster creative play, environmental education, and interactive community participation. Participants in our school garden programs also attend our Plant Out and Build-a-Bench</span></p><p><span style=\"font-size: 12px;\"> events as well as quarterly cleanup events focusing primarily on neighborhood playgrounds and school campuses. These students attend with their families, providing an intergenerational volunteer force.</span></p><p><span style=\"font-size: 12px;\"> </span></p><p><span style=\"font-size: 12px;\">Our events, volunteer recruitment, and school programs rely on marketing efforts and public education. Each program will be promoted via multiple media outlets including print, radio, television, social media (e.g. Facebook, Instagram, NextDoor, etc.) and influencer promotions. </span></p>",
+            "Section__c": "@GGW_Section__cRef2",
+            "Language__c": "en_US",
+            "Short_Description__c": "The core of our Greenspace initiative lies in hands-on work in our local parks,"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef5"
+            },
             "Name": "[SAMPLE CONTENT] - Grow Austin",
             "Description__c": "<p>SAMPLE CONTENT - Grow Austin aims at improving the overall quality of life of Texas residents by providing education and resources to engage citizens in building more beautiful communities. What started out as a neighborhood project 10 years ago has developed into a 10 person team of dedicated staff serving the greater Austin area and surrounding counties.</p><p>Through organized volunteer events and annual programs, GA provides communities with the tools they need to improve their overall community and build a better future for themselves and their neighbors. We provide communities with resources that teach them about necessary information to their environments such as sustainable gardening, native plants and composting. GA also helps coordinate and host large volunteer events to quickly transform spaces in Austin such as vacant lots or overrun trail passes. All with the &#39;better together&#39; focus in mind, encouraging community involvement and engagement.</p><p>With inclusivity at its core, GA offers a wide variety of programs that cater to various groups of individuals. We want individuals to find a home at Beautify Austin and to do that we offer many different programs that we feel can check off one or more volunteer interests.</p><p>Grow Austin believes that communities hold the power to keep their neighborhoods clean and thriving. In 2021, over 1000 volunteers participated in the Grow Austin programs, filling over 2000 recycling bags. Grow Austin also did its part of educating and supporting Austin citizens by supplying families with over 350 seed packets for sustainable gardening and tallying over 500 hours with educational seminars and videos.</p>",
             "Section__c": "@GGW_Section__cRef3",
-            "Short_Description__c": "Grow Austin aims at improving the overall quality of life of Texas residents",
-            "Language__c": "en_US"
+            "Language__c": "en_US",
+            "Short_Description__c": "Grow Austin aims at improving the overall quality of life of Texas residents"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef6"
+            },
+            "Name": "Goals objectives SAMPLE",
+            "Description__c": "<p><span style=\"font-size: 12px;\">A general operating support grant from [GRANT FUNDER] will enable [PROGRAM] to work toward the following six-month organizational goals: </span></p><p><span style=\"font-family: Times; font-size: 12pt;\"><span class=\"ql-cursor\">﻿</span></span></p><ul><li><span style=\"font-size: 12px;\">Recruit and train 50 volunteers </span></li><li><span style=\"font-size: 12px;\">Spend 100 hours in local schools </span></li><li><span style=\"font-size: 12px;\">Improve the local diversity of nature by planting 150 trees that are native species </span></li><li><span style=\"font-size: 12px;\">Raise the profile of the organization locally by giving interviews to local press, organizing cleanup events </span></li><li><span style=\"font-size: 12px;\">Improve facilities for disabled people by installing benches at parks </span></li></ul>",
+            "Section__c": "@GGW_Section__cRef3",
+            "Language__c": "en_US",
+            "Short_Description__c": "A general operating support grant from [GRANT FUNDER] will enable"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef7"
+            },
+            "Name": "Budget narrative SAMPLE",
+            "Description__c": "<p><span style=\"font-size: 12px;\">Expenses </span></p><ul><li><span style=\"font-size: 12px;\">Salaries (1.2 FTE) - $60,000 </span></li><li><span style=\"font-size: 12px;\">Materials - $5,000 </span></li><li><span style=\"font-size: 12px;\">Trees - $30,000 </span></li><li><span style=\"font-size: 12px;\">Rental equipment - $5,000 </span></li><li><span style=\"font-size: 12px;\">Transport - $500 </span></li><li><span style=\"font-size: 12px;\">Marketing - $2,000 </span></li><li><span style=\"font-size: 12px;\">Overhead - $8,000 </span></li><li><span style=\"font-size: 12px;\">Requested amount: $25,000 </span></li></ul><p><br></p><p><span style=\"font-size: 12px;\">Income </span></p><ul><li><span style=\"font-size: 12px;\">Own funds: $50,000 </span></li><li><span style=\"font-size: 12px;\">Other partners funds: $25,000 </span></li><li><span style=\"font-size: 12px;\">Other income: $10,000 </span></li><li><span style=\"font-size: 12px;\">In-kind contribution (e.g. volunteering hours): $25,000 </span></li></ul><p><br></p><p><span style=\"font-size: 12px;\">This grant will cover portions of our Program Manager and Volunteer Coordinator’s salaries. </span></p><p><span style=\"font-size: 12px;\">Materials, trees, equipment and transport, and marketing are all used for our Build-a-Bench </span></p><p><span style=\"font-size: 12px;\">and Plant Out events. </span></p>",
+            "Section__c": "@GGW_Section__cRef4",
+            "Language__c": "en_US",
+            "Short_Description__c": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef8"
+            },
+            "Name": "Program narrative text",
+            "Description__c": "<p><span style=\"font-size: 12px;\">SAMPLE CONTENT - [ORG NAME] primarily focuses on beautification and improvement of parks and would like to expand into improving natural waterways. [ORG NAME] plans to build the clean water program over time with education and raising awareness; then, gradually move into organizing volunteers and special volunteer events. Many communities lack public and clean swimming areas for citizens to cool off during the hot summer months. The goal of this new program is to improve natural water sources to make them clean, safe, and accessible. </span></p><p><br></p><p><span style=\"font-size: 12px;\">Similar to our [EXISTING PROGRAM NAME] program, [ORG NAME] plans to start by determining community interest and understanding, and then, expand the program once key success metrics have been established. The clean water program will strive to improve local streams and lakes to make them more accessible and usable for communities. </span></p>",
+            "Section__c": "@GGW_Section__cRef5",
+            "Language__c": "en_US",
+            "Short_Description__c": "SAMPLE CONTENT - [ORG NAME] primarily focuses on beautification and improvement of parks"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef9"
+            },
+            "Name": "Outcomes SAMPLE",
+            "Description__c": "<p><span style=\"font-size: 12px;\">Impact &amp; Requirements </span></p><ul><li><span style=\"font-size: 12px;\">Impact requirements - How it&#39;s measured </span></li><li><span style=\"font-size: 12px;\">Report requirements - How it&#39;s measured </span></li></ul>",
+            "Section__c": "@GGW_Section__cRef6",
+            "Language__c": "en_US",
+            "Short_Description__c": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef10"
+            },
+            "Name": "Statement of need - Green Spaces",
+            "Description__c": "<p><span style=\"font-size: 12px;\">[SAMPLE CONTENT] - [city] faces a serious lack of safe, clean public green spaces. A survey from last year showed that out of 4,505 people, 26% visited parks weekly, and of that amount, approximately 49% found most parks&#39; water unsafe. </span></p><p><span style=\"font-size: 12px;\">A school survey from 2021 showed 30% of parents in [city] felt their local park was too dirty or unsafe for their children to play. The World Health Organization recommends that all people reside within 300 meters of green space. </span></p><p><span style=\"font-size: 12px;\">Yet as of 2020, 100 million people in [country], including 27 million children, reported not having access to decent nearby green space. Racially inequitable urban spaces have long been an issue for the city of [city]. Currently, </span></p><p><span style=\"font-size: 12px;\">the city lacks the transportation infrastructure to ensure that all parks are accessible. Last year a study showed that out of 100 parks in the city, only 12 of these parks had reasonable access to public transportation. Several reviews suggest that access to </span></p><p><span style=\"font-size: 12px;\">neighborhood parks &amp; green spaces are associated with better population health, including improved physical activity and less obesity, which continues to be one of today’s most pressing public health problems. In addition, some research evidence </span></p><p><span style=\"font-size: 12px;\">suggests that this access improves mental health. This nation-wide study covering &gt;900,000 people shows that children who grew up with the lowest levels of green space had up to 55% higher risk of developing a psychiatric disorder independent from effects </span></p><p><span style=\"font-size: 12px;\">of other known risk factors. If [city]’s parks are cleaner and more accessible, more citizens can get outdoors and connect across geographic and other lines. This leads to better health outcomes, potential economic benefits, and a stronger community. ﻿</span></p>",
+            "Section__c": "@GGW_Section__cRef7",
+            "Language__c": "en_US",
+            "Short_Description__c": "[city] faces a serious lack of safe, clean public green spaces."
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef11"
+            },
+            "Name": "Statement Need",
+            "Description__c": "<p>Imperative initiative to test functionality of editor tool</p>",
+            "Section__c": "@GGW_Section__cRef7",
+            "Language__c": "en_US",
+            "Short_Description__c": null
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef12"
+            },
+            "Name": "Executive Summary text",
+            "Description__c": "<p><span style=\"font-size: 12px;\">SAMPLE CONTENT - [ORG NAME] aims to improve the overall quality of life of [LOCATION] residents. [ORG NAME] provides education and resources to engage citizens and improve their communities. What started out as a neighborhood project made up of volunteers 10 years ago has developed into a 12-person team of dedicated, full-time staff serving the greater [LOCATION] area and surrounding counties. </span></p><p><br></p><p><span style=\"font-size: 12px;\">Through annual programs and volunteer events, [ORG NAME] equips citizens with the tools that they need to build a better future for themselves and their neighbors. </span></p><p><span style=\"font-size: 12px;\">With a better-together focus in mind, [ORG NAME] encourages community involvement and engagement. [ORG NAME]: </span></p><p><br></p><p><span style=\"font-size: 12px;\">• Provides educational programs on sustainable gardening, native plants, and composting. </span></p><p><span style=\"font-size: 12px;\">• Hosts large volunteer events to quickly transform spaces, such as vacant lots or overrun trail passes, into clean and accessible spaces for everyone. </span></p><p><span style=\"font-size: 12px;\">• Organizes volunteers throughout the year to assess and maintain public spaces. </span></p><p><br></p><p><span style=\"font-size: 12px;\">With inclusivity at its core, [ORG NAME] offers a wide variety of programs for individuals of all ages and abilities. Individuals should feel pride in [LOCATION]. To help with this, [ORG NAME] offers many different programs that offer a wide range of volunteer interests. </span></p><p><span style=\"font-size: 12px;\">[ORG NAME] believes that communities hold the power to keep their neighborhoods clean and thriving. Last year, over 1,000 volunteers participated in the [ORG NAME] programs, filled over 2,000 recycling bags, and improved 36 natural areas throughout [LOCATION]. [ORG NAME] also educated and supported [LOCATION] citizens by supplying families with over 350 seed packets for sustainable gardening and tallied over 500 hours of educational seminars and videos. </span></p>",
+            "Section__c": "@GGW_Section__cRef8",
+            "Language__c": "en_US",
+            "Short_Description__c": "SAMPLE CONTENT - [ORG NAME] aims to improve the overall quality"
+        },
+        {
+            "attributes": {
+                "type": "GGW_Content_Block__c",
+                "referenceId": "GGW_Content_Block__cRef13"
+            },
+            "Name": "Project objectives SAMPLE",
+            "Description__c": "<p><span style=\"font-size: 12px;\">SAMPLE CONTENT - [ORG]’s mission is to rehabilitate existing spaces so they are greener, cleaner, and more accessible. </span></p><p><span style=\"font-size: 12px;\">We want to show that with an inclusive aim, the community can grow friendships as well as trees. Over the next year, our objectives are: </span></p><p><br></p><ul><li><span style=\"font-size: 12px;\">Increasing inclusivity by providing safe, outdoor spaces that are accessible to people of all ages and abilities. </span></li><li><span style=\"font-size: 12px;\">Making our green spaces beautiful and sustainable by fostering more diverse plant species that are native to our city. </span></li><li><span style=\"font-size: 12px;\">Growing the community’s relationship with nature through school programs. </span></li><li><span style=\"font-size: 12px;\">Making our volunteer programs a pipeline for work-ready individuals in the conservation and ecological sciences sectors. </span></li><li><span style=\"font-size: 12px;\">Gaining visibility and support in [city] through our efforts to create a cleaner, accessible, and connected community. </span></li></ul>",
+            "Section__c": "@GGW_Section__cRef9",
+            "Language__c": "en_US",
+            "Short_Description__c": "[ORG]’s mission is to rehabilitate existing spaces so they are greener, cleaner, and more accessible."
         }
     ]
 }

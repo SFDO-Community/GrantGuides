@@ -119,24 +119,6 @@ public class GGW_UtilTest {
 
     }
     @isTest
-    static void testQueryGrantApp(){
-        // Query all suggested sections
-        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
-        List<String> sections = new List<String>();
-        for (GGW_SectionWrapper gww : lst){
-            if(gww.selected){
-                sections.add(gww.recordid);
-            }
-        }
-        GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App', sections);
-
-        Test.startTest();
-        GGW_Grant_Application__c grant = GGW_Util.queryGrantApp(app.Id);
-        Test.stopTest();    
-        System.assertEquals(grant.Name, 'Grant App', 'Could not create a new grant application'); 
-        
-    }
-    @isTest
     static void testSelectOptionFromPicklist(){
         Test.startTest();
         List<GGW_Util.PickList> picList = GGW_Util.getSelectOptionFromPicklist(ggGtSteObj, ggGtStLanField, true);

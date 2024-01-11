@@ -1,7 +1,7 @@
 # --- Query export Grant Sample data ---
 
 sfdx force:data:tree:export --query \
-    "SELECT Id, Name, Recommended__c, Section_Details__c, Sort_Order__c, Suggested__c, \
-        (SELECT Id, Name, Description__c, Section__c, Short_Description__c FROM Content_Blocks__r )
+    "SELECT Id, Name, Recommended__c, Section_Details__c, Sort_Order__c, Language__c, Suggested__c, \
+        (SELECT Id, Name, Description__c, Section__c, Language__c, Short_Description__c FROM Content_Blocks__r )
     FROM GGW_Section__c WHERE Sort_Order__c < 10" \
---prefix export-data --outputdir test-data --plan -u ggw
+--prefix sample-data --outputdir test-data --plan -u ggw

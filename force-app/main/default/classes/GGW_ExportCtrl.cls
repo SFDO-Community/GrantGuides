@@ -35,7 +35,7 @@ public without sharing class GGW_ExportCtrl {
         system.debug('### PDF VIew ID:'+this.recordId);
         this.appName = 'This view requires a Grant record, missing.';
         if(this.recordId != null && this.recordId.length() > 0){
-            GGW_Grant_Application__c app = GGW_Util.queryGrantApp(this.recordId.escapeHtml4());
+            GGW_Grant_Application__c app = GGW_ApplicationSelector.queryGrantApp(this.recordId.escapeHtml4());
             if(app != null && app.Logo_Download_Url__c != null){
                 this.logoURL = app.Logo_Download_Url__c;
                 if(app.Include_Logo__c == true){

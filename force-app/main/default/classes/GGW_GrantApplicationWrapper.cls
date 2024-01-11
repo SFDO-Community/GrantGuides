@@ -10,7 +10,8 @@
  */
 public class GGW_GrantApplicationWrapper {
     @AuraEnabled public String recordid;
-    @AuraEnabled public String name;
+    @AuraEnabled public String name; // This can hold a Lookup standard records URL link to Grant by Name
+    @AuraEnabled public String textname; // Save only grant name as text
     @AuraEnabled public String status;
     @AuraEnabled public String logodisplayurl;
     @AuraEnabled public Boolean logostate;

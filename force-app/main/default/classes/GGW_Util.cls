@@ -23,12 +23,6 @@ public without sharing class GGW_Util {
                 WHERE Grant_Application__c =: appId WITH SECURITY_ENFORCED ORDER BY Sort_Order__c];
         return items;
     }
-    public static GGW_Grant_Application__c queryGrantApp(String appId){
-        return [SELECT Id, Name, Application_Name__c, Logo_Download_Url__c, 
-                        DistributionPublicUrl__c, Status__c, Description__c, Language__c, Include_Logo__c  
-                FROM GGW_Grant_Application__c 
-                WHERE Id =: appId WITH SECURITY_ENFORCED LIMIT 1];
-    }
     public static Boolean isValidString(String str){
         Boolean res = false;
         if(str != null && str.length() > 0){

@@ -150,7 +150,7 @@ public class GGW_ApplicationCtrlTest {
         Test.stopTest();
         
         System.assertEquals('MyTest Grant', app.Name, 'Grant name did not match'); 
-        System.assertEquals('Progress', app.Status__c, 'Initial grant status not set correctly to Progress'); 
+        System.assertEquals('In Progress', app.Status__c, 'Initial grant status not set correctly to In Progress'); 
         // Check if all section are created for app
         List<GGW_Selected_Item__c> selectedItems = [SELECT Id, Name, Grant_Application__c, GGW_Section__c, Sort_Order__c 
                                                     FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
@@ -238,7 +238,7 @@ public class GGW_ApplicationCtrlTest {
         // assertion checks happy path and set up
         System.assertEquals(app.Id, appWrapper.recordid, 'No new grant was created');
         System.assertEquals('Grant App',appWrapper.name, 'Default grant name did not match - Grant App');
-        System.assertEquals('Progress', appWrapper.status, 'Default grant status did not match expected - Progress');
+        System.assertEquals('In Progress', appWrapper.status, 'Default grant status did not match expected - In Progress');
         // Check selected Items created as content blocks wraper to number of sections
         System.assertEquals(sections.size(),appWrapper.selectedContentBlock.size(), 'The copy of created blocks from template did not match expected number');
     }
@@ -253,7 +253,7 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('MyTest Grant Sections', sections);
-        List<GGW_Selected_Item__c> selItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> selItemList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         //List<GGW_Selected_Item__c> selItemList = [SELECT Id, Name, GGW_Section__c,Grant_Application__c, Sort_Order__c 
         //                                        FROM GGW_Selected_Item__c WHERE Grant_Application__c =:app.Id];
         String itemid = selItemList[0].Id; 
@@ -264,7 +264,7 @@ public class GGW_ApplicationCtrlTest {
         GGW_ApplicationCtrl.saveSelectedSectionText(itemid, bwList[0].recordid);
         Test.stopTest();
         // assertion checks that item saved the Block text
-        List<GGW_Selected_Item__c> savedItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> savedItemList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         System.assertEquals(blocktext, savedItemList[0].Text_Block__c, 'Block text did not match template'); 
     }
     @isTest
@@ -278,7 +278,7 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App Order', sections);
-        List<GGW_Selected_Item__c> selItemList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> selItemList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         // List of selected Iteam IDs - GGW_Selected_Item__c
         List<String> itemList =  new List<String>();
         // FLip order first/last
@@ -293,7 +293,7 @@ public class GGW_ApplicationCtrlTest {
         GGW_ApplicationCtrl.reorderSections(itemList, app.Id);
         Test.stopTest();
         // Check fliped order
-        List<GGW_Selected_Item__c> selOrderedList = GGW_ApplicationCtrl.querySelectedItemsByGrant(app.Id);
+        List<GGW_Selected_Item__c> selOrderedList = GGW_SectionSelector.querySelectedItemsByGrant(app.Id);
         System.assertEquals(last, selOrderedList[0].Id, 'Last seleected section item did not match expected');                                             
         System.assertEquals(first, selOrderedList[selOrderedList.size()-1].Id, 'First seleectd section item did not match selected');
     }

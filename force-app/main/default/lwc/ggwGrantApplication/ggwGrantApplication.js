@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { LightningElement ,wire , api, track } from "lwc";
+import { LightningElement, wire, api, track } from "lwc";
 import { CloseActionScreenEvent } from 'lightning/actions';
 import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
 import getApplication from '@salesforce/apex/GGW_ApplicationCtrl.getApplication';
+import getApplicationList from '@salesforce/apex/GGW_ApplicationCtrl.getApplicationList';
 import includeLogo from '@salesforce/apex/GGW_ApplicationCtrl.includeLogo';
 import deleteLogo from '@salesforce/apex/GGW_ApplicationCtrl.deleteLogo';
 import createContentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createContentDistribution';
@@ -16,6 +17,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 const GRANT_TITLE = 'Grant Application';
 const GRANT_TITLE_HEADER = 'Grant Application:';
 const GRANT_TITLE_ERROR = 'Grant Application do not exist, please create new or select existing grant.';
+const GRANT_TITLE_LOOKUP_ERROR = 'Grant Application do not contain sections, please add sections to grant using Reorder.';
 const GRANT_RECORD_PAGE_URL = '/lightning/r/GGW_Grant_Application__c/'; // Add record ID
 
 export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
@@ -46,6 +48,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     container = 'modal';
     showModalFooter = false;
     showCard = true; // Display Editor card if data grant exists ELSE show illustration
+    grantOptions = []; // List of available Grants for combo box
+    selectedGrant;
 
     showToastSuccess(msg){
         const evt = new ShowToastEvent({
@@ -64,6 +68,23 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         this.dispatchEvent(evt);    
     }
 
+    @wire(getApplicationList) 
+        grantApplications({ error, data }) {
+            if (data) {
+                this.grantOptions = [];
+                for(let i = 0; i < data.length; i++)  {
+                    let grantItem = data[i];
+                    if(grantItem){
+                        this.grantOptions.push({ label: grantItem.Name, value: grantItem.Id });
+                    }
+                }
+                this.error = undefined;
+            } else if (error) {
+              this.error = error;
+              this.grantOptions = undefined;
+            }
+        }
+        
     @wire(CurrentPageReference)
         setCurrentPageReference(currentPageReference) {
             this.currentPageReference = currentPageReference;
@@ -77,6 +98,13 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             this.displayGrantCard();
             this.queryGrantApplication();
         }
+
+    handleGrantChange(event) {
+        this.selectedGrant = event.detail.value;
+        this.recordId = this.selectedGrant;
+        this.displayGrantCard();
+        this.queryGrantApplication();
+    }
 
     handleLogoSelectorClick() {
         this.logoState = !this.logoState;
@@ -232,7 +260,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         if(name){
             this.displayTitle = ` ${GRANT_TITLE_HEADER} ${name}`;
         }else{
-            this.displayTitle = GRANT_TITLE_ERROR;
+            this.displayTitle = GRANT_TITLE_LOOKUP_ERROR;
         }
     }
 
@@ -272,7 +300,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     this.sections = []; // Clear to reload
                     this.currentSections = [];
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
-                    this.grantName = data.name;
+                    this.grantName = data.textname;
                     this.logoState = data.logostate;
                     // Init record page URL
                     this.grantRecordPage = `${GRANT_RECORD_PAGE_URL}${this.recordId}/view`;

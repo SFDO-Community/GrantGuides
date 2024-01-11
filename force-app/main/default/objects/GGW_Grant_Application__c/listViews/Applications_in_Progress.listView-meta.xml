@@ -9,7 +9,7 @@
     <filters>
         <field>Status__c</field>
         <operation>equals</operation>
-        <value>Progress</value>
+        <value>In Progress</value>
     </filters>
     <label>Applications in Progress</label>
 </ListView>

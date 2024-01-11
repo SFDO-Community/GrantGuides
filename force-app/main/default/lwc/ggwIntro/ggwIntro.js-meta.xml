@@ -1,5 +1,5 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-	<apiVersion>52.0</apiVersion>
+	<apiVersion>58.0</apiVersion>
 	<isExposed>true</isExposed>
 	<masterLabel>Ggw intro</masterLabel>
 	<targets>
