@@ -16,7 +16,7 @@
           </h3> 
 
               <lightning-button-group slot="actions" >
-                <!-- Display Langauge selector component -->
+                <!-- Display Language selector component -->
                 <c-ggw-language-display applicationid={recordId} class="slds-p-right_x-small" ></c-ggw-language-display>
 
                 <lightning-button-group >
@@ -134,16 +134,19 @@
 
   <!-- Display Illustration NO Data showCard = FALSE -->
   <template if:false={showCard}>
+      <c-ggw-intro></c-ggw-intro>
+      <!--
       <c-ggw-static-no-data-card
         record-id={recordId}
         display-title={displayTitle}
       ></c-ggw-static-no-data-card>
+      -->
   </template> 
   <!-- END ILLUSTRATION CODE -->
 
   <!-- Display Reorder sections MOdal -->
   <template if:true={openModal}>  
-    <!------Body Section-->
+    <!-- Body Section -->
     <div class="slds-modal slds-fade-in-open slds-backdrop">  
       <div class="slds-modal__container">  
         <div class="slds-modal__content slds-p-around_medium">  
@@ -165,7 +168,7 @@
   </template>      
   <!-- END REORDER Section Modal -->
 
-  <!-- Display EXPORT VFP PDF Mdal -->
+  <!-- Display EXPORT VFP PDF Modal -->
   <template if:true={openVFPExportModal}>  
     <div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="Modalbox" class="slds-modal slds-modal_large">
       <div class="slds-modal__container" style="width: 40%;">
@@ -181,6 +184,6 @@
       </div>
     </div>
   </template>
-  <!-- Display EXPORT VFP PDF Mdal -->
+  <!-- Display EXPORT VFP PDF Modal -->
 
 </template>
