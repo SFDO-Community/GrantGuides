@@ -23,6 +23,16 @@ tasks:
     run_tests:
         options:
             required_org_code_coverage_percent: 75
+    
+    deploy:
+        options:
+            transforms:
+                - transform: find_replace
+                  options:
+                      patterns:
+                          - find: test-7xs4dwvoelxh@example.com
+                            inject_username: True
+
 
 flows:
     config_dev:
