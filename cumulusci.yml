@@ -41,6 +41,15 @@ tasks:
                       patterns:
                           - find: test-7xs4dwvoelxh@example.com
                             inject_username: True
+
+    dx_push:
+        options:
+            transforms:
+                - transform: find_replace
+                  options:
+                      patterns:
+                          - find: test-7xs4dwvoelxh@example.com
+                            inject_username: True
 flows:
     config_dev:
         steps:
