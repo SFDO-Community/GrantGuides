@@ -33,7 +33,7 @@ tasks:
                           - find: test-7xs4dwvoelxh@example.com
                             inject_username: True
 
-    deploy_post:
+    DeployBundles:
         options:
             transforms:
                 - transform: find_replace
