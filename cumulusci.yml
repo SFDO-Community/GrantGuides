@@ -55,6 +55,13 @@ flows:
         steps:
             2:
                 task: dx_push
+                options:
+                    transforms:
+                        - transform: find_replace
+                          options:
+                              patterns:
+                                  - find: test-7xs4dwvoelxh@example.com
+                                    inject_username: True
             3:
                 task: assign_permission_sets
                 options:
