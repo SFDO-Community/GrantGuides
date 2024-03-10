@@ -33,7 +33,7 @@ tasks:
                           - find: test-7xs4dwvoelxh@example.com
                             inject_username: True
 
-    DeployBundles:
+    deploy_post:
         options:
             transforms:
                 - transform: find_replace
@@ -50,11 +50,12 @@ tasks:
                       patterns:
                           - find: test-7xs4dwvoelxh@example.com
                             inject_username: True
+
 flows:
     config_dev:
         steps:
-            2:
-                task: dx_push
+            1:
+                task: deploy_post
                 options:
                     transforms:
                         - transform: find_replace
@@ -62,15 +63,15 @@ flows:
                               patterns:
                                   - find: test-7xs4dwvoelxh@example.com
                                     inject_username: True
-            3:
+            2:
                 task: assign_permission_sets
                 options:
                     api_names: GGW_User_Permissions
-            4:
+            3:
                 task: command
                 options:
                     command: cci org default --org dev
-            5:
+            4:
                task: command
                options:
                    command: sfdx data import tree -p test-data/export-section-GGW_Section__c-plan.json
