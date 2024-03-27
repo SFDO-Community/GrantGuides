@@ -37,8 +37,6 @@ tasks:
 flows:
     config_dev:
         steps:
-            2:
-                task: dx_push
             3:
                 task: assign_permission_sets
                 options:
