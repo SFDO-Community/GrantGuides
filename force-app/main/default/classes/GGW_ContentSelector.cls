@@ -27,7 +27,7 @@ public with sharing class GGW_ContentSelector {
         return cdr;
     }
     // Query ContentVersion by id
-    public static ContentVersion getContentFile(String cvid){
+    public static ContentVersion getContentFile(Id cvid){
         ContentVersion file = [SELECT Id, Title 
                                 FROM ContentVersion 
                                 WHERE Id =: cvid WITH SECURITY_ENFORCED];

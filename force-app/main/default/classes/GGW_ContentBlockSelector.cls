@@ -8,13 +8,13 @@
  * 
  */
 public with sharing class GGW_ContentBlockSelector {
-    public static GGW_Content_Block__c queryContentBlockById(String blockid){
+    public static GGW_Content_Block__c queryContentBlockById(Id blockId){
         GGW_Content_Block__c cBlock = [SELECT Id, Name, Description__c 
                                         FROM GGW_Content_Block__c 
-                                        WHERE Id =: blockid WITH SECURITY_ENFORCED LIMIT 1];
+                                        WHERE Id =: blockId WITH SECURITY_ENFORCED LIMIT 1];
         return cBlock;
     }
-    public static List<GGW_Content_Block__c> queryContentBlocksBySection(String sectionId){
+    public static List<GGW_Content_Block__c> queryContentBlocksBySection(Id sectionId){
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                 Section__c, Section__r.Name, CreatedDate, 
                                                 Language__c  

@@ -63,7 +63,7 @@ public without sharing class GGW_ApplicationCtrl {
      */
     @AuraEnabled
     public static String createContentDistribution(String grantId, String cvid){
-        ContentVersion file = GGW_ContentSelector.getContentFile(cvid);
+        ContentVersion file = GGW_ContentSelector.getContentFile(Id.valueOf(cvid));
         // Creating ContentDistribution record 
         ContentDistribution cdr = insertContentDistribution(file);
         if(cdr.Id == null){
@@ -85,7 +85,7 @@ public without sharing class GGW_ApplicationCtrl {
      */
     @AuraEnabled
     public static void saveSelectedSectionText(String itemid, String blockid){
-        GGW_Content_Block__c cBlock = GGW_ContentBlockSelector.queryContentBlockById(blockid);
+        GGW_Content_Block__c cBlock = GGW_ContentBlockSelector.queryContentBlockById(Id.valueOf(blockid));
         // Construct selected Item to update
         GGW_Selected_Item__c item = new GGW_Selected_Item__c();
         item.Id = itemid;
@@ -139,7 +139,7 @@ public without sharing class GGW_ApplicationCtrl {
     public static void reorderSections(List<String> sectionList, String appId){
         List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
         // Clean up items for reorder, delete items that are NOT on this list
-        cleanSelectedSections(sectionList, appId);
+        cleanSelectedSections(sectionList, Id.valueOf(appId));
         Integer cnt = 1;
         for (String s : sectionList){
 
@@ -154,7 +154,7 @@ public without sharing class GGW_ApplicationCtrl {
                 System.debug('## Update existing section: '+s);
             }
 
-            ggws.Grant_Application__c = appId;
+            ggws.Grant_Application__c = Id.valueOf(appId);
             ggws.Sort_Order__c = cnt;
             updateOrderList.add(ggws);
             cnt++;
@@ -167,7 +167,7 @@ public without sharing class GGW_ApplicationCtrl {
     @AuraEnabled(cacheable=true)
     public static List<GGW_ContentBlockWrapper> getContentBlocks(String sectionId){
         List<GGW_ContentBlockWrapper> cbwResultList = new List<GGW_ContentBlockWrapper>();
-        List<GGW_Content_Block__c> cbList = GGW_ContentBlockSelector.queryContentBlocksBySection(sectionId);
+        List<GGW_Content_Block__c> cbList = GGW_ContentBlockSelector.queryContentBlocksBySection(Id.valueOf(sectionId));
         // Get map of block tags to display as badges
         Map<String,List<String>> blockTags = getBlockTopics();
         for(GGW_Content_Block__c c : cbList){
@@ -261,7 +261,7 @@ public without sharing class GGW_ApplicationCtrl {
     }
     @AuraEnabled (cacheable=true)
     public static String getLanguageSelectionForWire(String appId){
-        return getApplicationLanguage(appId);
+        return getApplicationLanguage(appId.escapeHtml4());
     }
 
     @AuraEnabled (cacheable=true)
