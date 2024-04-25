@@ -7,7 +7,7 @@
  * GGW_ApplicationCtrl controller class support GGW.
  * 
  */
-public without sharing class GGW_ApplicationCtrl {
+public with sharing class GGW_ApplicationCtrl {
     public static String ggGtSteObj = GGW_Grant_State__c.sobjecttype.getDescribe().getName();
     public static String ggGtStLanField = GGW_Grant_State__c.Language__c.getDescribe().getName();
     // -- START LWC CONtroller Methods
