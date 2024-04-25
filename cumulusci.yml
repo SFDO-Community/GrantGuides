@@ -45,8 +45,6 @@ flows:
                 task: command
                 options:
                     command: cci org default --org dev
-            5:
-               task: load_dataset
     
     gk_release_beta:
         description: 'Generate Release notes and auto merge main branch.'
