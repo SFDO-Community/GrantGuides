@@ -1,45 +1,51 @@
-Insert Accounts:
-    sf_object: Account
-    table: Account
-    fields:
-        Name: Name
-        Description: Description
-        BillingStreet: BillingStreet
-        BillingCity: BillingCity
-        BillingState: BillingState
-        BillingPostalCode: BillingPostalCode
-        BillingCountry: BillingCountry
-        ShippingStreet: ShippingStreet
-        ShippingCity: ShippingCity
-        ShippingState: ShippingState
-        ShippingPostalCode: ShippingPostalCode
-        ShippingCountry: ShippingCountry
-        Phone: Phone
-        Fax: Fax
-        Website: Website
-        NumberOfEmployees: NumberOfEmployees
-        AccountNumber: AccountNumber
-        Site: Site
-        Type: Type
-Insert Contacts:
-    sf_object: Contact
-    table: Contact
-    fields:
-        Salutation: Salutation
-        FirstName: FirstName
-        LastName: LastName
-        Email: Email
-        Phone: Phone
-        MobilePhone: MobilePhone
-        OtherPhone: OtherPhone
-        HomePhone: HomePhone
-        Title: Title
-        Birthdate: Birthdate
-        MailingStreet: MailingStreet
-        MailingCity: MailingCity
-        MailingState: MailingState
-        MailingPostalCode: MailingPostalCode
-        MailingCountry: MailingCountry
-    lookups:
-        AccountId:
-            table: Account
+Insert GGW_Grant_Application__c:
+  sf_object: GGW_Grant_Application__c
+  fields:
+  - Description__c
+  - DistributionPublicUrl__c
+  - Include_Logo__c
+  - Language__c
+  - Logo_Download_Url__c
+  - Name
+  - Status__c
+Insert GGW_Grant_State__c:
+  sf_object: GGW_Grant_State__c
+  fields:
+  - Current_User__c
+  - Grant_Application__c
+  - Language__c
+Insert GGW_Section__c:
+  sf_object: GGW_Section__c
+  fields:
+  - Language__c
+  - Name
+  - Recommended__c
+  - Section_Details__c
+  - Sort_Order__c
+  - Suggested__c
+Insert GGW_Content_Block__c:
+  sf_object: GGW_Content_Block__c
+  fields:
+  - Description__c
+  - Language__c
+  - Name
+  - Short_Description__c
+  lookups:
+    Section__c:
+      table:
+      - GGW_Section__c
+Insert GGW_Selected_Item__c:
+  sf_object: GGW_Selected_Item__c
+  fields:
+  - Sort_Order__c
+  - Text_Block__c
+  lookups:
+    GGW_Section__c:
+      table:
+      - GGW_Section__c
+    Grant_Application__c:
+      table:
+      - GGW_Grant_Application__c
+    Selected_Block__c:
+      table:
+      - GGW_Content_Block__c
