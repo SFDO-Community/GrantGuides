@@ -8,7 +8,7 @@
  * GGW_Util class for support utility methods on Grant application.
  * Used by standard and Custom controller
  */
-public without sharing class GGW_Util {
+public with sharing class GGW_Util {
     public static String ggGtSteObj = GGW_Grant_State__c.sobjecttype.getDescribe().getName();
     public static String ggGtStLanField = GGW_Grant_State__c.Language__c.getDescribe().getName();
    
