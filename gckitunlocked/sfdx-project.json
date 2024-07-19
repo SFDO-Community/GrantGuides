@@ -4,8 +4,7 @@
       "path": "force-app",
       "default": true,
       "package": "Grants Content Kit",
-      "versionName": "Spring 24",
-      "versionNumber": "3.1.0.NEXT",
+      "versionNumber": "3.0.0.NEXT",
       "apexTestAccess": {
         "permissionSets": [
           "GGW_User_Permissions"
@@ -18,7 +17,7 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "54.0",
   "packageAliases": {
-    "Grants Content Kit": "0Ho8a0000008OTFCA2",
+    "Grants Content Kit": "0Ho8a000000fxV5CAI",
     "Grants Content Kit@0.1.0-1": "04t8a000001aJXYAA2",
     "Grants Content Kit@0.1.0-2": "04t8a000001aJYWAA2",
     "Grants Content Kit@0.1.0-3-main": "04t8a000001B8qcAAC",
@@ -27,6 +26,7 @@
     "Grants Content Kit@1.0.0-1-main": "04t8a000001B8qrAAC",
     "Grants Content Kit@1.0.0-2-main": "04t8a000001B8vnAAC",
     "Grants Content Kit@2.0.0-1-main": "04t8a000001B8vsAAC",
-    "Grants Content Kit@2.1.0-1-main": "04t8a000000qq4HAAQ"
+    "Grants Content Kit@2.1.0-1-main": "04t8a000000qq4HAAQ",
+    "Grants Content Kit@3.0.0-1-main": "04t8a000000qqHcAAI"
   }
 }
