@@ -17,6 +17,7 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "54.0",
   "packageAliases": {
-    "Grants Content Kit": "0Ho8a0000008OTFCA2"
+    "Grants Content Kit": "0Ho8a0000008OTFCA2",
+    "Grants Content Kit@3.1.0-2-main": "04t8a000000qqHSAAY"
   }
 }
