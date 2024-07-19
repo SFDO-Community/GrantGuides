@@ -2,10 +2,12 @@ name: beta release
 
 on:
   workflow_dispatch:
-    
-env:
-      CUMULUSCI_KEYCHAIN_CLASS: cumulusci.core.keychain.EnvironmentProjectKeychain
-      CUMULUSCI_SERVICE_github: ${{ secrets.CUMULUSCI_SERVICE_GITHUB }}
+    inputs:
+        versionName:
+          description: 'Name of release (e.g., Spring)'
+          required: true
+        
+      
 jobs:
   unit_tests:
     name: "Run Beta release"
@@ -47,12 +49,12 @@ jobs:
         id: createPackageVersion
         run: |
           set +e
-          json=$(sf package version create -p "Grants Content Kit" -x -f config/project-scratch-def.json -w 10 -b main -c --json)
+          json=$(sf package version create -p "Grants Content Kit" -x -f config/project-scratch-def.json -a ${{ github.event.inputs.versionName}} -w 10 -b main -c --json)
           echo $json
           status=$(echo $json | jq '.status')
           if [ $status == "0" ]; then
           packageVersionId=$(echo $json | jq -r '.result.SubscriberPackageVersionId')
-          echo "::set-output name=packageVersionId::$packageVersionId"
+          echo "packageVersionId=$packageVersionId" >> $GITHUB_OUTPUT
           else
           echo "sf package creation failed"
           fi
@@ -71,3 +73,25 @@ jobs:
       # Housekeeping
       - name: 'Delete scratch org'
         run: sf org delete scratch -p -o scratch-org
+
+      # Pull Request commit generated Package Id in sfdx-package.json file. 
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: 'Bump package version to ${{ steps.createPackageVersion.outputs.packageVersionId }}'
+          body: |
+            This pull request updates the package version to ${{ steps.createPackageVersion.outputs.packageVersionId }}.
+          branch: 'bump-package-version-${{ steps.createPackageVersion.outputs.packageVersionId }}'
+          commit-message: 'chore: bump package version to ${{ steps.createPackageVersion.outputs.packageVersionId }}'
+          labels: 'dependencies, automated pr'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+        # Approve and mark PR for auto merge
+      - name: 'Approve and mark PR for auto merge'
+        run: |
+            gh pr review --approve "$PR_NUMBER"
+            gh pr merge --auto --squash --delete-branch "$PR_NUMBER" 
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
