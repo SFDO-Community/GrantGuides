@@ -29,20 +29,20 @@ jobs:
       - name: 'Populate auth file with DEV_HUB_AUTH secret'
         shell: bash
         run: |
-            echo ${{ secrets.DEV_HUB_AUTH}} > ./DEV_HUB_AUTH.txt
-            secretFileSize=$(wc -c "./DEV_HUB_AUTH.txt" | awk '{print $1}')
+            echo ${{ secrets.DEV_HUB_AUTH_URL}} > ./DEV_HUB_AUTH_URL.txt
+            secretFileSize=$(wc -c "./DEV_HUB_AUTH_URL.txt" | awk '{print $1}')
             if [ $secretFileSize == 1 ]; then
-                echo "Missing DEV_HUB_AUTH secret. Is this workflow running on a fork?";
+                echo "Missing DEV_HUB_AUTH_URL secret. Is this workflow running on a fork?";
                 exit 1;
             fi
 
       # Authenticate dev hub
       - name: 'Authenticate Dev Hub'
-        run: sf org login sfdx-url -f ./DEV_HUB_AUTH.txt -a devhub -d
+        run: sf org login sfdx-url -f ./DEV_HUB_AUTH_URL.txt -a devhub -d
 
       # Remove auth file
       - name: 'Remove auth file'
-        run: rm -f ./DEV_HUB_AUTH.txt
+        run: rm -f ./DEV_HUB_AUTH_URL.txt
       
       #Create Package Version
       - name: "Create package version"
@@ -90,8 +90,8 @@ jobs:
         # Approve and mark PR for auto merge
       - name: 'Approve and mark PR for auto merge'
         run: |
-            gh pr review --approve "$PR_NUMBER"
-            gh pr merge --auto --squash --delete-branch "$PR_NUMBER" 
+            gh pr review --approve "$PR_NUMBER" 
+            gh pr merge --admin --auto --squash --delete-branch "$PR_NUMBER" 
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
