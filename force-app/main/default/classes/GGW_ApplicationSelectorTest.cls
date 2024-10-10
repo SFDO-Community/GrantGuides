@@ -26,9 +26,36 @@
  */
 @isTest
 private class GGW_ApplicationSelectorTest {
+    @TestSetup
+    static void makeData(){
 
+        String uniqueUserName = 'grantuser' + DateTime.now().getTime() + '@labsorg.com';
+        // This code runs as the system user
+        Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+
+        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'GGW_User_Permissions'];
+        
+        User u = new User(Alias = 'standt', Email='grantuser@labsorg.com',
+                        EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
+                        LocaleSidKey='en_US', ProfileId = p.Id,
+                        TimeZoneSidKey='America/Los_Angeles',
+                        UserName=uniqueUserName);   
+        insert u;
+
+        insert new PermissionSetAssignment(AssigneeId = u.id, PermissionSetId = ps.Id);                 
+    }
     @isTest
     static void testQueryGrantApp(){
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                    LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                    FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+        
+        System.runAs(u) {
+        
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+
         // Query all suggested sections
         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
@@ -43,10 +70,20 @@ private class GGW_ApplicationSelectorTest {
         GGW_Grant_Application__c grant = GGW_ApplicationSelector.queryGrantApp(app.Id);
         Test.stopTest();    
         System.assertEquals(grant.Name, 'Grant App', 'Could not create a new grant application'); 
-        
+        }        
     }
     @isTest
     static void getGrantApplicationsTest(){
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                    LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                    FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+        
+        System.runAs(u) {
+        
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+
         // Query all suggested sections
         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
@@ -63,5 +100,6 @@ private class GGW_ApplicationSelectorTest {
         List<GGW_Grant_Application__c> grantList =  GGW_ApplicationSelector.getGrantApplications();
         Test.stopTest();    
         System.assertEquals(2, grantList.size(), 'Query grant application invalid'); 
-    }
+            }
+        }
 }

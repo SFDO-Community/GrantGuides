@@ -11,12 +11,35 @@
 public class GGW_SectionWrapperTest {
     @TestSetup
     static void makeData(){
-        // Samlple content data for testing methods
-        GGW_TestDataFactory.createGrantContentTestData();
+
+        String uniqueUserName = 'grantuser' + DateTime.now().getTime() + '@labsorg.com';
+        // This code runs as the system user
+        Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+
+        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'GGW_User_Permissions'];
+        
+        User u = new User(Alias = 'standt', Email='grantuser@labsorg.com',
+                        EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
+                        LocaleSidKey='en_US', ProfileId = p.Id,
+                        TimeZoneSidKey='America/Los_Angeles',
+                        UserName=uniqueUserName);   
+        insert u;
+
+        insert new PermissionSetAssignment(AssigneeId = u.id, PermissionSetId = ps.Id);                 
     }
 
     @isTest
     static void testSectionWrapperConstructors(){
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                    LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                    FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+        
+        System.runAs(u) {
+        
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+        
         List<GGW_Section__c> sectionList = [SELECT Id, Name, CreatedDate, Recommended__c, Suggested__c, 
                                             Sort_Order__c, Language__c 
                                             FROM GGW_Section__c 
@@ -34,6 +57,6 @@ public class GGW_SectionWrapperTest {
         System.assertNotEquals(null, swBlock, 'Default constructor faild to create wrapper section object'); 
         System.assertEquals(firstSection.Name, swSection.label, 'Default constructor section label name not valid'); 
         System.assertEquals(true, swSection.hasblocks, 'Default constructor section has no blocks'); 
-
+        }
     }
 }
