@@ -1,0 +1,57 @@
+name: Promote and release Salesforce package
+
+on:
+    workflow_dispatch:
+      inputs:
+        packageID:
+          description: 'ID (starts with 04t) of the package version to promote'
+          required: true
+        versionNumber:
+            description: 'Package version to release (e.g., 1.0.1 or 1.1.0)'
+            required: true
+
+jobs:
+    promote-sf-package:
+        runs-on: ubuntu-latest
+
+        steps:
+            #Install Salesforce CLI
+            - name: 'Install Salesforce CLI'
+              run: |
+                npm install @salesforce/cli --location=global
+                nodeInstallPath=$(npm config get prefix)
+                echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+                sf --version
+
+            # Checkout the source code
+            - name: 'Checkout source code'
+              uses: actions/checkout@v4
+
+            # Store secret for dev hub
+            - name: 'Populate auth file with DEV_HUB_URL secret'
+              shell: bash
+              run: |
+                echo ${{ secrets.DEV_HUB_AUTH}} > ./DEV_HUB_AUTH.txt
+                secretFileSize=$(wc -c "./DEV_HUB_AUTH.txt" | awk '{print $1}')
+                if [ $secretFileSize == 1 ]; then
+                    echo "Missing DEV_HUB_AUTH secret. Is this workflow running on a fork?";
+                    exit 1;
+                fi
+
+            # Authenticate dev hub
+            - name: 'Authenticate Dev Hub'
+              run: sf org login sfdx-url -f ./DEV_HUB_AUTH.txt -a devhub -d
+
+            # Remove auth file
+            - name: 'Remove auth file'
+              run: rm -f ./DEV_HUB_AUTH.txt
+
+            # Promote Package version
+            - name: Run SFDX Promote command
+              run: sf package version promote --package ${{ github.event.inputs.packageID }} -n
+
+            # Create release notes
+            - name: Create release
+              run: gh release create ${{ github.event.inputs.versionNumber }} --generate-notes
+              env:
+                    GITHUB_TOKEN: ${{ secrets.CUMULUSCI_SERVICE_GITHUB }}

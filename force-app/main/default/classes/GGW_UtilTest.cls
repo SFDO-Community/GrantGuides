@@ -13,13 +13,13 @@ public class GGW_UtilTest {
     
     @TestSetup
     static void makeData(){
-        // Samlple content data for testing methods
-        GGW_TestDataFactory.createGrantContentTestData();
 
         String uniqueUserName = 'grantuser' + DateTime.now().getTime() + '@labsorg.com';
         // This code runs as the system user
         Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+
         PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'GGW_User_Permissions'];
+        
         User u = new User(Alias = 'standt', Email='grantuser@labsorg.com',
                         EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
                         LocaleSidKey='en_US', ProfileId = p.Id,
@@ -27,10 +27,22 @@ public class GGW_UtilTest {
                         UserName=uniqueUserName);   
         insert u;
 
+        insert new PermissionSetAssignment(AssigneeId = u.id, PermissionSetId = ps.Id);                 
     }
 
     @isTest
     static void testNewsaveGrantState(){
+
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                    LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                    FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+        
+        System.runAs(u) {
+        
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+        
         // Query all suggested sections
         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
@@ -40,14 +52,6 @@ public class GGW_UtilTest {
             }
         }
 
-        // This code runs as the system user
-        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'GGW_User_Permissions'];
-        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
-                    LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
-                    FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
-        insert new PermissionSetAssignment(AssigneeId = u.id, PermissionSetId = ps.Id);                 
-
-        System.runAs(u) {
             GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App', sections);
 
             Test.startTest();
@@ -70,6 +74,18 @@ public class GGW_UtilTest {
 
     @isTest
     static void testExistingGrantState(){
+
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+           
+                    
+        System.runAs(u) {
+
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+
         // Query all suggested sections
         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
@@ -78,14 +94,6 @@ public class GGW_UtilTest {
                 sections.add(gww.recordid);
             }
         }
-        // This code runs as the system user
-        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'GGW_User_Permissions'];
-        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
-                        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
-                        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
-        insert new PermissionSetAssignment(AssigneeId = u.id, PermissionSetId = ps.Id);                 
-                    
-        System.runAs(u) {
    
             GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App', sections);
             GGW_Util.saveGrantState(app.Id);
@@ -102,6 +110,17 @@ public class GGW_UtilTest {
 
     @isTest
     static void testGetSelectedItems(){
+
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+        
+        System.runAs(u) {
+
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+        
         // Query all suggested sections
         List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
         List<String> sections = new List<String>();
@@ -116,10 +135,22 @@ public class GGW_UtilTest {
         List<GGW_Selected_Item__c> lstItems = GGW_Util.getSelectedItems(app.Id);
         Test.stopTest();    
         System.assertEquals(sections.size(), lstItems.size(), 'Grant app missing selected items'); 
-
+        }
     }
     @isTest
     static void testSelectOptionFromPicklist(){
+
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+
+        System.runAs(u) {
+
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+            
+            
         Test.startTest();
         List<GGW_Util.PickList> picList = GGW_Util.getSelectOptionFromPicklist(ggGtSteObj, ggGtStLanField, true);
         Test.stopTest();
@@ -132,9 +163,22 @@ public class GGW_UtilTest {
             }
         }
         System.assertEquals(lcode, 'en_US', 'Supported Language not found in metadata'); 
+        }
     }
     @isTest
     static void testToLanguageLabel(){
+        
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+
+        System.runAs(u) {
+
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+            
+                    
         Test.startTest();
         // Translate ISO language code to language label en_US -> English
         String lang = GGW_Util.toLanguageLabel('en_US');
@@ -143,9 +187,21 @@ public class GGW_UtilTest {
         Test.stopTest();
         System.assertEquals(lang, 'English', 'No language label found for code en_US');
         System.assertEquals(lang, 'English', 'No language label found for code pi_NG'); // Defalt to English
+        }
     }
     @isTest
     static void testGetValueMapFromPicklist(){
+        
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+
+        System.runAs(u) {
+
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+            
         Test.startTest();
         Map<String, String> valMap = GGW_Util.getValueMapFromPicklist(ggGtSteObj, ggGtStLanField);
         Test.stopTest();
@@ -154,27 +210,30 @@ public class GGW_UtilTest {
             String ln = valMap.get('en_US');
             System.assertEquals(ln, 'English', 'No language label found for code en_US');
         }
+        }
     }
     @isTest
     static void saveGrantLanguage(){
-        // Query all suggested sections
-        List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
-        List<String> sections = new List<String>();
-        for (GGW_SectionWrapper gww : lst){
-            if(gww.selected){
-                sections.add(gww.recordid);
-            }
-        }
-
-        // This code runs as the system user
-        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'GGW_User_Permissions'];
+        
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
         User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
-                        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
-                        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
-        insert new PermissionSetAssignment(AssigneeId = u.id, PermissionSetId = ps.Id);                 
-                        
+        LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+        FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+
         System.runAs(u) {
 
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+
+                // Query all suggested sections
+                List<GGW_SectionWrapper> lst = GGW_ApplicationCtrl.getSections();
+                List<String> sections = new List<String>();
+                for (GGW_SectionWrapper gww : lst){
+                    if(gww.selected){
+                        sections.add(gww.recordid);
+                    }
+                }
+        
             GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Grant App', sections);
             Test.startTest();
                 String  str = GGW_Util.saveGrantLanguage('en_US', app.Id);
