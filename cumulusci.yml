@@ -3,6 +3,7 @@ project:
     name: GrantGuides
     package:
         name: ggw
+        namespace: GCKit
         api_version: '55.0'
     git:
         default_branch: 'main'
@@ -23,12 +24,20 @@ tasks:
     run_tests:
         options:
             required_org_code_coverage_percent: 75
+    
+    deploy:
+        options:
+            transforms:
+                - transform: find_replace
+                  options:
+                      patterns:
+                          - find: test-7xs4dwvoelxh@example.com
+                            inject_username: True
+
 
 flows:
     config_dev:
         steps:
-            2:
-                task: dx_push
             3:
                 task: assign_permission_sets
                 options:
@@ -37,10 +46,6 @@ flows:
                 task: command
                 options:
                     command: cci org default --org dev
-            5:
-               task: command
-               options:
-                   command: sfdx data import tree -p test-data/export-section-GGW_Section__c-plan.json
     
     gk_release_beta:
         description: 'Generate Release notes and auto merge main branch.'
