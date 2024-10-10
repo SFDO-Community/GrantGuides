@@ -50,3 +50,6 @@ force-app/main/default/objects/Case/recordTypes/Test.recordType-meta.xml
 
 force-app/main/default/layouts/EmailMessage-Email Message Layout.layout-meta.xml
 #force-app/main/default/assignmentRules/Case.assignmentRules-meta.xml
+**/tsconfig.json
+
+**/*.ts

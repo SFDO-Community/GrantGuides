@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Application_Name__c</fullName>
     <externalId>false</externalId>
-    <formula>HYPERLINK(&quot;/lightning/n/GGW_Grant_Editor?c__uictx=page&amp;c__recordId=&quot; &amp; Id, Name, &quot;_self&quot;)</formula>
+    <formula>HYPERLINK(&quot;/lightning/n/GCKit__GGW_Grant_Editor?c__uictx=page&amp;c__recordId=&quot; &amp; Id, Name, &quot;_self&quot;)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Application Name</label>
     <required>false</required>
