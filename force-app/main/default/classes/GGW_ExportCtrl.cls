@@ -7,7 +7,7 @@
  * GGW_ExportCtrl controller class for VFP Export and render.
  * Standard controller extension used for Standard record page action 
  */
-public without sharing class GGW_ExportCtrl {
+public with sharing class GGW_ExportCtrl {
     public String recordId {get; set;}
     public String appName {get;set;}
     public String logoURL {get; set;}
