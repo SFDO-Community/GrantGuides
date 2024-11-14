@@ -11,12 +11,36 @@
 public class GGW_ContentBlockWrapperTest {
     @TestSetup
     static void makeData(){
-        // Samlple content data for testing methods
-        GGW_TestDataFactory.createGrantContentTestData();
+
+        String uniqueUserName = 'grantuser' + DateTime.now().getTime() + '@labsorg.com';
+        // This code runs as the system user
+        Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+
+        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'GGW_User_Permissions'];
+        
+        User u = new User(Alias = 'standt', Email='grantuser@labsorg.com',
+                        EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
+                        LocaleSidKey='en_US', ProfileId = p.Id,
+                        TimeZoneSidKey='America/Los_Angeles',
+                        UserName=uniqueUserName);   
+        insert u;
+
+        insert new PermissionSetAssignment(AssigneeId = u.id, PermissionSetId = ps.Id);                 
     }
 
     @isTest
     static void testBlockWrapperConstructors(){
+
+        // This code runs as the Grant Guide User with GGW Permission Set from the TestSetup makeData() method.
+        User u = [SELECT Alias, Email, EmailEncodingKey, LastName, LanguageLocaleKey,
+                    LocaleSidKey, ProfileId, TimeZoneSidKey, UserName 
+                    FROM User WHERE Email = 'grantuser@labsorg.com' AND Alias='standt' LIMIT 1];
+        
+        System.runAs(u) {
+        
+        //Create sample data
+        GGW_TestDataFactory.createGrantContentTestData();
+ 
         List<GGW_Content_Block__c> cbList = [SELECT Id, Name, Description__c, Short_Description__c, 
                                                     Section__c, Section__r.Name, CreatedDate, 
                                                     Language__c 
@@ -33,6 +57,7 @@ public class GGW_ContentBlockWrapperTest {
         System.assertEquals(2, textBlock.totalblocks, 'Expected total block 2 did not match'); 
         System.assertEquals(firstBlock.Name, textBlock.title, 'Expected block name to tile did not match'); 
         System.assertEquals(firstBlock.Section__c, textBlock.sectionid, 'Block parent section not valid'); 
-    }
+            }
+        }
 
 }
