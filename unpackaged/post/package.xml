@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>%%%NAMESPACE%%%GGW_Content_Block__c</members>
+        <members>%%%NAMESPACE%%%GGW_Grant_Application__c</members>
+        <members>%%%NAMESPACE%%%GGW_Grant_State__c</members>
+        <members>%%%NAMESPACE%%%GGW_Section__c</members>
+        <members>%%%NAMESPACE%%%GGW_Selected_Item__c</members>
+        <name>TopicsForObjects</name>
+    </types>
+    <version>61.0</version>
+</Package>
