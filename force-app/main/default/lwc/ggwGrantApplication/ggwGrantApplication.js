@@ -204,9 +204,9 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     }    
 
     previewHTML(){
-        let tabName = TAB_GRANT_PREVIEW;
+        let tabName = 'Grant_Preview'; //TAB_GRANT_PREVIEW;
         if(this.is2GPNamespace()){
-            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW;
+            tabName = 'GCKit__Grant_Preview'; //NAMESPACE_PFX + TAB_GRANT_PREVIEW;
         }  
         console.log(`TAB Name HTML: ${tabName}`);  
         return tabName;
