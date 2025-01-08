@@ -392,7 +392,7 @@ public with sharing class GGW_ApplicationCtrl {
         Id sectionId = s; 
         String objName = sectionId.getsobjecttype()+'';
         System.debug('### Obj: '+objName+' ID: '+s);
-        if(objName.equals('GGW_Section__c')){ // Create new selected item junction for section
+        if(objName.equals('%%%NAMESPACE%%%GGW_Section__c')){ // Create new selected item junction for section
             res = true;
         }
         return res;
