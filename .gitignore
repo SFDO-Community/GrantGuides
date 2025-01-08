@@ -42,7 +42,12 @@ $RECYCLE.BIN/
 # ignore temp data files
 tempdata
 tempdata-out
-*.cci/*
+.codegenie/*
+.husky/*
+.cci/*
 .pmdCache
 .vscode/*
 .vscode/settings.json
+test_results.json
+test_results.xml
+

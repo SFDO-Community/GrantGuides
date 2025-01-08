@@ -5,7 +5,7 @@ Create templates for your grant proposals with the Grants Content Kit!
 Grants Content Kit Resources:
 - [Documentation](https://github.com/Salesforce-org-Impact-Labs/GrantGuides/wiki)
 - [Trailblazer Group](https://trailhead.salesforce.com/trailblazer-community/groups/0F94S000000kJbMSAU?tab=discussion&sort=LAST_MODIFIED_DATE_DESC)
-- [Intallation Instructions](https://github.com/Salesforce-org-Impact-Labs/GrantGuides/wiki#get-grants-content-kit)
+- [Installation Instructions](https://github.com/Salesforce-org-Impact-Labs/GrantGuides/wiki#get-grants-content-kit)
 
 ## Community Sprints 
 
