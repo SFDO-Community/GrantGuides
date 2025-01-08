@@ -58,20 +58,14 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     is2GPNamespace(){
         let testVar = false;
-        let partName = NAMESPACE_FIELD_CHECK.slice(0, 7);
-        if(partName == 'GCKit__'){
+        console.log(`Derived name: ${JSON.stringify(NAMESPACE_FIELD_CHECK)}`);
+        console.log(`Obj name: ${NAMESPACE_FIELD_CHECK.objectApiName}`);
+        let partName = NAMESPACE_FIELD_CHECK.objectApiName;
+        let nameSlice = partName.slice(0,6);
+        if(nameSlice == 'GCKit_'){
             testVar = true;
         }
-        console.log(`Derived name: ${partName}`);
-
         return testVar;
-    }
-    getPreviewTabName(){
-        if(is2GPNamespace()){
-            return NAMESPACE_PFX + TAB_GRANT_PREVIEW;
-        }else{
-            return TAB_GRANT_PREVIEW;
-        }
     }
 
     showToastSuccess(msg){
@@ -209,30 +203,51 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             });
     }    
 
-    handleExportMenuSelect(event){
-        const selectedItemValue = event.detail.value;
-        console.log(`## handleExportMenuSelect: ${selectedItemValue}`);
-        if(selectedItemValue === 'exportPDF'){
-            this.exportGrantVFPdf();
-        }
-        if(selectedItemValue === 'exportWORD'){
-           this.exportGrantVFWord(); 
-        }
-        if(selectedItemValue === 'exportHTML'){
-            this.exportGrantVFHTML(); 
-         }
-    }
-
-    exportGrantVFHTML(){
+    previewHTML(){
         let tabName = TAB_GRANT_PREVIEW;
         if(this.is2GPNamespace()){
             tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW;
+        }  
+        console.log(`TAB Name HTML: ${tabName}`);  
+        return tabName;
+    }
+    previewPDF(){
+        let tabName = TAB_GRANT_PREVIEW_PDF;
+        if(this.is2GPNamespace()){
+            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_PDF;
+        }  
+        console.log(`TAB Name PDF: ${tabName}`);  
+        return tabName;
+    }
+    previewWord(){
+        let tabName = TAB_GRANT_PREVIEW_WORD;
+        if(this.is2GPNamespace()){
+            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_WORD;
+        }  
+        console.log(`TAB Name WORD: ${tabName}`);  
+        return tabName;
+    }
+    handleExportMenuSelect(event){
+        const selectedItemValue = event.detail.value;
+        console.log(`## handleExportMenuSelect: ${selectedItemValue}`);
+        console.log(`### Derived name: ${JSON.stringify(NAMESPACE_FIELD_CHECK)}`);        
+
+        if(selectedItemValue === 'exportPDF'){
+            this.exportGrantVFPdf(this.previewPDF());
         }
-        console.log(`TAB Name: ${tabName}`);
+        if(selectedItemValue === 'exportWORD'){
+           this.exportGrantVFWord(this.previewWord()); 
+        }
+        if(selectedItemValue === 'exportHTML'){
+            this.exportGrantVFHTML(this.previewHTML()); 
+         }
+    }
+
+    exportGrantVFHTML(tabname){
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: tabName //'Grant_Preview'
+                apiName: tabname  //'Grant_Preview'
             },
             state: {
                 c__recordId: this.recordId,
@@ -241,17 +256,12 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         });
     }
 
-    exportGrantVFWord(){
+    exportGrantVFWord(tabname){
         // Tab name - Grant Preview Word
-        let tabName = TAB_GRANT_PREVIEW_WORD;
-        if(this.is2GPNamespace()){
-            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_WORD;
-        } 
-
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: tabName //'Grant_Preview_Word'
+                apiName: tabname //'Grant_Preview_Word'
             },
             state: {
                 c__recordId: this.recordId,  // Need this state object to pass parameters in LEX
@@ -260,17 +270,11 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         });
     }
 
-    exportGrantVFPdf(){
-        // Tab Name - Grant_Preview_PDF
-        let tabName = TAB_GRANT_PREVIEW_PDF;
-        if(this.is2GPNamespace()){
-            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_PDF;
-        } 
-
+    exportGrantVFPdf(tabname){
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: tabName //'Grant_Preview_PDF'
+                apiName: tabname //'Grant_Preview_PDF'
             },
             state: {
                 c__recordId: this.recordId,  // Need this state object to pass parameters in LEX
