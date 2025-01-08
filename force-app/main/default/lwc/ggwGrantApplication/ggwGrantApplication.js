@@ -227,9 +227,10 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     exportGrantVFHTML(){
         let tabName = TAB_GRANT_PREVIEW;
-        if(is2GPNamespace()){
+        if(this.is2GPNamespace()){
             tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW;
         }
+        console.log(`TAB Name: ${tabName}`);
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
@@ -245,7 +246,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     exportGrantVFWord(){
         // Tab name - Grant Preview Word
         let tabName = TAB_GRANT_PREVIEW_WORD;
-        if(is2GPNamespace()){
+        if(this.is2GPNamespace()){
             tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_WORD;
         } 
 
@@ -264,7 +265,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     exportGrantVFPdf(){
         // Tab Name - Grant_Preview_PDF
         let tabName = TAB_GRANT_PREVIEW_PDF;
-        if(is2GPNamespace()){
+        if(this.is2GPNamespace()){
             tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_PDF;
         } 
 
