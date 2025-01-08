@@ -58,8 +58,6 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     is2GPNamespace(){
         let testVar = false;
-        const nsprefix = NAMESPACE_FIELD_CHECK.namespacePrefix;
-        console.log(`is2GPNamespace: ${nsprefix}`);
         let partName = NAMESPACE_FIELD_CHECK.slice(0, 7);
         if(partName == 'GCKit__'){
             testVar = true;
