@@ -13,12 +13,17 @@ import includeLogo from '@salesforce/apex/GGW_ApplicationCtrl.includeLogo';
 import deleteLogo from '@salesforce/apex/GGW_ApplicationCtrl.deleteLogo';
 import createContentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createContentDistribution';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import NAMESPACE_FIELD_CHECK from '@salesforce/schema/GGW_Grant_Application__c.Application_Name__c';
 
 const GRANT_TITLE = 'Grant Application';
 const GRANT_TITLE_HEADER = 'Grant Application:';
 const GRANT_TITLE_ERROR = 'Grant Application do not exist, please create new or select existing grant.';
 const GRANT_TITLE_LOOKUP_ERROR = 'Grant Application do not contain sections, please add sections to grant using Reorder.';
 const GRANT_RECORD_PAGE_URL = '/lightning/r/GGW_Grant_Application__c/'; // Add record ID
+const NAMESPACE_PFX = 'GCKit__';
+const TAB_GRANT_PREVIEW = 'Grant_Preview';
+const TAB_GRANT_PREVIEW_WORD = 'Grant_Preview_Word';
+const TAB_GRANT_PREVIEW_PDF = 'Grant_Preview_PDF';
 
 export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
 	@api recordId;
@@ -50,6 +55,26 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     showCard = true; // Display Editor card if data grant exists ELSE show illustration
     grantOptions = []; // List of available Grants for combo box
     selectedGrant;
+
+    is2GPNamespace(){
+        let testVar = false;
+        const nsprefix = NAMESPACE_FIELD_CHECK.namespacePrefix;
+        console.log(`is2GPNamespace: ${nsprefix}`);
+        let partName = NAMESPACE_FIELD_CHECK.slice(0, 7);
+        if(partName == 'GCKit__'){
+            testVar = true;
+        }
+        console.log(`Derived name: ${partName}`);
+
+        return testVar;
+    }
+    getPreviewTabName(){
+        if(is2GPNamespace()){
+            return NAMESPACE_PFX + TAB_GRANT_PREVIEW;
+        }else{
+            return TAB_GRANT_PREVIEW;
+        }
+    }
 
     showToastSuccess(msg){
         const evt = new ShowToastEvent({
@@ -201,10 +226,14 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     }
 
     exportGrantVFHTML(){
+        let tabName = TAB_GRANT_PREVIEW;
+        if(is2GPNamespace()){
+            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW;
+        }
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: 'Grant_Preview'
+                apiName: tabName //'Grant_Preview'
             },
             state: {
                 c__recordId: this.recordId,
@@ -215,10 +244,15 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     exportGrantVFWord(){
         // Tab name - Grant Preview Word
+        let tabName = TAB_GRANT_PREVIEW_WORD;
+        if(is2GPNamespace()){
+            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_WORD;
+        } 
+
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: 'Grant_Preview_Word'
+                apiName: tabName //'Grant_Preview_Word'
             },
             state: {
                 c__recordId: this.recordId,  // Need this state object to pass parameters in LEX
@@ -229,10 +263,15 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
 
     exportGrantVFPdf(){
         // Tab Name - Grant_Preview_PDF
+        let tabName = TAB_GRANT_PREVIEW_PDF;
+        if(is2GPNamespace()){
+            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_PDF;
+        } 
+
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: 'Grant_Preview_PDF'
+                apiName: tabName //'Grant_Preview_PDF'
             },
             state: {
                 c__recordId: this.recordId,  // Need this state object to pass parameters in LEX
@@ -302,7 +341,7 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
                     this.recordId = data.recordid; // reset record ID from data in some navi patterns URL parameters can be null
                     this.grantName = data.textname;
                     this.logoState = data.logostate;
-                    // Init record page URL
+                    // Init record page URL used in HTML link on Editor page to open App standard record page it works in 2GP and source scratch
                     this.grantRecordPage = `${GRANT_RECORD_PAGE_URL}${this.recordId}/view`;
                     // Conditional display of logo if it is available or show empty placeholder image
                     this.setLogoDisplay(data.logodisplayurl);
