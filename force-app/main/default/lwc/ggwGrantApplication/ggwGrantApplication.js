@@ -13,17 +13,12 @@ import includeLogo from '@salesforce/apex/GGW_ApplicationCtrl.includeLogo';
 import deleteLogo from '@salesforce/apex/GGW_ApplicationCtrl.deleteLogo';
 import createContentDistribution from '@salesforce/apex/GGW_ApplicationCtrl.createContentDistribution';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import NAMESPACE_FIELD_CHECK from '@salesforce/schema/GGW_Grant_Application__c.Application_Name__c';
 
 const GRANT_TITLE = 'Grant Application';
 const GRANT_TITLE_HEADER = 'Grant Application:';
 const GRANT_TITLE_ERROR = 'Grant Application do not exist, please create new or select existing grant.';
 const GRANT_TITLE_LOOKUP_ERROR = 'Grant Application do not contain sections, please add sections to grant using Reorder.';
 const GRANT_RECORD_PAGE_URL = '/lightning/r/GGW_Grant_Application__c/'; // Add record ID
-const NAMESPACE_PFX = 'GCKit__';
-const TAB_GRANT_PREVIEW = 'Grant_Preview';
-const TAB_GRANT_PREVIEW_WORD = 'Grant_Preview_Word';
-const TAB_GRANT_PREVIEW_PDF = 'Grant_Preview_PDF';
 
 export default class GgwGrantApplication extends NavigationMixin(LightningElement) {
 	@api recordId;
@@ -203,51 +198,25 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
             });
     }    
 
-    previewHTML(){
-        let tabName = 'Grant_Preview'; //TAB_GRANT_PREVIEW;
-        if(this.is2GPNamespace()){
-            tabName = 'GCKit__Grant_Preview'; //NAMESPACE_PFX + TAB_GRANT_PREVIEW;
-        }  
-        console.log(`TAB Name HTML: ${tabName}`);  
-        return tabName;
-    }
-    previewPDF(){
-        let tabName = TAB_GRANT_PREVIEW_PDF;
-        if(this.is2GPNamespace()){
-            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_PDF;
-        }  
-        console.log(`TAB Name PDF: ${tabName}`);  
-        return tabName;
-    }
-    previewWord(){
-        let tabName = TAB_GRANT_PREVIEW_WORD;
-        if(this.is2GPNamespace()){
-            tabName = NAMESPACE_PFX + TAB_GRANT_PREVIEW_WORD;
-        }  
-        console.log(`TAB Name WORD: ${tabName}`);  
-        return tabName;
-    }
     handleExportMenuSelect(event){
-        const selectedItemValue = event.detail.value;
-        console.log(`## handleExportMenuSelect: ${selectedItemValue}`);
-        console.log(`### Derived name: ${JSON.stringify(NAMESPACE_FIELD_CHECK)}`);        
+        const selectedItemValue = event.detail.value;       
 
         if(selectedItemValue === 'exportPDF'){
-            this.exportGrantVFPdf(this.previewPDF());
+            this.exportGrantVFPdf();
         }
         if(selectedItemValue === 'exportWORD'){
-           this.exportGrantVFWord(this.previewWord()); 
+           this.exportGrantVFWord(); 
         }
         if(selectedItemValue === 'exportHTML'){
-            this.exportGrantVFHTML(this.previewHTML()); 
+            this.exportGrantVFHTML(); 
          }
     }
 
-    exportGrantVFHTML(tabname){
+    exportGrantVFHTML(){
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: tabname  //'Grant_Preview'
+                apiName: '%%%NAMESPACED_ORG%%%Grant_Preview'
             },
             state: {
                 c__recordId: this.recordId,
@@ -256,12 +225,12 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         });
     }
 
-    exportGrantVFWord(tabname){
+    exportGrantVFWord(){
         // Tab name - Grant Preview Word
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: tabname //'Grant_Preview_Word'
+                apiName: '%%%NAMESPACED_ORG%%%Grant_Preview_Word'
             },
             state: {
                 c__recordId: this.recordId,  // Need this state object to pass parameters in LEX
@@ -270,11 +239,11 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
         });
     }
 
-    exportGrantVFPdf(tabname){
+    exportGrantVFPdf(){
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: tabname //'Grant_Preview_PDF'
+                apiName: '%%%NAMESPACED_ORG%%%Grant_Preview_PDF'
             },
             state: {
                 c__recordId: this.recordId,  // Need this state object to pass parameters in LEX
