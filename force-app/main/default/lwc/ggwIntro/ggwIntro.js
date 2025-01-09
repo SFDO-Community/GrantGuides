@@ -72,7 +72,7 @@ export default class GgwIntro extends NavigationMixin(LightningElement) {
         this[NavigationMixin.Navigate]({
             type: 'standard__navItemPage',
             attributes: {
-                apiName: 'GGW_Grant_Editor'
+                apiName: '%%%NAMESPACED_ORG%%%GGW_Grant_Editor'
             },
             state: {
                 c__recordId: 'a001D000005DsP7QAK'
