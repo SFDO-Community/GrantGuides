@@ -170,6 +170,9 @@ public class GGW_ApplicationCtrlTest {
             }
         }
         GGW_Grant_Application__c app = GGW_ApplicationCtrl.newGrant('Content Distribution Test', sections);
+
+        System.debug('Grant App: '+ app.Id);
+        
         ContentVersion cvo = new Contentversion();
         cvo.Title = 'Test Content file'; 
         cvo.PathOnClient = 'test'; 
@@ -186,7 +189,7 @@ public class GGW_ApplicationCtrlTest {
         String downloadURL = GGW_ApplicationCtrl.createContentDistribution(app.Id, cvo.Id);
         Test.stopTest();
 
-        System.assertNotEquals(null, downloadURL, 'Contenet distribution is invalid');
+        System.assertNotEquals(null, downloadURL, 'Content distribution is invalid');
         GGW_GrantApplicationWrapper grant = GGW_ApplicationCtrl.getApplication(app.Id);
         System.assertEquals(downloadURL, grant.logodisplayurl, 'Logo download URL is not valid');
         }
