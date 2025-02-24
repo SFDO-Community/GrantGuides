@@ -83,11 +83,20 @@ public with sharing class GGW_SampleData {
     // Insert sample Grant app
     private static void createSampleGrant(){
         List<GGW_Content_Block__c> lstBlock = [SELECT Id, Name, Section__c, Description__c, Short_Description__c FROM GGW_Content_Block__c WITH SECURITY_ENFORCED LIMIT 20];
+
+        //Check FLS
+        Boolean canEditGA = GGW_PermissionValidator.getInstance()
+        .hasFLSAccessForFields('GGW_Grant_Application__c', new List<String>{'Name','Status__c','Language__c'}, 'Upsert');
+
+        Boolean canEditSI = GGW_PermissionValidator.getInstance()
+        .hasFLSAccessForFields('GGW_Selected_Item__c', new List<String>{'GGW_Section__c','Grant_Application__c','Selected_Block__c','Text_Block__c', 'Sort_Order__c'}, 'Upsert');
+
+
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
         gapp.Name = 'Cloudy Grant Sample';
         gapp.Status__c = 'In Progress';
         gapp.Language__c = 'en_US';
-        if(Schema.sObjectType.GGW_Grant_Application__c.isCreateable()){
+        if(Schema.sObjectType.GGW_Grant_Application__c.isCreateable() && canEditGA){
             insert gapp;            
         } 
         List<GGW_Selected_Item__c> items = new List<GGW_Selected_Item__c>();
@@ -104,7 +113,7 @@ public with sharing class GGW_SampleData {
             }
             itemSortOrder++; // increment sort order set as default
         }
-        if(Schema.sObjectType.GGW_Selected_Item__c.isCreateable()){
+        if(Schema.sObjectType.GGW_Selected_Item__c.isCreateable() && canEditSI){
             insert items;            
         } 
     }
