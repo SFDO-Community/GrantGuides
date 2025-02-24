@@ -79,4 +79,23 @@ public class GGW_TestDataFactory {
         insert sblock;
 
     }
+
+    public static User getTestUser() {
+
+        Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+
+        User user = new User( 
+            ProfileId = p.Id,
+            Username = 'test' + UserInfo.getOrganizationId() + System.currentTimeMillis() + '@test.com',
+            Email = 'test' + UserInfo.getOrganizationId() + System.currentTimeMillis() + '@test.com',
+            LastName = 'Test',
+            FirstName = 'Test',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            TimeZoneSidKey = 'America/Los_Angeles',
+            EmailEncodingKey = 'UTF-8',
+            Alias = 'Test'
+        );
+        return user;
+    }
 }
