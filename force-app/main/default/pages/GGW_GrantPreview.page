@@ -4,7 +4,7 @@
         <title>Grant Application: {!appName}</title>
         <meta charset="UTF-8"></meta>
         <apex:stylesheet value="{!URLFOR($Resource.GGWStyles, 'resources/css/fonts.css')}"/>
-        <apex:stylesheet value="{!URLFOR($Resource.GGWStyles, 'resources/css/fontawesome.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.GGWStyles, 'resources/fontawesome/css/all.css')}"/>
         
         <style></style>
 
@@ -33,7 +33,7 @@
                 </b>
             </h3>
 
-            <button id="copyBtn" class="btn" onclick="copyContent('{!$Component.theItemRepeat.textBlock}')"><i class="fa fa-copy"></i></button>
+            <button id="copyBtn" class="btn" onclick="copyContent('{!$Component.theItemRepeat.textBlock}')"><i class="fa-solid fa-copy"></i></button>
             
             <span id="tempTextSpan" class="ggw-span-text">
                 <apex:outputText value="{!item.Text_Block__c}" escape="false" id="textBlock"/>    
