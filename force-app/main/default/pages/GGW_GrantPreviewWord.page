@@ -4,8 +4,8 @@
     <head>
         <title>Grant Application: {!appName}</title>
         <meta charset="UTF-8"></meta>
-        <link href="http://fonts.googleapis.com/css?family=Crimson+Text:400,400italic,700,700italic|Roboto:400,700,700italic,400italic" rel="stylesheet" type="text/css"></link>
-        
+        <apex:stylesheet value="{!URLFOR($Resource.GGWStyles, 'resources/css/fonts.css')}"/>
+         
         <style></style>
         <apex:stylesheet value="{!URLFOR($Resource.GGWStyles, 'resources/css/gww_grant_preview.css')}"/>
     </head>
