@@ -402,7 +402,7 @@ public with sharing class GGW_ApplicationCtrl {
         //Check FLS 
 
         Boolean canAccessCD = GGW_PermissionValidator.getInstance()
-        .hasStandFLSAccessForFields('ContentDistribution', new List<String>{'Name','ContentVersionId', 'PreferencesAllowViewInBrowser'}, 'insert');
+        .hasFLSAccessForFields('ContentDistribution', new List<String>{'Name','ContentVersionId', 'PreferencesAllowViewInBrowser'}, 'insert');
 
         ContentDistribution cdr = new ContentDistribution(
                                             Name = file.Title,

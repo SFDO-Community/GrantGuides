@@ -80,59 +80,6 @@ public with sharing class GGW_PermissionValidator {
             return false;
         }
     }
-//FLS Check for Standard Objects without Namespace
-
-    public Boolean hasStandFLSAccessForFields(
-        String objectName,
-        List<String> fields,
-        String operation
-    ) {
-        return hasStandFLSAccessForFields(objectName, fields, operation, true);
-    }
-
-    public Boolean hasStandFLSAccessForFields(
-        String objectName,
-        List<String> fields,
-        String operation,
-        Boolean strictMode
-    ) {
-        try {
-
-            Schema.DescribeSobjectResult[] results = Schema.describeSObjects(
-                
-                new List<String>{ ObjectName }
-            );
-            Map<String, Schema.SObjectField> fieldsMap = results[0].fields.getMap();
-
-            for (String fieldName : fields) {
-
-                if (strictMode && !fieldsMap.containsKey(fieldname)) {
-                    return false;
-                } else if (!strictMode && !fieldsMap.containsKey(fieldname)) {
-                    return true;
-                } else if (
-                    operation == 'insert' &&
-                    !fieldsMap.get(fieldname).getDescribe().isCreateable()
-                ) {
-                    return false;
-                } else if (
-                    operation == 'upsert' &&
-                    (!fieldsMap.get(fieldname).getDescribe().isCreateable() ||
-                    !fieldsMap.get(fieldname).getDescribe().isUpdateable())
-                ) {
-                    return false;
-                } else if (
-                    operation == 'read' &&
-                    !hasFieldReadAccess(fieldsMap.get(fieldname).getDescribe())
-                ) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     public Boolean hasFieldReadAccess(DescribeFieldResult field) {
         return field.isAccessible();
