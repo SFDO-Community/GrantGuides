@@ -183,8 +183,8 @@ public with sharing class GGW_ApplicationCtrl {
             updateOrderList.add(ggws);
             cnt++;
         }
-        if(Schema.sObjectType.GGW_Selected_Item__c.isUpdateable() || 
-            Schema.sObjectType.GGW_Selected_Item__c.isCreateable() && canAccessSelectedItem3){
+        if((Schema.sObjectType.GGW_Selected_Item__c.isUpdateable() || 
+            Schema.sObjectType.GGW_Selected_Item__c.isCreateable() ) && canAccessSelectedItem3){
                 upsert updateOrderList; // Some records here exist some may be new added sections
         }
     }
@@ -393,7 +393,7 @@ public with sharing class GGW_ApplicationCtrl {
             app.DistributionPublicUrl__c = cdURL.DistributionPublicUrl; // Logo public URL
             app.Logo_Download_Url__c = cdURL.ContentDownloadUrl; // Logo display URL
             // Check object CRUD
-            if(Schema.sObjectType.GGW_Grant_Application__c.isUpdateable() ){
+            if(Schema.sObjectType.GGW_Grant_Application__c.isUpdateable() && canAccessGrantApp3 ){
                 update app;
             }
         }
@@ -409,7 +409,7 @@ public with sharing class GGW_ApplicationCtrl {
                                             ContentVersionId = file.Id,
                                             PreferencesAllowViewInBrowser = true );
         // Check object CRUD
-        if(Schema.sObjectType.ContentDistribution.isCreateable() ){
+        if(Schema.sObjectType.ContentDistribution.isCreateable() && canAccessCD){
             insert cdr;
         }
         return cdr;
