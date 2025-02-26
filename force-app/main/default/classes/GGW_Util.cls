@@ -35,7 +35,7 @@ public with sharing class GGW_Util {
         String msg = 'Save language select failed.';
 
         Boolean editableField = GGW_PermissionValidator.getInstance()
-            .hasFLSAccessForFields('GGW_Grant_State__c', new List<String>{ 'Language__c', 'Grant_Application__c' }, 'upsert');
+            .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_State__c', new List<String>{ '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Grant_Application__c' }, 'upsert');
         
         GGW_Grant_State__c st = getGrantState();
         if(st != null && st.Id != null){
@@ -59,7 +59,7 @@ public with sharing class GGW_Util {
         String msg = 'New state insert failed.';
 
         Boolean editableField = GGW_PermissionValidator.getInstance()
-            .hasFLSAccessForFields('GGW_Grant_State__c', new List<String>{ 'Language__c', 'Grant_Application__c', 'Current_User__c'}, 'upsert');
+            .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_State__c', new List<String>{ '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Grant_Application__c', '%%%NAMESPACED_ORG%%%Current_User__c'}, 'upsert');
         
         GGW_Grant_State__c st = new GGW_Grant_State__c();
         st.Current_User__c = UserInfo.getUserId(); // save state for current user
@@ -81,7 +81,7 @@ public with sharing class GGW_Util {
     public static void saveGrantState(String grantId){
         
         Boolean editableField = GGW_PermissionValidator.getInstance()
-            .hasFLSAccessForFields('GGW_Grant_State__c', new List<String>{ 'Language__c', 'Grant_Application__c', 'Current_User__c'}, 'upsert');
+            .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_State__c', new List<String>{ '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Grant_Application__c', '%%%NAMESPACED_ORG%%%Current_User__c'}, 'upsert');
         
 
         GGW_Grant_State__c st = getGrantState();

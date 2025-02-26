@@ -31,7 +31,7 @@ public with sharing class GGW_ApplicationCtrl {
     public static String deleteLogo(String recordId){
         //Check Field Level Security
         Boolean canAccessGrantApp = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Grant_Application__c', new List<String>{'DistributionPublicUrl__c','Logo_Download_Url__c','Include_Logo__c' }, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_Application__c', new List<String>{'%%%NAMESPACED_ORG%%%DistributionPublicUrl__c','%%%NAMESPACED_ORG%%%Logo_Download_Url__c','%%%NAMESPACED_ORG%%%Include_Logo__c' }, 'Upsert');
             
         GGW_Grant_Application__c app = new GGW_Grant_Application__c();
         app.Id = recordId;
@@ -51,7 +51,7 @@ public with sharing class GGW_ApplicationCtrl {
     public static String includeLogo(String recordId, Boolean state){
         //Check Field Level Security
         Boolean canAccessGrantApp2 = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Grant_Application__c', new List<String>{'Include_Logo__c' }, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_Application__c', new List<String>{'%%%NAMESPACED_ORG%%%Include_Logo__c' }, 'Upsert');
             
 
         GGW_Grant_Application__c app = new GGW_Grant_Application__c();
@@ -96,7 +96,7 @@ public with sharing class GGW_ApplicationCtrl {
     public static void saveSelectedSectionText(String itemid, String blockid){
 
         Boolean canAccessSelectedItem = GGW_PermissionValidator.getInstance()
-            .hasFLSAccessForFields('GGW_Selected_Item__c', new List<String>{'Selected_Block__c','Text_Block__c' }, 'Upsert');
+            .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Selected_Item__c', new List<String>{'%%%NAMESPACED_ORG%%%Selected_Block__c','%%%NAMESPACED_ORG%%%Text_Block__c' }, 'Upsert');
                 
         GGW_Content_Block__c cBlock = GGW_ContentBlockSelector.queryContentBlockById(blockid);
         // Construct selected Item to update
@@ -117,7 +117,7 @@ public with sharing class GGW_ApplicationCtrl {
     @AuraEnabled
     public static GGW_SectionWrapper createNewSection(String name){
         Boolean canAccessSection= GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Section__c', new List<String>{'Name', 'Recommended__c', 'Suggested__c', 'Language__c', 'Sort_Order__c' }, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Section__c', new List<String>{'%%%NAMESPACED_ORG%%%Name', '%%%NAMESPACED_ORG%%%Recommended__c', '%%%NAMESPACED_ORG%%%Suggested__c', '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Sort_Order__c' }, 'Upsert');
 
         GGW_Section__c maxOrder = GGW_SectionSelector.findMaxOrderSection();
         GGW_Section__c s = new GGW_Section__c();
@@ -136,7 +136,7 @@ public with sharing class GGW_ApplicationCtrl {
     public static void updateSelectedItemText(String itemid, String richtext){
         //Check FLS
         Boolean canAccessSelectedItem2 = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Selected_Item__c', new List<String>{'Text_Block__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Selected_Item__c', new List<String>{'%%%NAMESPACED_ORG%%%Text_Block__c'}, 'Upsert');
 
         GGW_Selected_Item__c item = new GGW_Selected_Item__c();
         item.Id = itemid;
@@ -160,7 +160,7 @@ public with sharing class GGW_ApplicationCtrl {
         List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
         //Check FLS
         Boolean canAccessSelectedItem3 = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Selected_Item__c', new List<String>{'GGW_Section__c','Grant_Application__c','Sort_Order__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Selected_Item__c', new List<String>{'%%%NAMESPACED_ORG%%%GGW_Section__c','%%%NAMESPACED_ORG%%%Grant_Application__c','%%%NAMESPACED_ORG%%%Sort_Order__c'}, 'Upsert');
 
         // Clean up items for reorder, delete items that are NOT on this list
         cleanSelectedSections(sectionList, appId);
@@ -232,7 +232,7 @@ public with sharing class GGW_ApplicationCtrl {
     public static String addTextBlockToLibrary(String sectionid, String richtext, String name){
         //Check FLS
         Boolean canAccessContentBlock = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Content_Block__c', new List<String>{'name','Section__c','Description__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Content_Block__c', new List<String>{'%%%NAMESPACED_ORG%%%Name','%%%NAMESPACED_ORG%%%Section__c','%%%NAMESPACED_ORG%%%Description__c'}, 'Upsert');
 
         GGW_Content_Block__c cb = new GGW_Content_Block__c();
         cb.name = getValidBlockName(name); // strange error Layout  Field:Name must not be Readonly
@@ -384,7 +384,7 @@ public with sharing class GGW_ApplicationCtrl {
     private static void updateGrantAppLogoURL(String grantId, ContentDistribution cdURL){
       //Check FLS
         Boolean canAccessGrantApp3 = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Grant_Application__c', new List<String>{'DistributionPublicUrl__c','Logo_Download_Url__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_Application__c', new List<String>{'%%%NAMESPACED_ORG%%%DistributionPublicUrl__c','%%%NAMESPACED_ORG%%%Logo_Download_Url__c'}, 'Upsert');
 
         // Update Grant with new logo
         if(cdURL.ContentDownloadUrl != null){
@@ -510,7 +510,7 @@ public with sharing class GGW_ApplicationCtrl {
     private static GGW_Grant_Application__c insertGrantRecord(String name){
         //Check FLS
         Boolean canAccessGrantApp4 = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Grant_Application__c', new List<String>{'Name','Status__c','Language__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_Application__c', new List<String>{'%%%NAMESPACED_ORG%%%Name','%%%NAMESPACED_ORG%%%Status__c','%%%NAMESPACED_ORG%%%Language__c'}, 'Upsert');
 
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
         if (GGW_Util.isValidString(name)){
@@ -526,7 +526,7 @@ public with sharing class GGW_ApplicationCtrl {
     private static void insertSelectedItemsForGrant(Id appId, List<String> sections){
         //Check FLS
         Boolean canAccessSI2 = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Selected_Item__c', new List<String>{'GGW_Section__c','Grant_Application__c','Sort_Order__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Selected_Item__c', new List<String>{'%%%NAMESPACED_ORG%%%GGW_Section__c','%%%NAMESPACED_ORG%%%Grant_Application__c','%%%NAMESPACED_ORG%%%Sort_Order__c'}, 'Upsert');
 
         // Add selected sections itterate over selected section IDs param
         List<GGW_Selected_Item__c> selectedItems = new List<GGW_Selected_Item__c>();

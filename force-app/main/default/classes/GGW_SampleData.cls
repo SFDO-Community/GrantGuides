@@ -86,10 +86,10 @@ public with sharing class GGW_SampleData {
 
         //Check FLS
         Boolean canEditGA = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Grant_Application__c', new List<String>{'Name','Status__c','Language__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_Application__c', new List<String>{'%%%NAMESPACED_ORG%%%Name','%%%NAMESPACED_ORG%%%Status__c','%%%NAMESPACED_ORG%%%Language__c'}, 'Upsert');
 
         Boolean canEditSI = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('GGW_Selected_Item__c', new List<String>{'GGW_Section__c','Grant_Application__c','Selected_Block__c','Text_Block__c', 'Sort_Order__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Selected_Item__c', new List<String>{'%%%NAMESPACED_ORG%%%GGW_Section__c','%%%NAMESPACED_ORG%%%Grant_Application__c','%%%NAMESPACED_ORG%%%Selected_Block__c','%%%NAMESPACED_ORG%%%Text_Block__c', '%%%NAMESPACED_ORG%%%Sort_Order__c'}, 'Upsert');
 
 
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
