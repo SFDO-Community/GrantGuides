@@ -117,7 +117,7 @@ public with sharing class GGW_ApplicationCtrl {
     @AuraEnabled
     public static GGW_SectionWrapper createNewSection(String name){
         Boolean canAccessSection= GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Section__c', new List<String>{'%%%NAMESPACED_ORG%%%Name', '%%%NAMESPACED_ORG%%%Recommended__c', '%%%NAMESPACED_ORG%%%Suggested__c', '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Sort_Order__c' }, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Section__c', new List<String>{'Name', '%%%NAMESPACED_ORG%%%Recommended__c', '%%%NAMESPACED_ORG%%%Suggested__c', '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Sort_Order__c' }, 'Upsert');
 
         GGW_Section__c maxOrder = GGW_SectionSelector.findMaxOrderSection();
         GGW_Section__c s = new GGW_Section__c();
@@ -232,7 +232,7 @@ public with sharing class GGW_ApplicationCtrl {
     public static String addTextBlockToLibrary(String sectionid, String richtext, String name){
         //Check FLS
         Boolean canAccessContentBlock = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Content_Block__c', new List<String>{'%%%NAMESPACED_ORG%%%Name','%%%NAMESPACED_ORG%%%Section__c','%%%NAMESPACED_ORG%%%Description__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Content_Block__c', new List<String>{'Name','%%%NAMESPACED_ORG%%%Section__c','%%%NAMESPACED_ORG%%%Description__c'}, 'Upsert');
 
         GGW_Content_Block__c cb = new GGW_Content_Block__c();
         cb.name = getValidBlockName(name); // strange error Layout  Field:Name must not be Readonly
@@ -510,7 +510,7 @@ public with sharing class GGW_ApplicationCtrl {
     private static GGW_Grant_Application__c insertGrantRecord(String name){
         //Check FLS
         Boolean canAccessGrantApp4 = GGW_PermissionValidator.getInstance()
-        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_Application__c', new List<String>{'%%%NAMESPACED_ORG%%%Name','%%%NAMESPACED_ORG%%%Status__c','%%%NAMESPACED_ORG%%%Language__c'}, 'Upsert');
+        .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_Application__c', new List<String>{'Name','%%%NAMESPACED_ORG%%%Status__c','%%%NAMESPACED_ORG%%%Language__c'}, 'Upsert');
 
         GGW_Grant_Application__c gapp = new GGW_Grant_Application__c();
         if (GGW_Util.isValidString(name)){
