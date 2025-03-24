@@ -33,10 +33,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>GGW_PermissionValidator</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>GGW_SampleData</apexClass>
         <enabled>true</enabled>
     </classAccesses>
