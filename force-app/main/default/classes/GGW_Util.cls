@@ -34,9 +34,6 @@ public with sharing class GGW_Util {
     public static String saveGrantLanguage(String lang, String grantId){
         String msg = 'Save language select failed.';
 
-        Boolean editableField = GGW_PermissionValidator.getInstance()
-            .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_State__c', new List<String>{ '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Grant_Application__c' }, 'upsert');
-        
         GGW_Grant_State__c st = getGrantState();
         if(st != null && st.Id != null){
             if(isValidString(lang)){
@@ -45,8 +42,8 @@ public with sharing class GGW_Util {
             if(isValidString(grantId)){
                 st.Grant_Application__c = grantId;
             }
-            if(Schema.sObjectType.GGW_Grant_State__c.isUpdateable() && editableField){
-                update st;
+            if(Schema.sObjectType.GGW_Grant_State__c.isUpdateable()){
+                update as User st;
                 msg = 'Language state is updated';
             }
         }else{
@@ -57,10 +54,7 @@ public with sharing class GGW_Util {
     // Create New Grant state record for user when there is NONE exists
     private static String insertNewState(String lang, String grantId){
         String msg = 'New state insert failed.';
-
-        Boolean editableField2 = GGW_PermissionValidator.getInstance()
-            .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_State__c', new List<String>{ '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Grant_Application__c', '%%%NAMESPACED_ORG%%%Current_User__c'}, 'upsert');
-        
+ 
         GGW_Grant_State__c st = new GGW_Grant_State__c();
         st.Current_User__c = UserInfo.getUserId(); // save state for current user
         if(isValidString(lang)){
@@ -71,32 +65,28 @@ public with sharing class GGW_Util {
         if(isValidString(grantId)){
             st.Grant_Application__c = grantId;
         }
-        if(Schema.sObjectType.GGW_Grant_State__c.isCreateable() && editableField2){
-            insert st;
+        if(Schema.sObjectType.GGW_Grant_State__c.isCreateable() ){
+            insert as User st;
             msg = 'NEW Language state is inserted';
         }
         return msg;
     }
     // Save Grant state for User
     public static void saveGrantState(String grantId){
-        
-        Boolean editableField3 = GGW_PermissionValidator.getInstance()
-            .hasFLSAccessForFields('%%%NAMESPACED_ORG%%%GGW_Grant_State__c', new List<String>{ '%%%NAMESPACED_ORG%%%Language__c', '%%%NAMESPACED_ORG%%%Grant_Application__c', '%%%NAMESPACED_ORG%%%Current_User__c'}, 'upsert');
-        
 
         GGW_Grant_State__c st = getGrantState();
         if(st != null && st.Id != null){
             // Update existing single state
             st.Grant_Application__c = grantId;
-            if(Schema.sObjectType.GGW_Grant_State__c.isUpdateable() && editableField3){
-                update st;
+            if(Schema.sObjectType.GGW_Grant_State__c.isUpdateable()){
+                update as User st;
             }
         }else{
             st = new GGW_Grant_State__c();
             st.Current_User__c = UserInfo.getUserId(); // save state for current user
             st.Grant_Application__c = grantId;
-            if(Schema.sObjectType.GGW_Grant_State__c.isCreateable() && editableField3){
-                insert st;
+            if(Schema.sObjectType.GGW_Grant_State__c.isCreateable()){
+                insert as User st;
             }
         }
     }
