@@ -2,7 +2,7 @@ minimum_cumulusci_version: '3.74.0'
 project:
     name: GrantGuides
     package:
-        name: ggw
+        name: Grant Content Kit
         namespace: GCKit
         api_version: '55.0'
     git:
@@ -46,13 +46,15 @@ flows:
                 task: command
                 options:
                     command: cci org default --org dev
-    
-    gk_release_beta:
-        description: 'Generate Release notes and auto merge main branch.'
+    release_2gp_beta:
         steps:
             1:
-                task: github_release
-            2: 
-                task: github_release_notes
-            3:
-                task: github_automerge_main
+                options:
+                    package_type: Managed
+                    package_name: $project_config.project__package__name
+                    skip_validation: False
+                    ancestor_id: latest_github_release
+                    version_base: latest_github_release
+                    version_type: major
+                    force_upload: True
+                    create_unlocked_dependency_packages: False
