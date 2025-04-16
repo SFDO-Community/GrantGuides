@@ -149,7 +149,7 @@ public with sharing class GGW_ApplicationCtrl {
         GGW_Selected_Item__c item = new GGW_Selected_Item__c();
         item.Id = itemId;
         if(Schema.sObjectType.GGW_Selected_Item__c.isDeletable()){
-            delete item;
+            delete as User item;
         }
     }
 
@@ -326,10 +326,10 @@ public with sharing class GGW_ApplicationCtrl {
         ContentDocument cd = new ContentDocument();
         cd.Id = cdl.ContentDocumentId;
         if(Schema.sObjectType.ContentDistribution.isDeletable()){
-            delete cntdistr;
+            delete as User cntdistr;
         }
         if(Schema.sObjectType.ContentDocument.isDeletable()){
-            delete cd;
+            delete as User cd;
         }
     }
     private static String getValidLogoURL(GGW_Grant_Application__c grant){
@@ -432,7 +432,7 @@ public with sharing class GGW_ApplicationCtrl {
         }
         if(!removeItems.isEmpty()){
             if(Schema.sObjectType.GGW_Selected_Item__c.isDeletable()){
-                delete removeItems;
+                delete as User removeItems;
             }
         }
     }
