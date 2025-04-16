@@ -46,6 +46,7 @@ flows:
                 task: command
                 options:
                     command: cci org default --org dev
+
     release_2gp_beta:
         steps:
             1:
