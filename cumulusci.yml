@@ -2,7 +2,7 @@ minimum_cumulusci_version: '3.74.0'
 project:
     name: GrantGuides
     package:
-        name: Grant Content Kit
+        name: ggw
         namespace: GCKit
         api_version: '55.0'
     git:
