@@ -46,6 +46,7 @@ flows:
                 task: command
                 options:
                     command: cci org default --org dev
+
     release_2gp_beta:
         steps:
             1:
@@ -55,6 +56,6 @@ flows:
                     skip_validation: False
                     ancestor_id: latest_github_release
                     version_base: latest_github_release
-                    version_type: major
+                    version_type: minor
                     force_upload: True
                     create_unlocked_dependency_packages: False
