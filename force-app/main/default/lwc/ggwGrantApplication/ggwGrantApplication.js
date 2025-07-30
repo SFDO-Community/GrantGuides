@@ -337,6 +337,8 @@ export default class GgwGrantApplication extends NavigationMixin(LightningElemen
     connectedCallback() {
         this.queryGrantApplication();
     }
+// Javascript to perform a Save All
+    //Apex Method to iterate over all the sections related to Grant Application to commit the record.
 
     handleDeleteSection(){
         // Section - selected item data has been deleted by Section component action
