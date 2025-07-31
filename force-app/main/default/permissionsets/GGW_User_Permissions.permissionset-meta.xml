@@ -51,6 +51,16 @@
     <description>Grants editor full permission set allows create or edit, delete grants</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Deliverable__c.Deliverable_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Deliverable__c.Deliverable_Requirement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>GGW_Content_Block__c.Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -181,6 +191,15 @@
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>GGW User Permissions</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Deliverable__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
