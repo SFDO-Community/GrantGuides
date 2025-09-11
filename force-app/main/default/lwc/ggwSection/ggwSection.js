@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { LightningElement, api , track } from "lwc";
+import { LightningElement, api , track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import LightningConfirm from 'lightning/confirm';
@@ -14,6 +14,7 @@ import saveSelectedSectionText from '@salesforce/apex/GGW_ApplicationCtrl.saveSe
 import updateSelectedItemText from '@salesforce/apex/GGW_ApplicationCtrl.updateSelectedItemText';
 import addTextBlockToLibrary  from '@salesforce/apex/GGW_ApplicationCtrl.addTextBlockToLibrary';
 import deleteSection from '@salesforce/apex/GGW_ApplicationCtrl.deleteSection';
+import {errorMessage} from 'c/ggwErrorHandler'; // Default Error handling helper function utility
 
 export default class GgwSection extends LightningElement {
     @api sectionTitle = 'Default Section';
@@ -28,6 +29,7 @@ export default class GgwSection extends LightningElement {
 
     @track openModal = false;
     @track confirmation;
+    @track buttonVariant = 'neutral';
 
     blockId;
     saveSelectedText;
@@ -38,6 +40,9 @@ export default class GgwSection extends LightningElement {
     textChanged = false;  // Track if user changed some text in section
     textBlockBuffer; // Store temporary
     textBlockOrigin; // Keep original text block
+    charCounter = '0 out of 32K'; // default message
+
+    maxBlockSize = 32768; //32K
 
     showToastSuccess(msg){
         const evt = new ShowToastEvent({
@@ -48,9 +53,11 @@ export default class GgwSection extends LightningElement {
         this.dispatchEvent(evt);
     }
     showToastError(msg){
+        let msgTxt = errorMessage(msg);
+
         const evt = new ShowToastEvent({
             title: this._title,
-            message: msg,
+            message: msgTxt,
             variant: 'error',
         });
         this.dispatchEvent(evt);
@@ -70,9 +77,23 @@ export default class GgwSection extends LightningElement {
             },
           );
     }
-
+    // count charcters in textBlock
+    getCharacterCount(str) {
+        // Check if input is a string
+        if (typeof str !== 'string') {
+            return 0;
+        }
+        //let textTemp = this.convertToPlainText(this.textBlock);
+        let cnt = str.length;
+        if (cnt > this.maxBlockSize) {
+            this.buttonVariant = 'destructive-text';
+        }else{
+            this.buttonVariant = 'neutral';
+        }
+        return cnt;
+    }
     showModal() {
-        console.log('# Section ID: '+this.key);
+        console.log(`# Section ID: ${this.key}`);
         this.openModal = true;
         // Save initial selected text to restore later
         this.saveSelectedText = this.textBlock;
@@ -100,7 +121,7 @@ export default class GgwSection extends LightningElement {
                 this.textChanged = false;
                 this.textBlock = this.textBlockOrigin;
             }else{
-                console.log('cancel delete section!')
+                console.log(`cancel delete section!`)
             }
         }else{
             this.enableEdit = this.enableEdit ? false : true;
@@ -113,13 +134,13 @@ export default class GgwSection extends LightningElement {
         // Save selected text block data in SFDC
         saveSelectedSectionText({itemid: this.selectedItemId, blockid: this.blockId})
             .then((result) => {
-                    console.log('Update App selected item: '+JSON.stringify(result));
-                    this.error = undefined;    
-                    this.showToastSuccess(`Grant Application was updated with text block.`)
+                console.log(`Update App selected item: ${JSON.stringify(result)}`);
+                this.error = undefined;    
+                this.showToastSuccess(`Grant Application was updated with text block.`)
             })
             .catch((error) => {
-                    this.error = error;
-                    this.showToastError(this.error);                    
+                this.error = error;
+                this.showToastError(error);                    
             });
     }
     // Delete Item section Button click handler call APEX method to delete here with 
@@ -131,7 +152,7 @@ export default class GgwSection extends LightningElement {
         const result = await LightningConfirm.open({
                 message: `Are you sure you want to delete section ${this.sectionTitle} from this grant?`,  // Modal body text
                 //variant: 'headerless',
-                label: 'Confirm Delete Section',
+                label: `Confirm Delete Section`,
                 // setting theme would have no effect
         });
         //Confirm has been closed
@@ -141,7 +162,7 @@ export default class GgwSection extends LightningElement {
             // Delete section
             this.deleteSectionCall();
         }else{
-            console.log('cancel delete section!')
+            console.log(`cancel delete section!`)
         }
         //console.log('Delete Confirm: '+result);
         
@@ -172,7 +193,7 @@ export default class GgwSection extends LightningElement {
             })
             .catch((error) => {
                 this.error = error;
-                this.showToastError(this.error);
+                this.showToastError(error);
             });
     }
     connectedCallback() {
@@ -182,6 +203,8 @@ export default class GgwSection extends LightningElement {
             this.sectionorder.push(i+1);
         }
         this.textBlockOrigin = this.textBlock;
+        let cnt = this.getCharacterCount(this.textBlock);
+        this.charCounter = `${cnt} out of 32K`;
     }
     /**
      * Action button handler User selects on ContentBlockModal one of the blocks by a button click
@@ -216,7 +239,7 @@ export default class GgwSection extends LightningElement {
         this.textBlock = this.textBlockBuffer;
         updateSelectedItemText({itemid: this.selectedItemId, richtext: this.textBlock})
         .then((result) => {
-            console.log('Updated text on selected item: '+JSON.stringify(result));
+            console.log(`Updated text on selected item: ${JSON.stringify(result)}`);
             this.error = undefined;
             this.showToastSuccess(`Text block updated.`);
 
@@ -227,7 +250,7 @@ export default class GgwSection extends LightningElement {
         })
         .catch((error) => {
             this.error = error;
-            this.showToastError(this.error);            
+            this.showToastError(error); 
         });
     }
     /**
@@ -239,6 +262,8 @@ export default class GgwSection extends LightningElement {
         //this.textBlock = event.target.value;
         this.textBlockBuffer = event.target.value;
         this.textChanged = true;
+        let cnt = this.getCharacterCount(this.textBlockBuffer);
+        this.charCounter = `${cnt} out of 32K`;
     }
     /**
      * TBD - NOT FULLY IMPLEMENTED
@@ -272,11 +297,11 @@ export default class GgwSection extends LightningElement {
             //result is input text if OK clicked
             //and null if cancel was clicked
             if(result != null){
-                console.log('New block save Name: '+result);
+                console.log(`New block save Name: ${result}`);
                 // Add save new block to library
                 this.saveNewTextBlock(result);
             }else{
-                console.log('cancel save block!')
+                console.log(`cancel save block!`)
             }    
         });
 
@@ -298,9 +323,11 @@ export default class GgwSection extends LightningElement {
         .catch((error) => {
             this.error = error;
             console.log(error);
+            console.log(`ERROR saveNewTextBlock: ${errorMessage(error)}`);  
             if(this.error){
-                this.showToastError(this.error);
+                this.showToastError(error);
             }
         });
     }
+
 }
