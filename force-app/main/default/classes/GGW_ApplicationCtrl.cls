@@ -10,8 +10,17 @@
 public with sharing class GGW_ApplicationCtrl {
     public static String ggGtSteObj = GGW_Grant_State__c.sobjecttype.getDescribe().getName();
     public static String ggGtStLanField = GGW_Grant_State__c.Language__c.getDescribe().getName();
-    // -- START LWC CONtroller Methods
-    // Return Grant Aplication Wrapper object
+    // -- START LWC Controller Methods
+    
+    /**
+     * Retrieves the grant application details for a given record ID.
+     * This UI/UX controller method fetches the grant application information, including its sections and selected items.
+     * It also saves the current state of the grant application for user.
+     * Return Grant Aplication Wrapper object
+     * 
+     * @param recordId The ID of the grant application record.
+     * @return A GGW_GrantApplicationWrapper object containing the grant application details.
+     */
     @AuraEnabled
     public static GGW_GrantApplicationWrapper getApplication(String recordId){
         String tempId = validateAppId(recordId);
@@ -22,11 +31,24 @@ public with sharing class GGW_ApplicationCtrl {
         GGW_GrantApplicationWrapper app = createGrantWrapper(grant, appItems);
         return app;
     }
+    /**
+     * Retrieves a list of all grant applications.
+     * This LWC Contrioller method fetches all grant applications from the system.
+     *
+     * @return A list of GGW_Grant_Application__c objects.
+     */
     @AuraEnabled (cacheable=true)
     public static List<GGW_Grant_Application__c> getApplicationList(){
         return GGW_ApplicationSelector.getGrantApplications();
     }
-    // Delete logo file from grant
+
+    /**
+     * Deletes the logo file associated with a grant application.
+     * This UI/UX controller method updates the grant application record to remove the logo information.
+     *
+     * @param recordId The ID of the grant application record.
+     * @return A success message indicating the logo has been deleted.
+     */
     @AuraEnabled
     public static String deleteLogo(String recordId){
     
@@ -45,7 +67,15 @@ public with sharing class GGW_ApplicationCtrl {
         deleteImageLogo(recordId);
         return 'Logo image deleted';
     }
-    // Include or exclude logo image into grant application
+    
+    /**
+     * Includes or excludes a logo image in a grant application.
+     * This UI/UX controller method updates the grant application record to include or exclude the logo.
+     *
+     * @param recordId The ID of the grant application record.
+     * @param state A boolean indicating whether to include (true) or exclude (false) the logo.
+     * @return A success message indicating the logo has been included or excluded.
+     */
     @AuraEnabled
     public static String includeLogo(String recordId, Boolean state){
        
@@ -87,9 +117,13 @@ public with sharing class GGW_ApplicationCtrl {
 
         return cdURL.ContentDownloadUrl;
     }
+
     /**
      * Update text block selection, wire block to item and copy block text data for display and edits
-     * 
+     * This method updates the grant application item with the selected content * and its text.
+     *
+     * @param itemid The ID of the grant application item.
+     * @param blockid The ID of the content * to be selected.
      */
     @AuraEnabled
     public static void saveSelectedSectionText(String itemid, String blockid){
@@ -104,8 +138,6 @@ public with sharing class GGW_ApplicationCtrl {
         if(Schema.SObjectType.GGW_Grant_Application__c.isUpdateable()){
             update as User item;
         }
-       
-
     }
     /**
      * Create new section on Grant landing home page component
@@ -132,7 +164,16 @@ public with sharing class GGW_ApplicationCtrl {
 
     return new GGW_SectionWrapper(s);
     }
-    // Edit rich text inside item method called from Section component when edit rich text
+
+    /**
+     * Updates the rich text content of a selected item in a grant application.
+     * This method is called from the Section component when the user edits the rich text.
+     * Edit rich text inside item method called from Section component when edit rich text
+     * It updates the grant application item with the new rich text content.
+     *
+     * @param itemid The ID of the grant application item to be updated.
+     * @param richtext The new rich text content to be saved.
+     */
     @AuraEnabled
     public static void updateSelectedItemText(String itemid, String richtext){
 
@@ -143,7 +184,14 @@ public with sharing class GGW_ApplicationCtrl {
             update as User item;
         }
     }
-    // Delete Section as selected item junction for grant - remoes a section
+    /**
+     * Deletes a selected section from a grant application.
+     * This method removes the selected section from the grant application.
+     * Delete Section as selected item junction for grant - removes a section
+     * It is typically called when a user wants to remove a section from their application.
+     *
+     * @param itemId The ID of the grant application item to be deleted.
+     */
     @AuraEnabled
     public static void deleteSection(String itemId){
         GGW_Selected_Item__c item = new GGW_Selected_Item__c();
@@ -152,7 +200,14 @@ public with sharing class GGW_ApplicationCtrl {
             delete as User item;
         }
     }
-
+    /**
+     * Reorders the sections of a given application.
+     * This method takes a list of section IDs and an application ID, and reorders the sections accordingly.
+     * Sections not included in the list will be removed from the application.
+     *
+     * @param sectionList List of section IDs in the desired order.
+     * @param appId The ID of the application for which the sections need to be reordered.
+     */
     @AuraEnabled
     public static void reorderSections(List<String> sectionList, String appId){
         List<GGW_Selected_Item__c> updateOrderList = new List<GGW_Selected_Item__c>();
@@ -183,7 +238,14 @@ public with sharing class GGW_ApplicationCtrl {
                 upsert as User updateOrderList; // Some records here exist some may be new added sections
         }
     }
-
+    /**
+     * Retrieves a list of content blocks associated with a specific section.
+     * This method queries the database for content blocks related to the given section ID.
+     * It returns a list of content blocks, which can be used to display content in the UI.
+     *
+     * @param sectionId The ID of the section for which content blocks are to be retrieved.
+     * @return A list of GGW_ContentBlockWrapper objects representing the content blocks.
+     */
     @AuraEnabled(cacheable=true)
     public static List<GGW_ContentBlockWrapper> getContentBlocks(String sectionId){
         List<GGW_ContentBlockWrapper> cbwResultList = new List<GGW_ContentBlockWrapper>();
@@ -210,6 +272,9 @@ public with sharing class GGW_ApplicationCtrl {
      * as selected items.
      * Application starting point, user can add text blocks to build out thsi record
      * 
+     * @param name The name of the new grant application.
+     * @param sections A list of section IDs to be associated with the grant application.
+     * @return The newly created GGW_Grant_Application__c record.
      */
     @AuraEnabled
     public static GGW_Grant_Application__c newGrant(String name, List<String> sections){
@@ -220,15 +285,21 @@ public with sharing class GGW_ApplicationCtrl {
         return gapp;
     }
     /**
+     * Adds a new ContentBlock to the library associated with a specific section.
      * Method to create a new ContentBlock add to section as part a library to later reuse
      * on other Grant applications.
      * 
+     * @param sectionid The ID of the section to which the text * will be added.
+     * @param richtext The rich text content for the new text *.
+     * @param name The name of the new text *.
+     * @return The ID of the newly created content *.
      */
     @AuraEnabled
     public static String addTextBlockToLibrary(String sectionid, String richtext, String name){
 
         GGW_Content_Block__c cb = new GGW_Content_Block__c();
         cb.name = getValidBlockName(name); // strange error Layout  Field:Name must not be Readonly
+        cb.Language__c = GGW_Util.getGrantLanguage(); // Default to Grant language
         cb.Section__c = sectionid;
         cb.Description__c = richtext;
         if(Schema.sObjectType.GGW_Content_Block__c.isCreateable()){
@@ -236,8 +307,14 @@ public with sharing class GGW_ApplicationCtrl {
         }
         return cb.Id+'';
     }
-    // Return all Suggested section for shorter list
-    @AuraEnabled //(cacheable=true)
+    /**
+     * Retrieves a list of all suggested sections for a grant application.
+     * This method returns a list of GGW_SectionWrapper objects representing the suggested sections.
+     * It is used to provide a shorter list of sections marked as suggested for the user to choose from.
+     *
+     * @return A list of GGW_SectionWrapper objects representing the suggested sections.
+     */
+    @AuraEnabled
     public static List<GGW_SectionWrapper> getSections(){
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
         String lang = GGW_Util.getGrantLanguage();
@@ -249,7 +326,15 @@ public with sharing class GGW_ApplicationCtrl {
         }
         return swList;
     }
-    // Search any section by text key
+    
+    /**
+     * Searches for sections based on a given search text key.
+     * This method returns a list of GGW_SectionWrapper objects representing the sections that match the search criteria.
+     * It is used to provide a list of sections that contain the search key in their name.
+     *
+     * @param searchKey The search key to find matching sections.
+     * @return A list of GGW_SectionWrapper objects representing the matching sections.
+     */
     @AuraEnabled(cacheable=true)
     public static  List<GGW_SectionWrapper> findSections(String searchKey) {
         List<GGW_SectionWrapper> swList = new List<GGW_SectionWrapper>();
@@ -264,27 +349,53 @@ public with sharing class GGW_ApplicationCtrl {
         return swList;
     }
     /**
-     Save user selected langauge for Grant in a Grant/User state
-     State record is used to store small setting selection data to drive 
-     logic. In this case Language filtering for content.
-     This method is called from LWC language selector 
-     */
+     * Save user selected langauge for Grant in a Grant/User state
+     * State record is used to store small setting selection data to drive 
+     * logic. In this case Language filtering for content.
+     * This method is called from LWC language selector 
+     *
+     * @param lang The selected language to be saved.
+     * @param appId The ID of the grant application for which the language is being saved.
+     * @return A success message indicating the language has been saved.
+     */    
     @AuraEnabled
     public static String saveLanguageSelection(String lang, String appId){
         // If lang = null then User langauge SFDC setting will be used by default
         return GGW_Util.saveGrantLanguage(lang, appId);
     }
-    // app ID not used to init new grant pass it for copatible api
-    // This method query user selected language from state record
+    /**
+     * Retrieves the selected language for a grant application.
+     * This method is called from the LWC language selector component.
+     * It retrieves the selected language for the grant application from the user's state record.
+     * app ID not used to init new grant to pass it for compatible api
+     *
+     * @param appId The ID of the grant application for which the language is being retrieved.
+     * @return The selected language for the grant application.
+     */
     @AuraEnabled 
     public static String getLanguageSelection(String appId){
         return GGW_Util.getGrantLanguage();
     }
+    /**
+     * Retrieves the selected language for a grant application.
+     * This method is called from the LWC language selector component.
+     * It retrieves the selected language for the grant application from the user's state record.
+     * app ID not used to init new grant to pass it for compatible api
+     *
+     * @param appId The ID of the grant application for which the language is being retrieved.
+     * @return The selected language for the grant application.
+     */
     @AuraEnabled (cacheable=true)
     public static String getLanguageSelectionForWire(String appId){
         return getApplicationLanguage(appId);
     }
-
+    /**
+     * Retrieves a list of supported languages for grant applications.
+     * This method is called from the LWC language selector component.
+     * It returns a list of picklist options representing the supported languages.
+     *
+     * @return A list of GGW_Util.PickList objects representing the supported languages.
+     */
     @AuraEnabled (cacheable=true)
     public static List<GGW_Util.PickList> getSupportedLanguages(){
         return GGW_Util.getSelectOptionFromPicklist(ggGtSteObj, ggGtStLanField, false); 

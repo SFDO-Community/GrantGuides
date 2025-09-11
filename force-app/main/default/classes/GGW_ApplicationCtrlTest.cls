@@ -317,9 +317,10 @@ public class GGW_ApplicationCtrlTest {
         String str = GGW_ApplicationCtrl.addTextBlockToLibrary(sectionid, richtext, 'Test block');
         Test.stopTest();
         // Check if new block was created with default name
-        GGW_Content_Block__c block = [SELECT Id, Name, Section__c, Description__c FROM GGW_Content_Block__c WHERE Id =:str ];
+        GGW_Content_Block__c block = [SELECT Id, Name, Section__c, Language__c, Description__c FROM GGW_Content_Block__c WHERE Id =:str ];
         System.assertEquals('Test block', block.Name, 'Block name not matching');
         System.assertEquals(str, block.Id, 'No Block ID found');
+        System.assertEquals('en_US', block.Language__c, 'No Language__c set for Block');
         System.assertEquals(sectionList[0].Id, block.Section__c, 'Block link to Section missing');
             }
         }
